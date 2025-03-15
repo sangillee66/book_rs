@@ -12,7 +12,7 @@
   {
     "objectID": "2_2_satellite_systems.html",
     "href": "2_2_satellite_systems.html",
-    "title": "5  인공위성 RS 시스템",
+    "title": "\n5  인공위성 RS 시스템\n",
     "section": "",
     "text": "5.1 시스템 설계",
     "crumbs": [
@@ -23,9 +23,9 @@
   {
     "objectID": "2_2_satellite_systems.html#landsat-시스템",
     "href": "2_2_satellite_systems.html#landsat-시스템",
-    "title": "5  인공위성 RS 시스템",
-    "section": "5.2 Landsat 시스템",
-    "text": "5.2 Landsat 시스템",
+    "title": "\n5  인공위성 RS 시스템\n",
+    "section": "\n5.2 Landsat 시스템",
+    "text": "5.2 Landsat 시스템\n\n5.2.1 WRS(World Reference System\n기본 패키지를 설치한다.\n\nlibrary(tidyverse)\nlibrary(sf)\nlibrary(tmap)\nlibrary(rnaturalearth)\nlibrary(spData)\n\nWRS 셰이프 파일을 불러온다.\n\nwrs2_desc &lt;- st_read(\"D:/My R/World Data Manupulation/USGS Landsat Systems/WRS2_descending_0/WRS2_descending.shp\", options = \"ENCODING=CP949\")\n\noptions:        ENCODING=CP949 \nReading layer `WRS2_descending' from data source \n  `D:\\My R\\World Data Manupulation\\USGS Landsat Systems\\WRS2_descending_0\\WRS2_descending.shp' \n  using driver `ESRI Shapefile'\nSimple feature collection with 28892 features and 14 fields\nGeometry type: MULTIPOLYGON\nDimension:     XY\nBounding box:  xmin: -180 ymin: -82.6401 xmax: 180 ymax: 82.6401\nGeodetic CRS:  WGS 84\n\nwrs2_desc &lt;- wrs2_desc |&gt; \n  mutate(\n    PATH_ROW = str_c(\n      PATH, ROW, sep = \"-\"\n    ), .after = ROW\n  ) \n\nwrs2 데이터가 너무 커서 여기에 나타내지는 않는다.\n한반도와 관련된 지도만 제작한다.\n\nworld_map &lt;- st_read(\"D:/My R/World Data Manupulation/NaturalEarth/new_1_ne_50m_admin_0_countries.shp\")\n\nReading layer `new_1_ne_50m_admin_0_countries' from data source \n  `D:\\My R\\World Data Manupulation\\NaturalEarth\\new_1_ne_50m_admin_0_countries.shp' \n  using driver `ESRI Shapefile'\nSimple feature collection with 244 features and 170 fields\nGeometry type: MULTIPOLYGON\nDimension:     XY\nBounding box:  xmin: -180 ymin: -89.99893 xmax: 180 ymax: 83.59961\nGeodetic CRS:  WGS 84\n\nkoreas &lt;- world_map |&gt; \n  filter(\n    str_detect(ADMIN, \"Korea\")\n  )\nwrs2_desc |&gt; \n  st_intersects(koreas) |&gt; lengths() &gt; 0 -&gt; sel_index\nwrs2_koreas &lt;- wrs2_desc |&gt; \n  filter(\n    sel_index\n  )\ntm_shape(world_map) + tm_polygons(col = \"gray95\") +\n  tm_shape(koreas) + tm_polygons() +\n  tm_shape(wrs2_koreas, is.master = TRUE) + tm_polygons(border.col = \"#984ea3\", lwd = 1, alpha = 0) + tm_text(\"PATH_ROW\", size = 0.5) +\n  tm_scale_bar(color.dark = \"gray60\", position = c(0.52, 0.01), breaks = seq(0, 400, 100), size = 0.3)",
     "crumbs": [
       "RS 데이터의 획득",
       "<span class='chapter-number'>5</span>  <span class='chapter-title'>인공위성 RS 시스템</span>"
@@ -34,8 +34,8 @@
   {
     "objectID": "2_2_satellite_systems.html#spot-시스템",
     "href": "2_2_satellite_systems.html#spot-시스템",
-    "title": "5  인공위성 RS 시스템",
-    "section": "5.3 SPOT 시스템",
+    "title": "\n5  인공위성 RS 시스템\n",
+    "section": "\n5.3 SPOT 시스템",
     "text": "5.3 SPOT 시스템",
     "crumbs": [
       "RS 데이터의 획득",
@@ -45,8 +45,8 @@
   {
     "objectID": "2_2_satellite_systems.html#sentinel-2-시스템",
     "href": "2_2_satellite_systems.html#sentinel-2-시스템",
-    "title": "5  인공위성 RS 시스템",
-    "section": "5.4 Sentinel-2 시스템",
+    "title": "\n5  인공위성 RS 시스템\n",
+    "section": "\n5.4 Sentinel-2 시스템",
     "text": "5.4 Sentinel-2 시스템",
     "crumbs": [
       "RS 데이터의 획득",
@@ -56,8 +56,8 @@
   {
     "objectID": "2_2_satellite_systems.html#goes-시스템",
     "href": "2_2_satellite_systems.html#goes-시스템",
-    "title": "5  인공위성 RS 시스템",
-    "section": "5.5 GOES 시스템",
+    "title": "\n5  인공위성 RS 시스템\n",
+    "section": "\n5.5 GOES 시스템",
     "text": "5.5 GOES 시스템",
     "crumbs": [
       "RS 데이터의 획득",
@@ -67,8 +67,8 @@
   {
     "objectID": "2_2_satellite_systems.html#avhrr-시스템",
     "href": "2_2_satellite_systems.html#avhrr-시스템",
-    "title": "5  인공위성 RS 시스템",
-    "section": "5.6 AVHRR 시스템",
+    "title": "\n5  인공위성 RS 시스템\n",
+    "section": "\n5.6 AVHRR 시스템",
     "text": "5.6 AVHRR 시스템",
     "crumbs": [
       "RS 데이터의 획득",
@@ -78,8 +78,8 @@
   {
     "objectID": "2_2_satellite_systems.html#modis-시스템",
     "href": "2_2_satellite_systems.html#modis-시스템",
-    "title": "5  인공위성 RS 시스템",
-    "section": "5.7 MODIS 시스템",
+    "title": "\n5  인공위성 RS 시스템\n",
+    "section": "\n5.7 MODIS 시스템",
     "text": "5.7 MODIS 시스템",
     "crumbs": [
       "RS 데이터의 획득",
