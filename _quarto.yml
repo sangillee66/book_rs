@@ -2,6 +2,8 @@ project:
   type: book
   output-dir: docs
 
+lang: ko
+
 book:
   title: "Remote Sensing"
   author: "Sang-Il Lee"
