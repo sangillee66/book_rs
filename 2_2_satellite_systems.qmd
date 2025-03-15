@@ -22,6 +22,45 @@ editor_options:
 
 ## Landsat 시스템
 
+### WRS(World Reference System
+
+기본 패키지를 설치한다.
+
+```{r}
+library(tidyverse)
+library(sf)
+library(tmap)
+library(spData)
+```
+
+WRS 셰이프 파일을 불러온다.
+
+```{r}
+wrs2_desc <- st_read("D:/My R/World Data Manupulation/USGS Landsat Systems/WRS2_descending_0/WRS2_descending.shp", options = "ENCODING=CP949")
+wrs2_desc <- wrs2_desc |> 
+  mutate(
+    PATH_ROW = str_c(
+      PATH, ROW, sep = "-"
+    ), .after = ROW
+  ) 
+```
+
+지도를 제작한다.
+
+```{r}
+tmap_mode("view")
+wrs2_map <- tm_shape(wrs2_desc) + tm_polygons(
+  col = NA, alpha = 0, border.col = "#984ea3", id = "PATH_ROW") +
+  tm_legend(title = "Landsat WRS2 Lookup Map")
+wrs2_map
+```
+
+```{r}
+#| echo: false
+#| eval: false
+tmap_save(wrs2_map, "D:/My Classes/2025년 1학기/원격탐사와 지리자료분석/wrs2_map.html")
+```
+
 ## SPOT 시스템
 
 ## Sentinel-2 시스템
