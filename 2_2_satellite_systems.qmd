@@ -37,7 +37,13 @@ library(spData)
 WRS 셰이프 파일을 불러온다.
 
 ```{r}
+#| results: hide
 wrs2_desc <- st_read("D:/My R/World Data Manupulation/USGS Landsat Systems/WRS2_descending_0/WRS2_descending.shp", options = "ENCODING=CP949")
+```
+
+이름을 위한 새로운 컬럼을 만든다.
+
+```{r}
 wrs2_desc <- wrs2_desc |> 
   mutate(
     PATH_ROW = str_c(
@@ -59,24 +65,36 @@ wrs2_map
 tmap_save(wrs2_map, "D:/My Classes/2025년 1학기/원격탐사와 지리자료분석/wrs2_map.html")
 ```
 
-한반도와 관련된 지도만 제작한다.
+한반도와 관련된 지도만 제작한다. 국가 바운더리 파일을 불러온다.
 
 ```{r}
+#| results: hide
 world_map <- st_read("D:/My R/World Data Manupulation/NaturalEarth/new_1_ne_50m_admin_0_countries.shp")
+```
+
+지도를 생성한다.
+
+```{r}
+#| fig-height: 8
+#| fig-dpi: 600
+
 koreas <- world_map |> 
   filter(
     str_detect(ADMIN, "Korea")
   )
+
 wrs2_desc |> 
   st_intersects(koreas) |> lengths() > 0 -> sel_index
+
 wrs2_koreas <- wrs2_desc |> 
   filter(
     sel_index
   )
+
 tm_shape(world_map) + tm_polygons(col = "gray95") +
   tm_shape(koreas) + tm_polygons() +
-  tm_shape(wrs2_koreas, is.master = TRUE) + tm_polygons(border.col = "#984ea3", lwd = 1, alpha = 0) + tm_text("PATH_ROW", size = 0.5) +
-  tm_scale_bar(color.dark = "gray60", position = c(0.52, 0.01), breaks = seq(0, 400, 100), size = 0.3)
+  tm_shape(wrs2_koreas, is.master = TRUE) + tm_polygons(border.col = "#984ea3", lwd = 1, alpha = 0) + tm_text("PATH_ROW") +
+  tm_scale_bar(color.dark = "gray60", position = c(0.52, 0.01), breaks = seq(0, 400, 100))
 ```
 
 ```{r}
@@ -96,7 +114,7 @@ my.file.name <- paste0(my.path.name, my.title, ".jpg")
 tmap_save(my.map, filename = my.file.name, height = 12.1, dpi = 600)
 ```
 
-##  SPOT 시스템
+## SPOT 시스템
 
 ## Sentinel-2 시스템
 
