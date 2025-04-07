@@ -17,3 +17,40 @@ editor: visual
 editor_options: 
   chunk_output_type: console
 ---
+
+## 영상 보정
+
+## 영상 탐색
+
+### 개요
+
+서울에 대한 Landsat 8 영상을 불러온다. 우선 필수적인 패키지를 설치한다.
+
+```{r}
+library(tidyverse)
+library(terra)
+library(tidyterra)
+library(sf)
+library(tmap)
+```
+
+Level-2 와 Level-1 데이터를 각각 불러온다.
+
+```{r}
+level2_landsat_seoul_st <- rast("D:/My R/World Data Manupulation/USGS EarthExplorer/level2_landsat_seoul_stack.tif")
+level1_landsat_seoul_st <- rast("D:/My R/World Data Manupulation/USGS EarthExplorer/level1_landsat_seoul_stack.tif")
+```
+
+Level-2 단순 플롯 그리기.
+
+```{r}
+plot(level2_landsat_seoul_st, col = grey(0:100/100)) # 어두움
+plot(stretch(level2_landsat_seoul_st, minq = 0.1, maxq = 0.99), col = grey(0:100/100)) # 밝음
+```
+
+Level-1 단순 플롯 그리기.
+
+```{r}
+plot(level1_landsat_seoul_st, col = grey(0:100/100)) # 어두움
+plot(stretch(level1_landsat_seoul_st, minq = 0.1, maxq = 0.99), col = grey(0:100/100)) # 밝음
+```

@@ -1,0 +1,17 @@
+{
+  "hash": "181679578962bc77b4a594142c02c305",
+  "result": {
+    "engine": "knitr",
+    "markdown": "---\ntitle: \"영상 탐색\"\nauthor: Sang-Il Lee\ndate-modified: last-modified\nnumber-sections: true\nformat: \n  html: \n    toc: true\ncode-link: true\ncode-copy: true\nlightbox: true\nexecute: \n  warning: false\n  error: false\n  freeze: auto\neditor: visual\neditor_options: \n  chunk_output_type: console\n---\n\n\n## 영상 보정\n\n## 영상 탐색\n\n### 개요\n\n서울에 대한 Landsat 8 영상을 불러온다. 우선 필수적인 패키지를 설치한다.\n\n\n::: {.cell}\n\n```{.r .cell-code}\nlibrary(tidyverse)\nlibrary(terra)\nlibrary(tidyterra)\nlibrary(sf)\nlibrary(tmap)\n```\n:::\n\n\nLevel-2 와 Level-1 데이터를 각각 불러온다.\n\n\n::: {.cell}\n\n```{.r .cell-code}\nlevel2_landsat_seoul_st <- rast(\"D:/My R/World Data Manupulation/USGS EarthExplorer/level2_landsat_seoul_stack.tif\")\nlevel1_landsat_seoul_st <- rast(\"D:/My R/World Data Manupulation/USGS EarthExplorer/level1_landsat_seoul_stack.tif\")\n```\n:::\n\n\nLevel-2 단순 플롯 그리기.\n\n\n::: {.cell}\n\n```{.r .cell-code}\nplot(level2_landsat_seoul_st, col = grey(0:100/100)) # 어두움\n```\n\n::: {.cell-output-display}\n![](3_2_image_exploration_files/figure-html/unnamed-chunk-3-1.png){width=672}\n:::\n\n```{.r .cell-code}\nplot(stretch(level2_landsat_seoul_st, minq = 0.1, maxq = 0.99), col = grey(0:100/100)) # 밝음\n```\n\n::: {.cell-output-display}\n![](3_2_image_exploration_files/figure-html/unnamed-chunk-3-2.png){width=672}\n:::\n:::\n\n\nLevel-1 단순 플롯 그리기.\n\n\n::: {.cell}\n\n```{.r .cell-code}\nplot(level1_landsat_seoul_st, col = grey(0:100/100)) # 어두움\n```\n\n::: {.cell-output-display}\n![](3_2_image_exploration_files/figure-html/unnamed-chunk-4-1.png){width=672}\n:::\n\n```{.r .cell-code}\nplot(stretch(level1_landsat_seoul_st, minq = 0.1, maxq = 0.99), col = grey(0:100/100)) # 밝음\n```\n\n::: {.cell-output-display}\n![](3_2_image_exploration_files/figure-html/unnamed-chunk-4-2.png){width=672}\n:::\n:::\n",
+    "supporting": [
+      "3_2_image_exploration_files"
+    ],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}
