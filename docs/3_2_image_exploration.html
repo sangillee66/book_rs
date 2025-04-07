@@ -280,13 +280,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">목차</h2>
    
   <ul>
-<li><a href="#%EC%98%81%EC%83%81-%EB%B3%B4%EC%A0%95" id="toc-영상-보정" class="nav-link active" data-scroll-target="#%EC%98%81%EC%83%81-%EB%B3%B4%EC%A0%95"><span class="header-section-number">9.1</span> 영상 보정</a></li>
+<li><a href="#%EA%B0%9C%EC%9A%94" id="toc-개요" class="nav-link active" data-scroll-target="#%EA%B0%9C%EC%9A%94"><span class="header-section-number">9.1</span> 개요</a></li>
+  <li><a href="#%EA%B0%9C%EB%B3%84-%ED%94%BD%EC%85%80%EA%B0%92-%ED%99%95%EC%9D%B8" id="toc-개별-픽셀값-확인" class="nav-link" data-scroll-target="#%EA%B0%9C%EB%B3%84-%ED%94%BD%EC%85%80%EA%B0%92-%ED%99%95%EC%9D%B8"><span class="header-section-number">9.2</span> 개별 픽셀값 확인</a></li>
   <li>
-<a href="#%EC%98%81%EC%83%81-%ED%83%90%EC%83%89" id="toc-영상-탐색" class="nav-link" data-scroll-target="#%EC%98%81%EC%83%81-%ED%83%90%EC%83%89"><span class="header-section-number">9.2</span> 영상 탐색</a>
+<a href="#%EC%98%81%EC%83%81-%ED%86%B5%EA%B3%84-%EB%B0%8F-%EA%B7%B8%EB%9E%98%ED%94%84" id="toc-영상-통계-및-그래프" class="nav-link" data-scroll-target="#%EC%98%81%EC%83%81-%ED%86%B5%EA%B3%84-%EB%B0%8F-%EA%B7%B8%EB%9E%98%ED%94%84"><span class="header-section-number">9.3</span> 영상 통계 및 그래프</a>
   <ul class="collapse">
-<li><a href="#%EA%B0%9C%EC%9A%94" id="toc-개요" class="nav-link" data-scroll-target="#%EA%B0%9C%EC%9A%94"><span class="header-section-number">9.2.1</span> 개요</a></li>
+<li><a href="#%EB%8B%A8%EB%B3%80%EB%9F%89" id="toc-단변량" class="nav-link" data-scroll-target="#%EB%8B%A8%EB%B3%80%EB%9F%89"><span class="header-section-number">9.3.1</span> 단변량</a></li>
+  <li><a href="#%EB%8B%A4%EB%B3%80%EB%9F%89" id="toc-다변량" class="nav-link" data-scroll-target="#%EB%8B%A4%EB%B3%80%EB%9F%89"><span class="header-section-number">9.3.2</span> 다변량</a></li>
   </ul>
 </li>
+  <li><a href="#%EC%98%81%EC%83%81-%ED%94%84%EB%A1%9C%ED%8C%8C%EC%9D%BC%EB%A7%81" id="toc-영상-프로파일링" class="nav-link" data-scroll-target="#%EC%98%81%EC%83%81-%ED%94%84%EB%A1%9C%ED%8C%8C%EC%9D%BC%EB%A7%81"><span class="header-section-number">9.4</span> 영상 프로파일링</a></li>
   </ul></nav>
     </div>
 <!-- main -->
@@ -319,12 +322,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   
 
 
-</header><section id="영상-보정" class="level2" data-number="9.1"><h2 data-number="9.1" class="anchored" data-anchor-id="영상-보정">
-<span class="header-section-number">9.1</span> 영상 보정</h2>
-</section><section id="영상-탐색" class="level2" data-number="9.2"><h2 data-number="9.2" class="anchored" data-anchor-id="영상-탐색">
-<span class="header-section-number">9.2</span> 영상 탐색</h2>
-<section id="개요" class="level3" data-number="9.2.1"><h3 data-number="9.2.1" class="anchored" data-anchor-id="개요">
-<span class="header-section-number">9.2.1</span> 개요</h3>
+</header><section id="개요" class="level2" data-number="9.1"><h2 data-number="9.1" class="anchored" data-anchor-id="개요">
+<span class="header-section-number">9.1</span> 개요</h2>
 <p>서울에 대한 Landsat 8 영상을 불러온다. 우선 필수적인 패키지를 설치한다.</p>
 <div class="cell">
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org">tidyverse</a></span><span class="op">)</span></span>
@@ -372,9 +371,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
+</section><section id="개별-픽셀값-확인" class="level2" data-number="9.2"><h2 data-number="9.2" class="anchored" data-anchor-id="개별-픽셀값-확인">
+<span class="header-section-number">9.2</span> 개별 픽셀값 확인</h2>
+</section><section id="영상-통계-및-그래프" class="level2" data-number="9.3"><h2 data-number="9.3" class="anchored" data-anchor-id="영상-통계-및-그래프">
+<span class="header-section-number">9.3</span> 영상 통계 및 그래프</h2>
+<section id="단변량" class="level3" data-number="9.3.1"><h3 data-number="9.3.1" class="anchored" data-anchor-id="단변량">
+<span class="header-section-number">9.3.1</span> 단변량</h3>
+</section><section id="다변량" class="level3" data-number="9.3.2"><h3 data-number="9.3.2" class="anchored" data-anchor-id="다변량">
+<span class="header-section-number">9.3.2</span> 다변량</h3>
+</section></section><section id="영상-프로파일링" class="level2" data-number="9.4"><h2 data-number="9.4" class="anchored" data-anchor-id="영상-프로파일링">
+<span class="header-section-number">9.4</span> 영상 프로파일링</h2>
 
 
-</section></section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
+</section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
     const mode = bsSheetEl.getAttribute("data-mode");
@@ -772,7 +781,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   </div>
 </nav>
 </div> <!-- /content -->
-<script>var lightboxQuarto = GLightbox({"loop":false,"openEffect":"zoom","selector":".lightbox","closeEffect":"zoom","descPosition":"bottom"});
+<script>var lightboxQuarto = GLightbox({"loop":false,"descPosition":"bottom","openEffect":"zoom","closeEffect":"zoom","selector":".lightbox"});
 window.onload = () => {
   lightboxQuarto.on('slide_before_load', (data) => {
     const { slideIndex, slideNode, slideConfig, player, trigger } = data;

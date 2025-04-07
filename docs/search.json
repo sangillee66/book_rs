@@ -91,7 +91,7 @@
     "href": "3_2_image_exploration.html",
     "title": "\n9  영상 탐색\n",
     "section": "",
-    "text": "9.1 영상 보정",
+    "text": "9.1 개요\n서울에 대한 Landsat 8 영상을 불러온다. 우선 필수적인 패키지를 설치한다.\nlibrary(tidyverse)\nlibrary(terra)\nlibrary(tidyterra)\nlibrary(sf)\nlibrary(tmap)\nLevel-2 와 Level-1 데이터를 각각 불러온다.\nlevel2_landsat_seoul_st &lt;- rast(\"D:/My R/World Data Manupulation/USGS EarthExplorer/level2_landsat_seoul_stack.tif\")\nlevel1_landsat_seoul_st &lt;- rast(\"D:/My R/World Data Manupulation/USGS EarthExplorer/level1_landsat_seoul_stack.tif\")\nLevel-2 단순 플롯 그리기.\nplot(level2_landsat_seoul_st, col = grey(0:100/100)) # 어두움\n\n\n\n\n\n\nplot(stretch(level2_landsat_seoul_st, minq = 0.1, maxq = 0.99), col = grey(0:100/100)) # 밝음\nLevel-1 단순 플롯 그리기.\nplot(level1_landsat_seoul_st, col = grey(0:100/100)) # 어두움\n\n\n\n\n\n\nplot(stretch(level1_landsat_seoul_st, minq = 0.1, maxq = 0.99), col = grey(0:100/100)) # 밝음",
     "crumbs": [
       "RS 데이터의 탐색 및 시각화",
       "<span class='chapter-number'>9</span>  <span class='chapter-title'>영상 탐색</span>"
@@ -103,6 +103,39 @@
     "title": "\n9  영상 탐색\n",
     "section": "\n9.2 영상 탐색",
     "text": "9.2 영상 탐색\n\n9.2.1 개요\n서울에 대한 Landsat 8 영상을 불러온다. 우선 필수적인 패키지를 설치한다.\n\nlibrary(tidyverse)\nlibrary(terra)\nlibrary(tidyterra)\nlibrary(sf)\nlibrary(tmap)\n\nLevel-2 와 Level-1 데이터를 각각 불러온다.\n\nlevel2_landsat_seoul_st &lt;- rast(\"D:/My R/World Data Manupulation/USGS EarthExplorer/level2_landsat_seoul_stack.tif\")\nlevel1_landsat_seoul_st &lt;- rast(\"D:/My R/World Data Manupulation/USGS EarthExplorer/level1_landsat_seoul_stack.tif\")\n\nLevel-2 단순 플롯 그리기.\n\nplot(level2_landsat_seoul_st, col = grey(0:100/100)) # 어두움\n\n\n\n\n\n\nplot(stretch(level2_landsat_seoul_st, minq = 0.1, maxq = 0.99), col = grey(0:100/100)) # 밝음\n\n\n\n\n\n\n\nLevel-1 단순 플롯 그리기.\n\nplot(level1_landsat_seoul_st, col = grey(0:100/100)) # 어두움\n\n\n\n\n\n\nplot(stretch(level1_landsat_seoul_st, minq = 0.1, maxq = 0.99), col = grey(0:100/100)) # 밝음",
+    "crumbs": [
+      "RS 데이터의 탐색 및 시각화",
+      "<span class='chapter-number'>9</span>  <span class='chapter-title'>영상 탐색</span>"
+    ]
+  },
+  {
+    "objectID": "3_2_image_exploration.html#개별-픽셀값-확인",
+    "href": "3_2_image_exploration.html#개별-픽셀값-확인",
+    "title": "\n9  영상 탐색\n",
+    "section": "\n9.2 개별 픽셀값 확인",
+    "text": "9.2 개별 픽셀값 확인",
+    "crumbs": [
+      "RS 데이터의 탐색 및 시각화",
+      "<span class='chapter-number'>9</span>  <span class='chapter-title'>영상 탐색</span>"
+    ]
+  },
+  {
+    "objectID": "3_2_image_exploration.html#영상-통계-및-그래프",
+    "href": "3_2_image_exploration.html#영상-통계-및-그래프",
+    "title": "\n9  영상 탐색\n",
+    "section": "\n9.3 영상 통계 및 그래프",
+    "text": "9.3 영상 통계 및 그래프\n\n9.3.1 단변량\n\n9.3.2 다변량",
+    "crumbs": [
+      "RS 데이터의 탐색 및 시각화",
+      "<span class='chapter-number'>9</span>  <span class='chapter-title'>영상 탐색</span>"
+    ]
+  },
+  {
+    "objectID": "3_2_image_exploration.html#영상-프로파일링",
+    "href": "3_2_image_exploration.html#영상-프로파일링",
+    "title": "\n9  영상 탐색\n",
+    "section": "\n9.4 영상 프로파일링",
+    "text": "9.4 영상 프로파일링",
     "crumbs": [
       "RS 데이터의 탐색 및 시각화",
       "<span class='chapter-number'>9</span>  <span class='chapter-title'>영상 탐색</span>"

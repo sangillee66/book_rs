@@ -18,11 +18,7 @@ editor_options:
   chunk_output_type: console
 ---
 
-## 영상 보정
-
-## 영상 탐색
-
-### 개요
+## 개요
 
 서울에 대한 Landsat 8 영상을 불러온다. 우선 필수적인 패키지를 설치한다.
 
@@ -54,3 +50,13 @@ Level-1 단순 플롯 그리기.
 plot(level1_landsat_seoul_st, col = grey(0:100/100)) # 어두움
 plot(stretch(level1_landsat_seoul_st, minq = 0.1, maxq = 0.99), col = grey(0:100/100)) # 밝음
 ```
+
+## 개별 픽셀값 확인
+
+## 영상 통계 및 그래프
+
+### 단변량
+
+### 다변량
+
+## 영상 프로파일링
