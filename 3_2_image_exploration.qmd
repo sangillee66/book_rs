@@ -289,8 +289,8 @@ hist(level2_landsat_seoul_st_mask, breaks = 100)
 #| fig-width: 19.4
 #| fig-asp: 0.618
 #| fig-dpi: 600
-df <- as.data.frame(level1_landsat_seoul_st_mask, xy = FALSE, na.rm = TRUE)
-df_long <- df |> 
+df_1 <- as.data.frame(level1_landsat_seoul_st_mask, xy = FALSE, na.rm = TRUE)
+df_long <- df_1 |> 
   pivot_longer(
     cols = everything(), names_to = "band", values_to = "DN"
   ) |> 
@@ -321,8 +321,8 @@ ggplot(df_long, aes(x = DN)) +
 #| fig-width: 19.4
 #| fig-asp: 0.618
 #| fig-dpi: 600
-df <- as.data.frame(level2_landsat_seoul_st_mask, xy = FALSE, na.rm = TRUE)
-df_long <- df |> 
+df_2 <- as.data.frame(level2_landsat_seoul_st_mask, xy = FALSE, na.rm = TRUE)
+df_long <- df_2 |> 
   pivot_longer(
     cols = everything(), names_to = "band", values_to = "DN"
   ) |> 
@@ -349,4 +349,219 @@ ggplot(df_long, aes(x = DN)) +
 
 ### 다변량
 
+Level-1에 대한 밴드간 Pearson's r을 계산한다.
+
+```{r}
+cor_matrix_1 <- cor(df_1, use = "complete.obs", method = "pearson")
+cor_matrix_1
+```
+
+상관관계 매트릭스 그래프를 생성한다.
+
+```{r}
+#| fig-width: 19.4
+#| fig-asp: 0.618
+#| fig-dpi: 600
+library(ggcorrplot)
+ggcorrplot(cor_matrix_1, hc.order = TRUE, tl.cex = 18, lab = TRUE, lab_size = 6, outline.color = "gray80", colors = c("#6D9EC1", "white", "#E46726"), digits = 3) + 
+  labs(caption = "SANG-IL LEE, Geography Education at SNU, 2025")
+```
+
+Level-2에 대한 밴드간 Pearson's r을 계산한다.
+
+```{r}
+cor_matrix_2 <- cor(df_2, use = "complete.obs", method = "pearson")
+cor_matrix_2
+```
+
+동일한 그래프를 생성한다.
+
+```{r}
+#| fig-width: 19.4
+#| fig-asp: 0.618
+#| fig-dpi: 600
+library(ggcorrplot)
+ggcorrplot(cor_matrix_2, hc.order = TRUE, tl.cex = 18, lab = TRUE, lab_size = 6, outline.color = "gray80", colors = c("#6D9EC1", "white", "#E46726"), digits = 3) + 
+  labs(caption = "SANG-IL LEE, Geography Education at SNU, 2025")
+```
+
+두 밴드 간의 산포도(feature space plot)를 제작한다(Level-2).
+
+```{r}
+#| fig-width: 19.4
+#| fig-asp: 0.618
+#| fig-dpi: 600
+ggplot(df_2, aes(x = B4, y = B5)) +
+  geom_point(alpha = 0.3, color = "darkblue", size = 0.5) +
+  coord_fixed() +
+  theme_minimal() +
+    theme(
+    plot.title = element_text(size = 30), 
+    axis.title = element_text(size = 20),
+    axis.text.x = element_text(size = 16), 
+    axis.text.y = element_text(size = 16),
+    legend.title = element_text(size = 17), 
+    legend.text = element_text(size = 16),
+    strip.text = element_text(size = 20)
+  ) +
+  labs(
+    x = "Band 4 (Red)", 
+    y = "Band 5 (NIR)", 
+    title = "Feature Space: B4 vs B5",
+    caption = "SANG-IL LEE, Geography Education at SNU, 2025")
+```
+
 ## 영상 프로파일링
+
+### 공간적(선형) 프로파일
+
+두 지점을 설정하여 라인을 생성하고, 라인 상에 일정한 간격의 포인트를 생성한다.
+
+```{r}
+# 두 지점을 연결하는 라인 sf를 만든다.
+line_sf <- tibble(x = c(126.961091, 126.992310), y = c(37.442904, 37.660032)) |> 
+  as.matrix() |> # st_linestring()은 매트릭스만 받음
+  st_linestring() |> 
+  st_sfc(crs = 4326) |> 
+  st_sf(geometry = _) |> # _ 표시는 직전에 만들어진 것을 인풋으로 받는다는 의미
+  st_transform(crs = 5179)
+
+# 라인 상에 적절한 간격의 포인트를 생성한다.
+points_sf <- line_sf |> 
+  st_line_sample(density = 0.1) |> # '단위 길이 당 포인트의 수'를 의미, 10m당 하나씩을 택한다는 의미.
+  st_cast("POINT") |> 
+  st_sf() 
+```
+
+선을 지도에 표시한다.
+
+```{r}
+#| fig-width: 15
+#| fig-height: 12
+#| fig-dpi: 600
+my_map <- tm_shape(level2_landsat_seoul_st_mask$B5, raster.downsample = FALSE) + 
+  tm_raster(style = "cont", palette = "-Greys", title = "DN") +
+  tm_shape(line_sf) + tm_lines(col = "red", lwd = 2) +
+  tm_shape(seoul) + tm_borders(col = "black", lwd = 2) +
+  tm_legend(legend.position = c(0.87, 0.05), legend.bg.color = "white", legend.bg.alpha = 0.6, legend.title.size = 1.5, legend.text.size = 1.2) +
+  tm_layout(inner.margins = c(0.05, 0.04, 0.06, 0.04), 
+            title = "Level-2: B5 (NIR)", title.size = 2,
+            title.position = c(0.02, 0.97)) + 
+  tm_scale_bar(breaks = seq(0, 20, 5), text.size = 0.6, color.dark = "gray60", position = c(0.03, 0.01)) +
+  tm_credits(text = "SANG-IL LEE, Geography Education at SNU, 2025", size = 0.8, position = c(0.76, 0.01))
+my_map
+```
+
+공간(선형) 프로파일을 생성한다.
+
+```{r}
+#| fig-width: 19.4
+#| fig-asp: 0.618
+#| fig-dpi: 600
+
+# 래스터로부터 각 포인트에 해당하는 값을 추출한다.
+profile <- level2_landsat_seoul_st_mask$B5 |> 
+  extract(points_sf) |> 
+  mutate(
+    distance = ID * 10 / 1000, # 10m 당 하나이므로 10을 곱해 거리(m)로 만들고, 1,000으로 나누어 km 단위
+    .keep = "unused"
+  )
+
+# 시각화
+ggplot(profile, aes(x = distance, y = B5)) +
+  geom_line() +
+  # theme_minimal() +
+  theme(
+    plot.title = element_text(size = 30), 
+    axis.title = element_text(size = 20),
+    axis.text.x = element_text(size = 16), 
+    axis.text.y = element_text(size = 16),
+    legend.title = element_text(size = 17), 
+    legend.text = element_text(size = 16),
+    strip.text = element_text(size = 20)
+  ) +
+  labs(
+    x = "Distance (km)", 
+    y = "DV", 
+    title = "Spatial Profile",
+    caption = "SANG-IL LEE, Geography Education at SNU, 2025"
+  )
+```
+
+### 분광 프로파일
+
+서울시 4곳의 분광 프로파일을 추출하고자 한다. 우선 위치를 결정하고 지도에 나타낸다.
+
+```{r}
+
+points_sf <- tibble(lon = c(126.956525, 126.800839, 126.976255, 126.974984), lat = c(37.451518, 37.567958, 37.510931, 37.585714)) |> 
+  st_as_sf(coords = c("lon", "lat"), crs = 4326) |> 
+  st_transform(crs = 5179) |> 
+  mutate(ID = 1:4)
+
+#| fig-width: 15
+#| fig-height: 12
+#| fig-dpi: 600
+my_map <- tm_shape(level2_landsat_seoul_st_mask$B5, raster.downsample = FALSE) + 
+  tm_raster(style = "cont", palette = "-Greys", title = "DN", legend.show = FALSE) +
+  tm_shape(points_sf) + tm_text("ID", col = "red", size = 2) +
+  tm_shape(seoul) + tm_borders(col = "black", lwd = 2) +
+  # tm_legend(legend.position = c(0.87, 0.05), legend.bg.color = "white", legend.bg.alpha = 0.6, legend.title.size = 1.5, legend.text.size = 1.2) +
+  tm_layout(inner.margins = c(0.05, 0.04, 0.06, 0.04), 
+            title = "Level-2: B5 (NIR)", title.size = 2,
+            title.position = c(0.02, 0.97)) + 
+  tm_scale_bar(breaks = seq(0, 20, 5), text.size = 0.6, color.dark = "gray60", position = c(0.03, 0.01)) +
+  tm_credits(text = "SANG-IL LEE, Geography Education at SNU, 2025", size = 0.8, position = c(0.76, 0.01))
+my_map
+```
+
+4개 지점에 대해 Level-2의 DN를 추출하고 분광 프로파일을 완성한다.
+
+```{r}
+#| fig-width: 19.4
+#| fig-asp: 0.618
+#| fig-dpi: 600
+
+spec_profile <- extract(level2_landsat_seoul_st_mask, points_sf) |> 
+  as.data.frame() |> select(-B10)
+
+df_spec <- spec_profile |> 
+  pivot_longer(
+    cols = B1:B7,
+    names_to = "band",
+    values_to = "DN"
+  ) |> 
+  mutate(
+    band = fct(band, levels = str_c("B", 1:7)),
+    ID = as_factor(ID)
+  )
+
+ggplot(df_spec, aes(x = band, y = DN, group = ID, color = ID)) +
+  geom_line(size = 1) +
+  geom_point(size = 2) +
+  # theme_minimal() +
+  scale_x_discrete(
+    labels = c("B1\n(Aerosol)", "B2\n(Blue)", "B3\n(Green)", 
+               "B4\n(Red)", "B5\n(NIR)", "B6\n(SWIR1)", 
+               "B7\n(SWIR2)")
+  ) +
+  scale_color_discrete(
+    name = "Locations", 
+    labels = c("1" = "관악산", "2" = "공항", "3" = "한강", "4" = "청와대")
+  ) +
+  theme(
+    plot.title = element_text(size = 30), 
+    axis.title = element_text(size = 20),
+    axis.text.x = element_text(size = 16), 
+    axis.text.y = element_text(size = 16),
+    legend.title = element_text(size = 17), 
+    legend.text = element_text(size = 16),
+    strip.text = element_text(size = 20)
+  ) +
+  labs(
+    title = "Spectral Profile", 
+    x = "Band", 
+    y = "DN",
+    caption = "SANG-IL LEE, Geography Education at SNU, 2025"
+  )
+```

@@ -295,7 +295,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#%EB%8B%A4%EB%B3%80%EB%9F%89" id="toc-다변량" class="nav-link" data-scroll-target="#%EB%8B%A4%EB%B3%80%EB%9F%89"><span class="header-section-number">9.3.2</span> 다변량</a></li>
   </ul>
 </li>
-  <li><a href="#%EC%98%81%EC%83%81-%ED%94%84%EB%A1%9C%ED%8C%8C%EC%9D%BC%EB%A7%81" id="toc-영상-프로파일링" class="nav-link" data-scroll-target="#%EC%98%81%EC%83%81-%ED%94%84%EB%A1%9C%ED%8C%8C%EC%9D%BC%EB%A7%81"><span class="header-section-number">9.4</span> 영상 프로파일링</a></li>
+  <li>
+<a href="#%EC%98%81%EC%83%81-%ED%94%84%EB%A1%9C%ED%8C%8C%EC%9D%BC%EB%A7%81" id="toc-영상-프로파일링" class="nav-link" data-scroll-target="#%EC%98%81%EC%83%81-%ED%94%84%EB%A1%9C%ED%8C%8C%EC%9D%BC%EB%A7%81"><span class="header-section-number">9.4</span> 영상 프로파일링</a>
+  <ul class="collapse">
+<li><a href="#%EA%B3%B5%EA%B0%84%EC%A0%81%EC%84%A0%ED%98%95-%ED%94%84%EB%A1%9C%ED%8C%8C%EC%9D%BC" id="toc-공간적선형-프로파일" class="nav-link" data-scroll-target="#%EA%B3%B5%EA%B0%84%EC%A0%81%EC%84%A0%ED%98%95-%ED%94%84%EB%A1%9C%ED%8C%8C%EC%9D%BC"><span class="header-section-number">9.4.1</span> 공간적(선형) 프로파일</a></li>
+  <li><a href="#%EB%B6%84%EA%B4%91-%ED%94%84%EB%A1%9C%ED%8C%8C%EC%9D%BC" id="toc-분광-프로파일" class="nav-link" data-scroll-target="#%EB%B6%84%EA%B4%91-%ED%94%84%EB%A1%9C%ED%8C%8C%EC%9D%BC"><span class="header-section-number">9.4.2</span> 분광 프로파일</a></li>
+  </ul>
+</li>
   </ul></nav>
     </div>
 <!-- main -->
@@ -773,8 +779,8 @@ B10 1369.7</code></pre>
 </div>
 <p><code>ggplot</code>으로 Level-1에 대한 히스토그램을 제작한다.</p>
 <div class="cell">
-<div class="sourceCode" id="cb61"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/as.data.frame.html">as.data.frame</a></span><span class="op">(</span><span class="va">level1_landsat_seoul_st_mask</span>, xy <span class="op">=</span> <span class="cn">FALSE</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span><span class="va">df_long</span> <span class="op">&lt;-</span> <span class="va">df</span> <span class="op">|&gt;</span> </span>
+<div class="sourceCode" id="cb61"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">df_1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/as.data.frame.html">as.data.frame</a></span><span class="op">(</span><span class="va">level1_landsat_seoul_st_mask</span>, xy <span class="op">=</span> <span class="cn">FALSE</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="va">df_long</span> <span class="op">&lt;-</span> <span class="va">df_1</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="https://tidyr.tidyverse.org/reference/pivot_longer.html">pivot_longer</a></span><span class="op">(</span></span>
 <span>    cols <span class="op">=</span> <span class="fu"><a href="https://tidyselect.r-lib.org/reference/everything.html">everything</a></span><span class="op">(</span><span class="op">)</span>, names_to <span class="op">=</span> <span class="st">"band"</span>, values_to <span class="op">=</span> <span class="st">"DN"</span></span>
 <span>  <span class="op">)</span> <span class="op">|&gt;</span> </span>
@@ -806,8 +812,8 @@ B10 1369.7</code></pre>
 </div>
 <p><code>ggplot</code>으로 Level-2에 대한 히스토그램을 제작한다.</p>
 <div class="cell">
-<div class="sourceCode" id="cb62"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/as.data.frame.html">as.data.frame</a></span><span class="op">(</span><span class="va">level2_landsat_seoul_st_mask</span>, xy <span class="op">=</span> <span class="cn">FALSE</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span><span class="va">df_long</span> <span class="op">&lt;-</span> <span class="va">df</span> <span class="op">|&gt;</span> </span>
+<div class="sourceCode" id="cb62"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">df_2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/as.data.frame.html">as.data.frame</a></span><span class="op">(</span><span class="va">level2_landsat_seoul_st_mask</span>, xy <span class="op">=</span> <span class="cn">FALSE</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="va">df_long</span> <span class="op">&lt;-</span> <span class="va">df_2</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="https://tidyr.tidyverse.org/reference/pivot_longer.html">pivot_longer</a></span><span class="op">(</span></span>
 <span>    cols <span class="op">=</span> <span class="fu"><a href="https://tidyselect.r-lib.org/reference/everything.html">everything</a></span><span class="op">(</span><span class="op">)</span>, names_to <span class="op">=</span> <span class="st">"band"</span>, values_to <span class="op">=</span> <span class="st">"DN"</span></span>
 <span>  <span class="op">)</span> <span class="op">|&gt;</span> </span>
@@ -839,11 +845,273 @@ B10 1369.7</code></pre>
 </div>
 </section><section id="다변량" class="level3" data-number="9.3.2"><h3 data-number="9.3.2" class="anchored" data-anchor-id="다변량">
 <span class="header-section-number">9.3.2</span> 다변량</h3>
+<p>Level-1에 대한 밴드간 Pearson’s r을 계산한다.</p>
+<div class="cell">
+<div class="sourceCode" id="cb63"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">cor_matrix_1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/cor.html">cor</a></span><span class="op">(</span><span class="va">df_1</span>, use <span class="op">=</span> <span class="st">"complete.obs"</span>, method <span class="op">=</span> <span class="st">"pearson"</span><span class="op">)</span></span>
+<span><span class="va">cor_matrix_1</span></span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>             B1          B2          B3          B4          B5         B6
+B1   1.00000000  0.99798739  0.96786426  0.95718076 -0.25897301 0.56027553
+B2   0.99798739  1.00000000  0.97507376  0.96432296 -0.25464801 0.57575476
+B3   0.96786426  0.97507376  1.00000000  0.98707290 -0.15120982 0.66445025
+B4   0.95718076  0.96432296  0.98707290  1.00000000 -0.18082622 0.64813007
+B5  -0.25897301 -0.25464801 -0.15120982 -0.18082622  1.00000000 0.51626370
+B6   0.56027553  0.57575476  0.66445025  0.64813007  0.51626370 1.00000000
+B7   0.81437027  0.82812993  0.87725273  0.88101123  0.10640364 0.88139157
+B8   0.95725571  0.96519887  0.98279318  0.98283331 -0.16371150 0.64852103
+B9  -0.04015354 -0.04008422 -0.03278075 -0.03357331  0.08783554 0.04154446
+B10  0.76315089  0.76279463  0.73760964  0.74309701 -0.28209793 0.47235755
+B11  0.75765298  0.75724889  0.73228394  0.73882537 -0.27484898 0.47280457
+             B7         B8          B9         B10         B11
+B1   0.81437027  0.9572557 -0.04015354  0.76315089  0.75765298
+B2   0.82812993  0.9651989 -0.04008422  0.76279463  0.75724889
+B3   0.87725273  0.9827932 -0.03278075  0.73760964  0.73228394
+B4   0.88101123  0.9828333 -0.03357331  0.74309701  0.73882537
+B5   0.10640364 -0.1637115  0.08783554 -0.28209793 -0.27484898
+B6   0.88139157  0.6485210  0.04154446  0.47235755  0.47280457
+B7   1.00000000  0.8680094 -0.00113004  0.68909026  0.68643512
+B8   0.86800944  1.0000000 -0.03238030  0.72119463  0.71657011
+B9  -0.00113004 -0.0323803  1.00000000 -0.02366797 -0.01506218
+B10  0.68909026  0.7211946 -0.02366797  1.00000000  0.99582716
+B11  0.68643512  0.7165701 -0.01506218  0.99582716  1.00000000</code></pre>
+</div>
+</div>
+<p>상관관계 매트릭스 그래프를 생성한다.</p>
+<div class="cell">
+<div class="sourceCode" id="cb65"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://www.sthda.com/english/wiki/ggcorrplot-visualization-of-a-correlation-matrix-using-ggplot2">ggcorrplot</a></span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/ggcorrplot/man/ggcorrplot.html">ggcorrplot</a></span><span class="op">(</span><span class="va">cor_matrix_1</span>, hc.order <span class="op">=</span> <span class="cn">TRUE</span>, tl.cex <span class="op">=</span> <span class="fl">18</span>, lab <span class="op">=</span> <span class="cn">TRUE</span>, lab_size <span class="op">=</span> <span class="fl">6</span>, outline.color <span class="op">=</span> <span class="st">"gray80"</span>, colors <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"#6D9EC1"</span>, <span class="st">"white"</span>, <span class="st">"#E46726"</span><span class="op">)</span>, digits <span class="op">=</span> <span class="fl">3</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>caption <span class="op">=</span> <span class="st">"SANG-IL LEE, Geography Education at SNU, 2025"</span><span class="op">)</span></span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure"><p><a href="3_2_image_exploration_files/figure-html/unnamed-chunk-34-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-13"><img src="3_2_image_exploration_files/figure-html/unnamed-chunk-34-1.png" class="img-fluid figure-img" width="11640"></a></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Level-2에 대한 밴드간 Pearson’s r을 계산한다.</p>
+<div class="cell">
+<div class="sourceCode" id="cb66"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">cor_matrix_2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/cor.html">cor</a></span><span class="op">(</span><span class="va">df_2</span>, use <span class="op">=</span> <span class="st">"complete.obs"</span>, method <span class="op">=</span> <span class="st">"pearson"</span><span class="op">)</span></span>
+<span><span class="va">cor_matrix_2</span></span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>            B1         B2         B3         B4         B5        B6        B7
+B1   1.0000000  0.9889701  0.9489457  0.9366629 -0.1050725 0.6395818 0.8398821
+B2   0.9889701  1.0000000  0.9725028  0.9615489 -0.1628024 0.6327087 0.8553201
+B3   0.9489457  0.9725028  1.0000000  0.9859232 -0.1062593 0.6912290 0.8891887
+B4   0.9366629  0.9615489  0.9859232  1.0000000 -0.1490324 0.6658327 0.8891081
+B5  -0.1050725 -0.1628024 -0.1062593 -0.1490324  1.0000000 0.5186501 0.1072651
+B6   0.6395818  0.6327087  0.6912290  0.6658327  0.5186501 1.0000000 0.8805283
+B7   0.8398821  0.8553201  0.8891887  0.8891081  0.1072651 0.8805283 1.0000000
+B10  0.6727512  0.7157254  0.7158112  0.7285352 -0.2516996 0.4879272 0.6940104
+           B10
+B1   0.6727512
+B2   0.7157254
+B3   0.7158112
+B4   0.7285352
+B5  -0.2516996
+B6   0.4879272
+B7   0.6940104
+B10  1.0000000</code></pre>
+</div>
+</div>
+<p>동일한 그래프를 생성한다.</p>
+<div class="cell">
+<div class="sourceCode" id="cb68"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://www.sthda.com/english/wiki/ggcorrplot-visualization-of-a-correlation-matrix-using-ggplot2">ggcorrplot</a></span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/ggcorrplot/man/ggcorrplot.html">ggcorrplot</a></span><span class="op">(</span><span class="va">cor_matrix_2</span>, hc.order <span class="op">=</span> <span class="cn">TRUE</span>, tl.cex <span class="op">=</span> <span class="fl">18</span>, lab <span class="op">=</span> <span class="cn">TRUE</span>, lab_size <span class="op">=</span> <span class="fl">6</span>, outline.color <span class="op">=</span> <span class="st">"gray80"</span>, colors <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"#6D9EC1"</span>, <span class="st">"white"</span>, <span class="st">"#E46726"</span><span class="op">)</span>, digits <span class="op">=</span> <span class="fl">3</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>caption <span class="op">=</span> <span class="st">"SANG-IL LEE, Geography Education at SNU, 2025"</span><span class="op">)</span></span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure"><p><a href="3_2_image_exploration_files/figure-html/unnamed-chunk-36-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-14"><img src="3_2_image_exploration_files/figure-html/unnamed-chunk-36-1.png" class="img-fluid figure-img" width="11640"></a></p>
+</figure>
+</div>
+</div>
+</div>
+<p>두 밴드 간의 산포도(feature space plot)를 제작한다(Level-2).</p>
+<div class="cell">
+<div class="sourceCode" id="cb69"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">df_2</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">B4</span>, y <span class="op">=</span> <span class="va">B5</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span>alpha <span class="op">=</span> <span class="fl">0.3</span>, color <span class="op">=</span> <span class="st">"darkblue"</span>, size <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/coord_fixed.html">coord_fixed</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_minimal</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme</a></span><span class="op">(</span></span>
+<span>    plot.title <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_text</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">30</span><span class="op">)</span>, </span>
+<span>    axis.title <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_text</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">20</span><span class="op">)</span>,</span>
+<span>    axis.text.x <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_text</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">16</span><span class="op">)</span>, </span>
+<span>    axis.text.y <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_text</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">16</span><span class="op">)</span>,</span>
+<span>    legend.title <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_text</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">17</span><span class="op">)</span>, </span>
+<span>    legend.text <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_text</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">16</span><span class="op">)</span>,</span>
+<span>    strip.text <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_text</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">20</span><span class="op">)</span></span>
+<span>  <span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span></span>
+<span>    x <span class="op">=</span> <span class="st">"Band 4 (Red)"</span>, </span>
+<span>    y <span class="op">=</span> <span class="st">"Band 5 (NIR)"</span>, </span>
+<span>    title <span class="op">=</span> <span class="st">"Feature Space: B4 vs B5"</span>,</span>
+<span>    caption <span class="op">=</span> <span class="st">"SANG-IL LEE, Geography Education at SNU, 2025"</span><span class="op">)</span></span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure"><p><a href="3_2_image_exploration_files/figure-html/unnamed-chunk-37-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-15"><img src="3_2_image_exploration_files/figure-html/unnamed-chunk-37-1.png" class="img-fluid figure-img" width="11640"></a></p>
+</figure>
+</div>
+</div>
+</div>
 </section></section><section id="영상-프로파일링" class="level2" data-number="9.4"><h2 data-number="9.4" class="anchored" data-anchor-id="영상-프로파일링">
 <span class="header-section-number">9.4</span> 영상 프로파일링</h2>
+<section id="공간적선형-프로파일" class="level3" data-number="9.4.1"><h3 data-number="9.4.1" class="anchored" data-anchor-id="공간적선형-프로파일">
+<span class="header-section-number">9.4.1</span> 공간적(선형) 프로파일</h3>
+<p>두 지점을 설정하여 라인을 생성하고, 라인 상에 일정한 간격의 포인트를 생성한다.</p>
+<div class="cell">
+<div class="sourceCode" id="cb70"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># 두 지점을 연결하는 라인 sf를 만든다.</span></span>
+<span><span class="va">line_sf</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html">tibble</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">126.961091</span>, <span class="fl">126.992310</span><span class="op">)</span>, y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">37.442904</span>, <span class="fl">37.660032</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://rspatial.github.io/terra/reference/coerce.html">as.matrix</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="co"># st_linestring()은 매트릭스만 받음</span></span>
+<span>  <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st.html">st_linestring</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://r-spatial.github.io/sf/reference/sfc.html">st_sfc</a></span><span class="op">(</span>crs <span class="op">=</span> <span class="fl">4326</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://r-spatial.github.io/sf/reference/sf.html">st_sf</a></span><span class="op">(</span>geometry <span class="op">=</span> <span class="va">_</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="co"># _ 표시는 직전에 만들어진 것을 인풋으로 받는다는 의미</span></span>
+<span>  <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_transform.html">st_transform</a></span><span class="op">(</span>crs <span class="op">=</span> <span class="fl">5179</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># 라인 상에 적절한 간격의 포인트를 생성한다.</span></span>
+<span><span class="va">points_sf</span> <span class="op">&lt;-</span> <span class="va">line_sf</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_line_sample.html">st_line_sample</a></span><span class="op">(</span>density <span class="op">=</span> <span class="fl">0.1</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="co"># '단위 길이 당 포인트의 수'를 의미, 10m당 하나씩을 택한다는 의미.</span></span>
+<span>  <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_cast.html">st_cast</a></span><span class="op">(</span><span class="st">"POINT"</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://r-spatial.github.io/sf/reference/sf.html">st_sf</a></span><span class="op">(</span><span class="op">)</span> </span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>선을 지도에 표시한다.</p>
+<div class="cell">
+<div class="sourceCode" id="cb71"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">my_map</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_shape.html">tm_shape</a></span><span class="op">(</span><span class="va">level2_landsat_seoul_st_mask</span><span class="op">$</span><span class="va">B5</span>, raster.downsample <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>  <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_raster.html">tm_raster</a></span><span class="op">(</span>style <span class="op">=</span> <span class="st">"cont"</span>, palette <span class="op">=</span> <span class="st">"-Greys"</span>, title <span class="op">=</span> <span class="st">"DN"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_shape.html">tm_shape</a></span><span class="op">(</span><span class="va">line_sf</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_lines.html">tm_lines</a></span><span class="op">(</span>col <span class="op">=</span> <span class="st">"red"</span>, lwd <span class="op">=</span> <span class="fl">2</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_shape.html">tm_shape</a></span><span class="op">(</span><span class="va">seoul</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_polygons.html">tm_borders</a></span><span class="op">(</span>col <span class="op">=</span> <span class="st">"black"</span>, lwd <span class="op">=</span> <span class="fl">2</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_layout.html">tm_legend</a></span><span class="op">(</span>legend.position <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0.87</span>, <span class="fl">0.05</span><span class="op">)</span>, legend.bg.color <span class="op">=</span> <span class="st">"white"</span>, legend.bg.alpha <span class="op">=</span> <span class="fl">0.6</span>, legend.title.size <span class="op">=</span> <span class="fl">1.5</span>, legend.text.size <span class="op">=</span> <span class="fl">1.2</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_layout.html">tm_layout</a></span><span class="op">(</span>inner.margins <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0.05</span>, <span class="fl">0.04</span>, <span class="fl">0.06</span>, <span class="fl">0.04</span><span class="op">)</span>, </span>
+<span>            title <span class="op">=</span> <span class="st">"Level-2: B5 (NIR)"</span>, title.size <span class="op">=</span> <span class="fl">2</span>,</span>
+<span>            title.position <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0.02</span>, <span class="fl">0.97</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>  <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_scale_bar.html">tm_scale_bar</a></span><span class="op">(</span>breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">20</span>, <span class="fl">5</span><span class="op">)</span>, text.size <span class="op">=</span> <span class="fl">0.6</span>, color.dark <span class="op">=</span> <span class="st">"gray60"</span>, position <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0.03</span>, <span class="fl">0.01</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_credits.html">tm_credits</a></span><span class="op">(</span>text <span class="op">=</span> <span class="st">"SANG-IL LEE, Geography Education at SNU, 2025"</span>, size <span class="op">=</span> <span class="fl">0.8</span>, position <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0.76</span>, <span class="fl">0.01</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">my_map</span></span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure"><p><a href="3_2_image_exploration_files/figure-html/unnamed-chunk-39-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-16"><img src="3_2_image_exploration_files/figure-html/unnamed-chunk-39-1.png" class="img-fluid figure-img" width="9000"></a></p>
+</figure>
+</div>
+</div>
+</div>
+<p>공간(선형) 프로파일을 생성한다.</p>
+<div class="cell">
+<div class="sourceCode" id="cb72"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># 래스터로부터 각 포인트에 해당하는 값을 추출한다.</span></span>
+<span><span class="va">profile</span> <span class="op">&lt;-</span> <span class="va">level2_landsat_seoul_st_mask</span><span class="op">$</span><span class="va">B5</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://rspatial.github.io/terra/reference/extract.html">extract</a></span><span class="op">(</span><span class="va">points_sf</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span></span>
+<span>    distance <span class="op">=</span> <span class="va">ID</span> <span class="op">*</span> <span class="fl">10</span> <span class="op">/</span> <span class="fl">1000</span>, <span class="co"># 10m 당 하나이므로 10을 곱해 거리(m)로 만들고, 1,000으로 나누어 km 단위</span></span>
+<span>    .keep <span class="op">=</span> <span class="st">"unused"</span></span>
+<span>  <span class="op">)</span></span>
+<span></span>
+<span><span class="co"># 시각화</span></span>
+<span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">profile</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">distance</span>, y <span class="op">=</span> <span class="va">B5</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="co"># theme_minimal() +</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme</a></span><span class="op">(</span></span>
+<span>    plot.title <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_text</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">30</span><span class="op">)</span>, </span>
+<span>    axis.title <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_text</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">20</span><span class="op">)</span>,</span>
+<span>    axis.text.x <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_text</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">16</span><span class="op">)</span>, </span>
+<span>    axis.text.y <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_text</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">16</span><span class="op">)</span>,</span>
+<span>    legend.title <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_text</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">17</span><span class="op">)</span>, </span>
+<span>    legend.text <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_text</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">16</span><span class="op">)</span>,</span>
+<span>    strip.text <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_text</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">20</span><span class="op">)</span></span>
+<span>  <span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span></span>
+<span>    x <span class="op">=</span> <span class="st">"Distance (km)"</span>, </span>
+<span>    y <span class="op">=</span> <span class="st">"DV"</span>, </span>
+<span>    title <span class="op">=</span> <span class="st">"Spatial Profile"</span>,</span>
+<span>    caption <span class="op">=</span> <span class="st">"SANG-IL LEE, Geography Education at SNU, 2025"</span></span>
+<span>  <span class="op">)</span></span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure"><p><a href="3_2_image_exploration_files/figure-html/unnamed-chunk-40-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-17"><img src="3_2_image_exploration_files/figure-html/unnamed-chunk-40-1.png" class="img-fluid figure-img" width="11640"></a></p>
+</figure>
+</div>
+</div>
+</div>
+</section><section id="분광-프로파일" class="level3" data-number="9.4.2"><h3 data-number="9.4.2" class="anchored" data-anchor-id="분광-프로파일">
+<span class="header-section-number">9.4.2</span> 분광 프로파일</h3>
+<p>서울시 4곳의 분광 프로파일을 추출하고자 한다. 우선 위치를 결정하고 지도에 나타낸다.</p>
+<div class="cell">
+<div class="sourceCode" id="cb73"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">points_sf</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html">tibble</a></span><span class="op">(</span>lon <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">126.956525</span>, <span class="fl">126.800839</span>, <span class="fl">126.976255</span>, <span class="fl">126.974984</span><span class="op">)</span>, lat <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">37.451518</span>, <span class="fl">37.567958</span>, <span class="fl">37.510931</span>, <span class="fl">37.585714</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_as_sf.html">st_as_sf</a></span><span class="op">(</span>coords <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"lon"</span>, <span class="st">"lat"</span><span class="op">)</span>, crs <span class="op">=</span> <span class="fl">4326</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_transform.html">st_transform</a></span><span class="op">(</span>crs <span class="op">=</span> <span class="fl">5179</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>ID <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">4</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">#| fig-width: 15</span></span>
+<span><span class="co">#| fig-height: 12</span></span>
+<span><span class="co">#| fig-dpi: 600</span></span>
+<span><span class="va">my_map</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_shape.html">tm_shape</a></span><span class="op">(</span><span class="va">level2_landsat_seoul_st_mask</span><span class="op">$</span><span class="va">B5</span>, raster.downsample <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>  <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_raster.html">tm_raster</a></span><span class="op">(</span>style <span class="op">=</span> <span class="st">"cont"</span>, palette <span class="op">=</span> <span class="st">"-Greys"</span>, title <span class="op">=</span> <span class="st">"DN"</span>, legend.show <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_shape.html">tm_shape</a></span><span class="op">(</span><span class="va">points_sf</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_text.html">tm_text</a></span><span class="op">(</span><span class="st">"ID"</span>, col <span class="op">=</span> <span class="st">"red"</span>, size <span class="op">=</span> <span class="fl">2</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_shape.html">tm_shape</a></span><span class="op">(</span><span class="va">seoul</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_polygons.html">tm_borders</a></span><span class="op">(</span>col <span class="op">=</span> <span class="st">"black"</span>, lwd <span class="op">=</span> <span class="fl">2</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="co"># tm_legend(legend.position = c(0.87, 0.05), legend.bg.color = "white", legend.bg.alpha = 0.6, legend.title.size = 1.5, legend.text.size = 1.2) +</span></span>
+<span>  <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_layout.html">tm_layout</a></span><span class="op">(</span>inner.margins <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0.05</span>, <span class="fl">0.04</span>, <span class="fl">0.06</span>, <span class="fl">0.04</span><span class="op">)</span>, </span>
+<span>            title <span class="op">=</span> <span class="st">"Level-2: B5 (NIR)"</span>, title.size <span class="op">=</span> <span class="fl">2</span>,</span>
+<span>            title.position <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0.02</span>, <span class="fl">0.97</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>  <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_scale_bar.html">tm_scale_bar</a></span><span class="op">(</span>breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">20</span>, <span class="fl">5</span><span class="op">)</span>, text.size <span class="op">=</span> <span class="fl">0.6</span>, color.dark <span class="op">=</span> <span class="st">"gray60"</span>, position <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0.03</span>, <span class="fl">0.01</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_credits.html">tm_credits</a></span><span class="op">(</span>text <span class="op">=</span> <span class="st">"SANG-IL LEE, Geography Education at SNU, 2025"</span>, size <span class="op">=</span> <span class="fl">0.8</span>, position <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0.76</span>, <span class="fl">0.01</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">my_map</span></span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure"><p><a href="3_2_image_exploration_files/figure-html/unnamed-chunk-41-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-18"><img src="3_2_image_exploration_files/figure-html/unnamed-chunk-41-1.png" class="img-fluid figure-img" width="672"></a></p>
+</figure>
+</div>
+</div>
+</div>
+<p>4개 지점에 대해 Level-2의 DN를 추출하고 분광 프로파일을 완성한다.</p>
+<div class="cell">
+<div class="sourceCode" id="cb74"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">spec_profile</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/extract.html">extract</a></span><span class="op">(</span><span class="va">level2_landsat_seoul_st_mask</span>, <span class="va">points_sf</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://rspatial.github.io/terra/reference/as.data.frame.html">as.data.frame</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="op">-</span><span class="va">B10</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">df_spec</span> <span class="op">&lt;-</span> <span class="va">spec_profile</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://tidyr.tidyverse.org/reference/pivot_longer.html">pivot_longer</a></span><span class="op">(</span></span>
+<span>    cols <span class="op">=</span> <span class="va">B1</span><span class="op">:</span><span class="va">B7</span>,</span>
+<span>    names_to <span class="op">=</span> <span class="st">"band"</span>,</span>
+<span>    values_to <span class="op">=</span> <span class="st">"DN"</span></span>
+<span>  <span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span></span>
+<span>    band <span class="op">=</span> <span class="fu"><a href="https://forcats.tidyverse.org/reference/fct.html">fct</a></span><span class="op">(</span><span class="va">band</span>, levels <span class="op">=</span> <span class="fu"><a href="https://stringr.tidyverse.org/reference/str_c.html">str_c</a></span><span class="op">(</span><span class="st">"B"</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">7</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>    ID <span class="op">=</span> <span class="fu"><a href="https://forcats.tidyverse.org/reference/as_factor.html">as_factor</a></span><span class="op">(</span><span class="va">ID</span><span class="op">)</span></span>
+<span>  <span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">df_spec</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">band</span>, y <span class="op">=</span> <span class="va">DN</span>, group <span class="op">=</span> <span class="va">ID</span>, color <span class="op">=</span> <span class="va">ID</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">2</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="co"># theme_minimal() +</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_discrete.html">scale_x_discrete</a></span><span class="op">(</span></span>
+<span>    labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"B1\n(Aerosol)"</span>, <span class="st">"B2\n(Blue)"</span>, <span class="st">"B3\n(Green)"</span>, </span>
+<span>               <span class="st">"B4\n(Red)"</span>, <span class="st">"B5\n(NIR)"</span>, <span class="st">"B6\n(SWIR1)"</span>, </span>
+<span>               <span class="st">"B7\n(SWIR2)"</span><span class="op">)</span></span>
+<span>  <span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_colour_discrete.html">scale_color_discrete</a></span><span class="op">(</span></span>
+<span>    name <span class="op">=</span> <span class="st">"Locations"</span>, </span>
+<span>    labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"1"</span> <span class="op">=</span> <span class="st">"관악산"</span>, <span class="st">"2"</span> <span class="op">=</span> <span class="st">"공항"</span>, <span class="st">"3"</span> <span class="op">=</span> <span class="st">"한강"</span>, <span class="st">"4"</span> <span class="op">=</span> <span class="st">"청와대"</span><span class="op">)</span></span>
+<span>  <span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme</a></span><span class="op">(</span></span>
+<span>    plot.title <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_text</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">30</span><span class="op">)</span>, </span>
+<span>    axis.title <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_text</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">20</span><span class="op">)</span>,</span>
+<span>    axis.text.x <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_text</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">16</span><span class="op">)</span>, </span>
+<span>    axis.text.y <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_text</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">16</span><span class="op">)</span>,</span>
+<span>    legend.title <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_text</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">17</span><span class="op">)</span>, </span>
+<span>    legend.text <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_text</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">16</span><span class="op">)</span>,</span>
+<span>    strip.text <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_text</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">20</span><span class="op">)</span></span>
+<span>  <span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span></span>
+<span>    title <span class="op">=</span> <span class="st">"Spectral Profile"</span>, </span>
+<span>    x <span class="op">=</span> <span class="st">"Band"</span>, </span>
+<span>    y <span class="op">=</span> <span class="st">"DN"</span>,</span>
+<span>    caption <span class="op">=</span> <span class="st">"SANG-IL LEE, Geography Education at SNU, 2025"</span></span>
+<span>  <span class="op">)</span></span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure"><p><a href="3_2_image_exploration_files/figure-html/unnamed-chunk-42-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-19"><img src="3_2_image_exploration_files/figure-html/unnamed-chunk-42-1.png" class="img-fluid figure-img" width="11640"></a></p>
+</figure>
+</div>
+</div>
+</div>
 
 
-</section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
+</section></section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
     const mode = bsSheetEl.getAttribute("data-mode");
@@ -1241,7 +1509,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   </div>
 </nav>
 </div> <!-- /content -->
-<script>var lightboxQuarto = GLightbox({"selector":".lightbox","closeEffect":"zoom","openEffect":"zoom","loop":false,"descPosition":"bottom"});
+<script>var lightboxQuarto = GLightbox({"selector":".lightbox","openEffect":"zoom","loop":false,"descPosition":"bottom","closeEffect":"zoom"});
 window.onload = () => {
   lightboxQuarto.on('slide_before_load', (data) => {
     const { slideIndex, slideNode, slideConfig, player, trigger } = data;
