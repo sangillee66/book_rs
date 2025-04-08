@@ -151,5 +151,16 @@
       "RS 데이터의 탐색 및 시각화",
       "<span class='chapter-number'>9</span>  <span class='chapter-title'>영상 탐색</span>"
     ]
+  },
+  {
+    "objectID": "3_2_image_exploration.html#개별-픽셀값의-확인",
+    "href": "3_2_image_exploration.html#개별-픽셀값의-확인",
+    "title": "\n9  영상 탐색\n",
+    "section": "\n9.2 개별 픽셀값의 확인",
+    "text": "9.2 개별 픽셀값의 확인\nLevel-2의 B4를 기준으로 기본적인 사항을 알아본다.\n\nlevel2_B4 \n\nclass       : SpatRaster \ndimensions  : 1011, 1235, 1  (nrow, ncol, nlyr)\nresolution  : 29.98619, 29.98619  (x, y)\nextent      : 935034.8, 972067.8, 1936673, 1966989  (xmin, xmax, ymin, ymax)\ncoord. ref. : +proj=tmerc +lat_0=38 +lon_0=127.5 +k=0.9996 +x_0=1000000 +y_0=2000000 +ellps=GRS80 +units=m +no_defs \nsource      : level2_landsat_seoul_stack.tif \nname        :        B4 \nmin value   :  5501.331 \nmax value   : 55165.191 \n\n\n개별 파라미터 값을 다음과 같이 확인해 볼 수 있다.\n\next(level2_B4) # 범역\nres(level2_B4) # 공간 해상도\ndim(level2_B4) # 가로 세로 그리드 셀 수\nncell(level2_B4) # 총 그리드 셀 수\n\n셀 일련번호와 셀위치 좌표계를 왕래할 수 있다. 다음과 같은 방식으로 가능하다.\n\nrowFromCell(level2_B4, 10000)\n\n[1] 9\n\ncolFromCell(level2_B4, 10000)\n\n[1] 120\n\ncellFromRowCol(level2_B4, 9, 120)\n\n[1] 10000\n\nxyFromCell(level2_B4, 10000)\n\n            x       y\n[1,] 938618.2 1966734\n\ncellFromXY(level2_B4, cbind(938618.2, 1966734))\n\n[1] 10000\n\ncolFromX(level2_B4, 938618.2)\n\n[1] 120\n\nrowFromY(level2_B4, 1966734)\n\n[1] 9\n\n\nextract() 함수를 이용하면 셀 값을 얻을 수 있다. 가장 단순한 방법은 셀 일련번호를 아는 경우이다.\n\nlevel2_B4 |&gt; extract(10000)\n\n       B4\n1 9203.76\n\n\n그리드 좌표를 아는 경우는 다음과 같이 구할 수 있다.\n\nlevel2_B4 |&gt; extract(cbind(938618.2, 1966734))\n\n       B4\n1 9203.76\n\n\n셀위치 좌표를 아는 경우 막바로 구할 수 없고, 먼저 셀 일련번호로 전환한 후 구할 수 있다.\n\ncell_num &lt;- cellFromRowCol(level2_B4, 9, 120)\nlevel2_B4 |&gt; extract(cell_num)\n\n       B4\n1 9203.76\n\n\n내 연구실의 DN를 확인하고자 한다. 우선 경위도 좌표를 평면직각좌표로 전환한다.\n\npoints_sf &lt;- tibble(lon = 126.955184, lat = 37.460422) |&gt; \n  st_as_sf(coords = c(\"lon\", \"lat\"), crs = 4326) |&gt; \n  st_transform(crs = 5179) \nst_coordinates(points_sf)\n\n            X       Y\n[1,] 951818.1 1940275\n\n\n내 연구실의 DN를 산출한다.\n\nlevel2_B4 |&gt; extract(st_coordinates(points_sf))\n\n        B4\n1 10099.12",
+    "crumbs": [
+      "RS 데이터의 탐색 및 시각화",
+      "<span class='chapter-number'>9</span>  <span class='chapter-title'>영상 탐색</span>"
+    ]
   }
 ]

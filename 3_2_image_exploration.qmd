@@ -145,75 +145,54 @@ my_map
 
 ## 개별 픽셀값의 확인
 
-기본적인 사항을 알아본다.
+Level-2의 B4를 기준으로 기본적인 사항을 알아본다.
 
 ```{r}
-level2_B4 <- level2_landsat_seoul_st |> select(B4)
-level2_B4
+level2_B4 
 ```
 
-```{r}
-level1_B4 <- level1_landsat_seoul_st |> select(B4)
-level1_B4
-```
-
-개별 파라미터 값을 다음과 같이 알아본다.
+개별 파라미터 값을 다음과 같이 확인해 볼 수 있다.
 
 ```{r}
+#| eval: false
 ext(level2_B4) # 범역
-```
-
-```{r}
 res(level2_B4) # 공간 해상도
-```
-
-```{r}
 dim(level2_B4) # 가로 세로 그리드 셀 수
-```
-
-```{r}
 ncell(level2_B4) # 총 그리드 셀 수
 ```
 
-```{r}
-persp(level2_B4)
-```
-
-지도를 제작한다.
-
-```{r}
-my_map <- tm_shape(level2_B4, raster.downsample = FALSE) + 
-  tm_raster(style = "cont", palette = "-Greys", title = "DN") +
-  tm_shape(seoul) + tm_borders(col = "gray20", lwd = 1.5) +
-  tm_legend(legend.position = c(0.85, 0.06), legend.bg.color = "white", legend.bg.alpha = 0.6) +
-  tm_layout(inner.margins = c(0.07, 0.04, 0.06, 0.04), 
-            title = "Level 2, B4", title.size = 1, 
-            title.position = c("LEFT", "TOP")) + 
-  tm_scale_bar(breaks = seq(0, 20, 4), color.dark = "gray60", position = c(0.03, 0.01))
-my_map
-```
-
-```{r}
-hist(level2_B4)
-```
+셀 일련번호와 셀위치 좌표계를 왕래할 수 있다. 다음과 같은 방식으로 가능하다.
 
 ```{r}
 rowFromCell(level2_B4, 10000)
+colFromCell(level2_B4, 10000)
+cellFromRowCol(level2_B4, 9, 120)
+xyFromCell(level2_B4, 10000)
+cellFromXY(level2_B4, cbind(938618.2, 1966734))
+colFromX(level2_B4, 938618.2)
+rowFromY(level2_B4, 1966734)
 ```
 
-```{r}
-colFromCell(level2_B4, 10000)
-```
+[`extract()`](https://rspatial.github.io/terra/reference/extract.html) 함수를 이용하면 셀 값을 얻을 수 있다. 가장 단순한 방법은 셀 일련번호를 아는 경우이다.
 
 ```{r}
 level2_B4 |> extract(10000)
 ```
 
+그리드 좌표를 아는 경우는 다음과 같이 구할 수 있다.
+
 ```{r}
-where.max(level2_B4)
+level2_B4 |> extract(cbind(938618.2, 1966734))
 ```
 
-내 연구실의 경위도 좌표를 평면직각좌표로 전환한다.
+셀위치 좌표를 아는 경우 막바로 구할 수 없고, 먼저 셀 일련번호로 전환한 후 구할 수 있다.
+
+```{r}
+cell_num <- cellFromRowCol(level2_B4, 9, 120)
+level2_B4 |> extract(cell_num)
+```
+
+내 연구실의 DN를 확인하고자 한다. 우선 경위도 좌표를 평면직각좌표로 전환한다.
 
 ```{r}
 points_sf <- tibble(lon = 126.955184, lat = 37.460422) |> 
@@ -225,8 +204,7 @@ st_coordinates(points_sf)
 내 연구실의 DN를 산출한다.
 
 ```{r}
-level2_B4 |> 
-  extract(st_coordinates(points_sf))
+level2_B4 |> extract(st_coordinates(points_sf))
 ```
 
 ## 영상 통계 및 그래프
