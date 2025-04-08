@@ -20,7 +20,7 @@ editor_options:
 
 ## 개요
 
-서울에 대한 Landsat 8 영상을 불러온다. 우선 필수적인 패키지를 설치한다.
+필수적인 패키지를 설치한다. RS 영상의 기본적으로 래스터 데이터이므로 `terra` 패키지를 사용하여 기본적인 오퍼레이션을 수행한다.
 
 ```{r}
 library(tidyverse)
@@ -30,28 +30,204 @@ library(sf)
 library(tmap)
 ```
 
-Level-2 와 Level-1 데이터를 각각 불러온다.
+서울의 행정구역 바운더리 파일을 불러온다.
 
 ```{r}
-level2_landsat_seoul_st <- rast("D:/My R/World Data Manupulation/USGS EarthExplorer/level2_landsat_seoul_stack.tif")
+#| results: hide
+seoul <- st_read("D:/My R/Korean Administrative Areas/행정구역 셰이프 파일/2 Original Cleaning/2023_2Q/SEOUL_SIDO_2023_2Q.shp")
+seoul_gu <- st_read("D:/My R/Korean Administrative Areas/행정구역 셰이프 파일/2 Original Cleaning/2023_2Q/SEOUL_GU_2023_2Q.shp")
+seoul_dong <- st_read("D:/My R/Korean Administrative Areas/행정구역 셰이프 파일/2 Original Cleaning/2023_2Q/SEOUL_EMD_2023_2Q.shp")
+```
+
+### Level-1 데이터
+
+Level-1 데이터를 불러온다.
+
+```{r}
 level1_landsat_seoul_st <- rast("D:/My R/World Data Manupulation/USGS EarthExplorer/level1_landsat_seoul_stack.tif")
 ```
 
-Level-2 단순 플롯 그리기.
-
-```{r}
-plot(level2_landsat_seoul_st, col = grey(0:100/100)) # 어두움
-plot(stretch(level2_landsat_seoul_st, minq = 0.1, maxq = 0.99), col = grey(0:100/100)) # 밝음
-```
-
-Level-1 단순 플롯 그리기.
+Base R의 `plot()` 함수를 이용하여 단순 플롯을 제작한다.
 
 ```{r}
 plot(level1_landsat_seoul_st, col = grey(0:100/100)) # 어두움
-plot(stretch(level1_landsat_seoul_st, minq = 0.1, maxq = 0.99), col = grey(0:100/100)) # 밝음
 ```
 
-## 개별 픽셀값 확인
+`tmap` 패키지를 이용하여 모든 밴드의 지도를 한꺼 번에 제작한다.
+
+```{r}
+#| fig-width: 15
+#| fig-height: 10
+#| fig-dpi: 600
+tm_shape(level1_landsat_seoul_st, raster.downsample = FALSE) +
+  tm_raster(style = "cont", palette = "-Greys", title = "DN") +
+  tm_facets(ncol = 4, free.scales = FALSE) +
+  tm_layout(legend.show = FALSE, panel.label.size = 2, 
+            attr.outside = T, attr.outside.position = "bottom") +
+  tm_credits(text = "SANG-IL LEE, Geography Education at SNU, 2025", size = 1.5, position = c(0.75, "top"))
+```
+
+B4(Red)만 분리해낸다.
+
+```{r}
+level1_B4 <- level1_landsat_seoul_st |> select(B4)
+```
+
+`tmap` 패키지를 이용하여 B4(Red)에 대한 기본 지도를 제작한다.
+
+```{r}
+#| fig-width: 15
+#| fig-height: 12
+#| fig-dpi: 600
+my_map <- tm_shape(level1_B4, raster.downsample = FALSE) + 
+  tm_raster(style = "cont", palette = "-Greys", title = "DN") +
+  tm_shape(seoul) + tm_borders(col = "black", lwd = 2) +
+  tm_legend(legend.position = c(0.87, 0.05), legend.bg.color = "white", legend.bg.alpha = 0.6, legend.title.size = 1.5, legend.text.size = 1.2) +
+  tm_layout(inner.margins = c(0.05, 0.04, 0.06, 0.04), 
+            title = "Level-1: B4", title.size = 2,
+            title.position = c(0.02, 0.97)) + 
+  tm_scale_bar(breaks = seq(0, 20, 5), text.size = 0.6, color.dark = "gray60", position = c(0.03, 0.01)) +
+  tm_credits(text = "SANG-IL LEE, Geography Education at SNU, 2025", size = 0.8, position = c(0.76, 0.01))
+my_map
+```
+
+### Level-2 데이터
+
+Level-2 데이터를 불러온다.
+
+```{r}
+level2_landsat_seoul_st <- rast("D:/My R/World Data Manupulation/USGS EarthExplorer/level2_landsat_seoul_stack.tif")
+```
+
+Base R의 `plot()` 함수를 이용하여 단순 플롯을 제작한다.
+
+```{r}
+plot(level2_landsat_seoul_st, col = grey(0:100/100)) # 어두움
+```
+
+`tmap` 패키지를 이용하여 모든 밴드의 지도를 한꺼 번에 제작한다.
+
+```{r}
+#| fig-width: 15
+#| fig-height: 6.6
+#| fig-dpi: 600
+tm_shape(level2_landsat_seoul_st, raster.downsample = FALSE) +
+  tm_raster(style = "cont", palette = "-Greys", title = "DN") +
+  tm_facets(ncol = 4, free.scales = FALSE) +
+  tm_layout(legend.show = FALSE, panel.label.size = 2, 
+            attr.outside = T, attr.outside.position = "bottom") +
+  tm_credits(text = "SANG-IL LEE, Geography Education at SNU, 2025", size = 1.5, position = c(0.65, "top"))
+```
+
+B4(Red)만 분리해낸다.
+
+```{r}
+level2_B4 <- level2_landsat_seoul_st |> select(B4)
+```
+
+`tmap` 패키지를 이용하여 B4(Red)에 대한 기본 지도를 제작한다.
+
+```{r}
+#| fig-width: 15
+#| fig-height: 12
+#| fig-dpi: 600
+my_map <- tm_shape(level2_B4, raster.downsample = FALSE) + 
+  tm_raster(style = "cont", palette = "-Greys", title = "DN") +
+  tm_shape(seoul) + tm_borders(col = "black", lwd = 2) +
+  tm_legend(legend.position = c(0.87, 0.05), legend.bg.color = "white", legend.bg.alpha = 0.6, legend.title.size = 1.5, legend.text.size = 1.2) +
+  tm_layout(inner.margins = c(0.05, 0.04, 0.06, 0.04), 
+            title = "Level-2: B4", title.size = 2,
+            title.position = c(0.02, 0.97)) + 
+  tm_scale_bar(breaks = seq(0, 20, 5), text.size = 0.6, color.dark = "gray60", position = c(0.03, 0.01)) +
+  tm_credits(text = "SANG-IL LEE, Geography Education at SNU, 2025", size = 0.8, position = c(0.76, 0.01))
+my_map
+```
+
+## 개별 픽셀값의 확인
+
+기본적인 사항을 알아본다.
+
+```{r}
+level2_B4 <- level2_landsat_seoul_st |> select(B4)
+level2_B4
+```
+
+```{r}
+level1_B4 <- level1_landsat_seoul_st |> select(B4)
+level1_B4
+```
+
+개별 파라미터 값을 다음과 같이 알아본다.
+
+```{r}
+ext(level2_B4) # 범역
+```
+
+```{r}
+res(level2_B4) # 공간 해상도
+```
+
+```{r}
+dim(level2_B4) # 가로 세로 그리드 셀 수
+```
+
+```{r}
+ncell(level2_B4) # 총 그리드 셀 수
+```
+
+```{r}
+persp(level2_B4)
+```
+
+지도를 제작한다.
+
+```{r}
+my_map <- tm_shape(level2_B4, raster.downsample = FALSE) + 
+  tm_raster(style = "cont", palette = "-Greys", title = "DN") +
+  tm_shape(seoul) + tm_borders(col = "gray20", lwd = 1.5) +
+  tm_legend(legend.position = c(0.85, 0.06), legend.bg.color = "white", legend.bg.alpha = 0.6) +
+  tm_layout(inner.margins = c(0.07, 0.04, 0.06, 0.04), 
+            title = "Level 2, B4", title.size = 1, 
+            title.position = c("LEFT", "TOP")) + 
+  tm_scale_bar(breaks = seq(0, 20, 4), color.dark = "gray60", position = c(0.03, 0.01))
+my_map
+```
+
+```{r}
+hist(level2_B4)
+```
+
+```{r}
+rowFromCell(level2_B4, 10000)
+```
+
+```{r}
+colFromCell(level2_B4, 10000)
+```
+
+```{r}
+level2_B4 |> extract(10000)
+```
+
+```{r}
+where.max(level2_B4)
+```
+
+내 연구실의 경위도 좌표를 평면직각좌표로 전환한다.
+
+```{r}
+points_sf <- tibble(lon = 126.955184, lat = 37.460422) |> 
+  st_as_sf(coords = c("lon", "lat"), crs = 4326) |> 
+  st_transform(crs = 5179) 
+st_coordinates(points_sf)
+```
+
+내 연구실의 DN를 산출한다.
+
+```{r}
+level2_B4 |> 
+  extract(st_coordinates(points_sf))
+```
 
 ## 영상 통계 및 그래프
 
