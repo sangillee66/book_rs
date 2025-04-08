@@ -28,6 +28,7 @@ library(terra)
 library(tidyterra)
 library(sf)
 library(tmap)
+options(scipen = 999)
 ```
 
 서울의 행정구역 바운더리 파일을 불러온다.
@@ -164,6 +165,7 @@ ncell(level2_B4) # 총 그리드 셀 수
 셀 일련번호와 셀위치 좌표계를 왕래할 수 있다. 다음과 같은 방식으로 가능하다.
 
 ```{r}
+#| eval: false
 rowFromCell(level2_B4, 10000)
 colFromCell(level2_B4, 10000)
 cellFromRowCol(level2_B4, 9, 120)
@@ -204,12 +206,146 @@ st_coordinates(points_sf)
 내 연구실의 DN를 산출한다.
 
 ```{r}
-level2_B4 |> extract(st_coordinates(points_sf))
+level1_landsat_seoul_st |> extract(st_coordinates(points_sf))
+```
+
+```{r}
+level2_landsat_seoul_st |> extract(st_coordinates(points_sf))
+```
+
+모든 밴드에 대한 값을 동시에 얻고 싶으면 다음과 같이 하면 된다.
+
+```{r}
+level2_landsat_seoul_st |> extract(st_coordinates(points_sf))
 ```
 
 ## 영상 통계 및 그래프
 
 ### 단변량
+
+우선, 서울시 내부 영역만 마스킹하도록 한다. 우선 Level-1에 적용한다.
+
+```{r}
+level1_landsat_seoul_st_mask <- level1_landsat_seoul_st |> 
+  mask(seoul)
+```
+
+기본 플롯을 제작한다.
+
+```{r}
+plot(level1_landsat_seoul_st_mask, col = grey(0:100/100))
+```
+
+Level-2에 적용한다.
+
+```{r}
+level2_landsat_seoul_st_mask <- level2_landsat_seoul_st |> 
+  mask(seoul)
+```
+
+```{r}
+plot(level2_landsat_seoul_st_mask, col = grey(0:100/100))
+```
+
+Level-1에 대한 요약 통계량을 계산한다.
+
+```{r}
+global(level1_landsat_seoul_st_mask, fun = max, na.rm = TRUE) |> round(digits = 1)
+global(level1_landsat_seoul_st_mask, fun = min, na.rm = TRUE) |> round(digits = 1)
+global(level1_landsat_seoul_st_mask, fun = mean, na.rm = TRUE) |> round(digits = 1)
+global(level1_landsat_seoul_st_mask, fun = range, na.rm = TRUE) |> 
+  mutate(range = X2 - X1) |> round(digits = 1)
+global(level1_landsat_seoul_st_mask, fun = var, na.rm = TRUE) |> round(digits = 1)
+global(level1_landsat_seoul_st_mask, fun = sd, na.rm = TRUE) |> round(digits = 1)
+```
+
+Level-2에 대한 요약 통계량을 계산한다.
+
+```{r}
+global(level2_landsat_seoul_st_mask, fun = max, na.rm = TRUE) |> round(digits = 1)
+global(level2_landsat_seoul_st_mask, fun = min, na.rm = TRUE) |> round(digits = 1)
+global(level2_landsat_seoul_st_mask, fun = mean, na.rm = TRUE) |> round(digits = 1)
+global(level2_landsat_seoul_st_mask, fun = range, na.rm = TRUE) |> 
+  mutate(range = X2 - X1) |> round(digits = 1)
+global(level2_landsat_seoul_st_mask, fun = var, na.rm = TRUE) |> round(digits = 1)
+global(level2_landsat_seoul_st_mask, fun = sd, na.rm = TRUE) |> round(digits = 1)
+```
+
+Level-1에 대한 히스토그램을 제작한다.
+
+```{r}
+hist(level1_landsat_seoul_st_mask, breaks = 100)
+```
+
+Level-2에 대한 히스토그램을 제작한다.
+
+```{r}
+hist(level2_landsat_seoul_st_mask, breaks = 100)
+```
+
+`ggplot`으로 Level-1에 대한 히스토그램을 제작한다.
+
+```{r}
+#| fig-width: 19.4
+#| fig-asp: 0.618
+#| fig-dpi: 600
+df <- as.data.frame(level1_landsat_seoul_st_mask, xy = FALSE, na.rm = TRUE)
+df_long <- df |> 
+  pivot_longer(
+    cols = everything(), names_to = "band", values_to = "DN"
+  ) |> 
+  mutate(
+    band = fct(band, levels = str_c("B", 1:11))
+  )
+ggplot(df_long, aes(x = DN)) +
+  geom_histogram(bins = 100) +
+  facet_wrap(~ band, scales = "free_y") +
+  theme(
+    plot.title = element_text(size = 30), 
+    axis.title = element_text(size = 20),
+    axis.text.x = element_text(size = 16), 
+    axis.text.y = element_text(size = 16),
+    legend.title = element_text(size = 17), 
+    legend.text = element_text(size = 16),
+    strip.text = element_text(size = 20)
+  ) +
+  labs(
+    x = "DN", 
+    y = "Frequencies", 
+    caption ="SANG-IL LEE, Geography Education at SNU, 2025") 
+```
+
+`ggplot`으로 Level-2에 대한 히스토그램을 제작한다.
+
+```{r}
+#| fig-width: 19.4
+#| fig-asp: 0.618
+#| fig-dpi: 600
+df <- as.data.frame(level2_landsat_seoul_st_mask, xy = FALSE, na.rm = TRUE)
+df_long <- df |> 
+  pivot_longer(
+    cols = everything(), names_to = "band", values_to = "DN"
+  ) |> 
+  mutate(
+    band = fct(band, levels = str_c("B", 1:11))
+  )
+ggplot(df_long, aes(x = DN)) +
+  geom_histogram(bins = 100) +
+  facet_wrap(~ band, scales = "free_y") +
+  theme(
+    plot.title = element_text(size = 30), 
+    axis.title = element_text(size = 20),
+    axis.text.x = element_text(size = 16), 
+    axis.text.y = element_text(size = 16),
+    legend.title = element_text(size = 17), 
+    legend.text = element_text(size = 16),
+    strip.text = element_text(size = 20)
+  ) +
+  labs(
+    x = "DN", 
+    y = "Frequencies", 
+    caption ="SANG-IL LEE, Geography Education at SNU, 2025") 
+```
 
 ### 다변량
 
