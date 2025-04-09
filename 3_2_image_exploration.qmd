@@ -490,18 +490,22 @@ ggplot(profile, aes(x = distance, y = B5)) +
 
 ### 분광 프로파일
 
-서울시 4곳의 분광 프로파일을 추출하고자 한다. 우선 위치를 결정하고 지도에 나타낸다.
+서울시 4곳(관악산, 공항, 한강, 청와대)의 분광 프로파일을 추출하고자 한다. 우선 포인트 셰이프 파일을 생성한다.
 
 ```{r}
-
 points_sf <- tibble(lon = c(126.956525, 126.800839, 126.976255, 126.974984), lat = c(37.451518, 37.567958, 37.510931, 37.585714)) |> 
   st_as_sf(coords = c("lon", "lat"), crs = 4326) |> 
   st_transform(crs = 5179) |> 
   mutate(ID = 1:4)
+```
 
+지도를 제작한다.
+
+```{r}
 #| fig-width: 15
 #| fig-height: 12
 #| fig-dpi: 600
+
 my_map <- tm_shape(level2_landsat_seoul_st_mask$B5, raster.downsample = FALSE) + 
   tm_raster(style = "cont", palette = "-Greys", title = "DN", legend.show = FALSE) +
   tm_shape(points_sf) + tm_text("ID", col = "red", size = 2) +

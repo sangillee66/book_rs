@@ -63,7 +63,7 @@ R(4, Red) + G(3, Green) + B(2, Blue) 조합의 영상을 생성한다.
 
 ```{r}
 #| fig-width: 15
-#| fig-height: 10.1
+#| fig-height: 12
 #| fig-dpi: 600
 my.map <- tm_shape(level2_landsat_seoul_st_mask_str, raster.downsample = FALSE) + tm_rgb(r = 4, g = 3, b = 2, legend.show = FALSE) +
   tm_shape(seoul) + tm_borders(lwd = 2, col = "gray20") +
@@ -80,7 +80,7 @@ R(5, NIR) + G(4, Red) + B(3, Green)
 
 ```{r}
 #| fig-width: 15
-#| fig-height: 10.1
+#| fig-height: 12
 #| fig-dpi: 600
 my.map <- tm_shape(level2_landsat_seoul_st_mask_str, raster.downsample = FALSE) + tm_rgb(r = 5, g = 4, b = 3, legend.show = FALSE) +
   tm_shape(seoul) + tm_borders(lwd = 2, col = "gray20") +
@@ -97,7 +97,7 @@ R(7, SWIR2) + G(6, SWIR1) + B(4, Red)
 
 ```{r}
 #| fig-width: 15
-#| fig-height: 10.1
+#| fig-height: 12
 #| fig-dpi: 600
 my.map <- tm_shape(level2_landsat_seoul_st_mask_str, raster.downsample = FALSE) + tm_rgb(r = 7, g = 6, b = 4, legend.show = FALSE) +
   tm_shape(seoul) + tm_borders(lwd = 2, col = "gray20") +
@@ -114,7 +114,7 @@ R(6, SWIR1) + G(5, NIR) + B(4, Red)
 
 ```{r}
 #| fig-width: 15
-#| fig-height: 10.1
+#| fig-height: 12
 #| fig-dpi: 600
 my.map <- tm_shape(level2_landsat_seoul_st_mask_str, raster.downsample = FALSE) + tm_rgb(r = 6, g = 5, b = 4, legend.show = FALSE) +
   tm_shape(seoul) + tm_borders(lwd = 2, col = "gray20") +
@@ -131,7 +131,7 @@ R(7, SWIR2) + G(5, NIR) + B(4, Red)
 
 ```{r}
 #| fig-width: 15
-#| fig-height: 10.1
+#| fig-height: 12
 #| fig-dpi: 600
 my.map <- tm_shape(level2_landsat_seoul_st_mask_str, raster.downsample = FALSE) + tm_rgb(r = 7, g = 5, b = 4, legend.show = FALSE) +
   tm_shape(seoul) + tm_borders(lwd = 2, col = "gray20") +
