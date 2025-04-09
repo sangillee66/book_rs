@@ -325,7 +325,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 </header><section id="개요" class="level2" data-number="9.1"><h2 data-number="9.1" class="anchored" data-anchor-id="개요">
 <span class="header-section-number">9.1</span> 개요</h2>
-<p>필수적인 패키지를 설치한다.</p>
+<p>필수적인 패키지를 설치한다. RS 영상의 기본적으로 래스터 데이터이므로 <code>terra</code> 패키지를 사용하여 기본적인 오퍼레이션을 수행한다.</p>
 <div class="cell">
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org">tidyverse</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/">terra</a></span><span class="op">)</span></span>
@@ -346,7 +346,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span><span class="va">level2_landsat_seoul_st_mask</span> <span class="op">&lt;-</span> <span class="va">level2_landsat_seoul_st</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="https://rspatial.github.io/terra/reference/mask.html">mask</a></span><span class="op">(</span><span class="va">seoul</span><span class="op">)</span></span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>영상 확장을 시행한다.</p>
+<p>대비 확장을 시행한다.</p>
 <div class="cell">
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">level2_landsat_seoul_st_mask_str</span> <span class="op">&lt;-</span> <span class="va">level2_landsat_seoul_st_mask</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="https://rspatial.github.io/terra/reference/stretch.html">stretch</a></span><span class="op">(</span>minv <span class="op">=</span> <span class="fl">0</span>, maxv <span class="op">=</span> <span class="fl">255</span>, minq <span class="op">=</span> <span class="fl">0.05</span>, maxq <span class="op">=</span> <span class="fl">0.95</span><span class="op">)</span></span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -843,7 +843,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   </div>
 </nav>
 </div> <!-- /content -->
-<script>var lightboxQuarto = GLightbox({"descPosition":"bottom","openEffect":"zoom","closeEffect":"zoom","loop":false,"selector":".lightbox"});
+<script>var lightboxQuarto = GLightbox({"openEffect":"zoom","descPosition":"bottom","loop":false,"selector":".lightbox","closeEffect":"zoom"});
 window.onload = () => {
   lightboxQuarto.on('slide_before_load', (data) => {
     const { slideIndex, slideNode, slideConfig, player, trigger } = data;
