@@ -25,8 +25,8 @@ book:
     - part: part_3.qmd
       chapters: 
         - 3_1_image_correction.qmd
-        - 3_2_image_exploration.qmd
-        - 3_3_image_mapping.qmd
+        - 3_2_image_mapping.qmd
+        - 3_3_image_exploration.qmd
         - 3_4_image_enhancement.qmd
     - part: part_4.qmd
       chapters: 
