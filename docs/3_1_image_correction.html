@@ -31,7 +31,7 @@ ul.task-list li input[type="checkbox"] {
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./3_2_image_exploration.html" rel="next">
+<link href="./3_2_image_mapping.html" rel="next">
 <link href="./part_3.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
@@ -195,14 +195,14 @@ ul.task-list li input[type="checkbox"] {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./3_2_image_exploration.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">영상 탐색</span></span></a>
+  <a href="./3_2_image_mapping.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">영상 매핑</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./3_3_image_mapping.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">영상 매핑</span></span></a>
+  <a href="./3_3_image_exploration.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">영상 탐색</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -225,7 +225,7 @@ ul.task-list li input[type="checkbox"] {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./4_1_image_composite.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">영상 보정</span></span></a>
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">영상 합성</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -254,7 +254,28 @@ ul.task-list li input[type="checkbox"] {
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">목차</h2>
+   
+  <ul>
+  <li><a href="#개요" id="toc-개요" class="nav-link active" data-scroll-target="#개요"><span class="header-section-number">8.1</span> 개요</a></li>
+  <li><a href="#방사-보정radiometric-correction" id="toc-방사-보정radiometric-correction" class="nav-link" data-scroll-target="#방사-보정radiometric-correction"><span class="header-section-number">8.2</span> 방사 보정(radiometric correction)</a>
+  <ul class="collapse">
+  <li><a href="#개요-1" id="toc-개요-1" class="nav-link" data-scroll-target="#개요-1"><span class="header-section-number">8.2.1</span> 개요</a></li>
+  <li><a href="#절대적-방사대기-보정" id="toc-절대적-방사대기-보정" class="nav-link" data-scroll-target="#절대적-방사대기-보정"><span class="header-section-number">8.2.2</span> 절대적 방사(대기) 보정</a></li>
+  <li><a href="#지형-효과-방사-보정" id="toc-지형-효과-방사-보정" class="nav-link" data-scroll-target="#지형-효과-방사-보정"><span class="header-section-number">8.2.3</span> 지형 효과 방사 보정</a></li>
+  <li><a href="#내부-오류-방사-보정" id="toc-내부-오류-방사-보정" class="nav-link" data-scroll-target="#내부-오류-방사-보정"><span class="header-section-number">8.2.4</span> 내부 오류 방사 보정</a></li>
+  </ul></li>
+  <li><a href="#기하-보정geometric-correction" id="toc-기하-보정geometric-correction" class="nav-link" data-scroll-target="#기하-보정geometric-correction"><span class="header-section-number">8.3</span> 기하 보정(geometric correction)</a>
+  <ul class="collapse">
+  <li><a href="#개요-2" id="toc-개요-2" class="nav-link" data-scroll-target="#개요-2"><span class="header-section-number">8.3.1</span> 개요</a></li>
+  <li><a href="#내부적-기하-왜곡" id="toc-내부적-기하-왜곡" class="nav-link" data-scroll-target="#내부적-기하-왜곡"><span class="header-section-number">8.3.2</span> 내부적 기하 왜곡</a></li>
+  <li><a href="#외부적-기하-왜곡" id="toc-외부적-기하-왜곡" class="nav-link" data-scroll-target="#외부적-기하-왜곡"><span class="header-section-number">8.3.3</span> 외부적 기하 왜곡</a></li>
+  <li><a href="#단순-기하-보정" id="toc-단순-기하-보정" class="nav-link" data-scroll-target="#단순-기하-보정"><span class="header-section-number">8.3.4</span> 단순 기하 보정</a></li>
+  <li><a href="#모자이크-영상-제작mosaicking" id="toc-모자이크-영상-제작mosaicking" class="nav-link" data-scroll-target="#모자이크-영상-제작mosaicking"><span class="header-section-number">8.3.5</span> 모자이크 영상 제작(mosaicking)</a></li>
+  </ul></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
@@ -279,7 +300,7 @@ ul.task-list li input[type="checkbox"] {
     <div>
     <div class="quarto-title-meta-heading">Modified</div>
     <div class="quarto-title-meta-contents">
-      <p class="date-modified">2025년 3월 15일</p>
+      <p class="date-modified">2025년 4월 16일</p>
     </div>
   </div>
     
@@ -290,8 +311,79 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
+<section id="개요" class="level2" data-number="8.1">
+<h2 data-number="8.1" class="anchored" data-anchor-id="개요"><span class="header-section-number">8.1</span> 개요</h2>
+</section>
+<section id="방사-보정radiometric-correction" class="level2" data-number="8.2">
+<h2 data-number="8.2" class="anchored" data-anchor-id="방사-보정radiometric-correction"><span class="header-section-number">8.2</span> 방사 보정(radiometric correction)</h2>
+<section id="개요-1" class="level3" data-number="8.2.1">
+<h3 data-number="8.2.1" class="anchored" data-anchor-id="개요-1"><span class="header-section-number">8.2.1</span> 개요</h3>
+</section>
+<section id="절대적-방사대기-보정" class="level3" data-number="8.2.2">
+<h3 data-number="8.2.2" class="anchored" data-anchor-id="절대적-방사대기-보정"><span class="header-section-number">8.2.2</span> 절대적 방사(대기) 보정</h3>
+<ul>
+<li><code>RStoolbox</code> 패키지의 <code>radCor()</code> 함수</li>
+</ul>
+</section>
+<section id="지형-효과-방사-보정" class="level3" data-number="8.2.3">
+<h3 data-number="8.2.3" class="anchored" data-anchor-id="지형-효과-방사-보정"><span class="header-section-number">8.2.3</span> 지형 효과 방사 보정</h3>
+<ul>
+<li><code>RStoolbox</code> 패키지의 <code>topCor()</code> 함수</li>
+</ul>
+</section>
+<section id="내부-오류-방사-보정" class="level3" data-number="8.2.4">
+<h3 data-number="8.2.4" class="anchored" data-anchor-id="내부-오류-방사-보정"><span class="header-section-number">8.2.4</span> 내부 오류 방사 보정</h3>
+</section>
+</section>
+<section id="기하-보정geometric-correction" class="level2" data-number="8.3">
+<h2 data-number="8.3" class="anchored" data-anchor-id="기하-보정geometric-correction"><span class="header-section-number">8.3</span> 기하 보정(geometric correction)</h2>
+<section id="개요-2" class="level3" data-number="8.3.1">
+<h3 data-number="8.3.1" class="anchored" data-anchor-id="개요-2"><span class="header-section-number">8.3.1</span> 개요</h3>
+</section>
+<section id="내부적-기하-왜곡" class="level3" data-number="8.3.2">
+<h3 data-number="8.3.2" class="anchored" data-anchor-id="내부적-기하-왜곡"><span class="header-section-number">8.3.2</span> 내부적 기하 왜곡</h3>
+<section id="휨-현상" class="level4" data-number="8.3.2.1">
+<h4 data-number="8.3.2.1" class="anchored" data-anchor-id="휨-현상"><span class="header-section-number">8.3.2.1</span> 휨 현상</h4>
+</section>
+<section id="비일률적-공간해상도-및-축척의-문제" class="level4" data-number="8.3.2.2">
+<h4 data-number="8.3.2.2" class="anchored" data-anchor-id="비일률적-공간해상도-및-축척의-문제"><span class="header-section-number">8.3.2.2</span> 비일률적 공간해상도 및 축척의 문제</h4>
+</section>
+<section id="차원-기복-변위" class="level4" data-number="8.3.2.3">
+<h4 data-number="8.3.2.3" class="anchored" data-anchor-id="차원-기복-변위"><span class="header-section-number">8.3.2.3</span> 1차원 기복 변위</h4>
+</section>
+<section id="접선-방향-축척-왜곡" class="level4" data-number="8.3.2.4">
+<h4 data-number="8.3.2.4" class="anchored" data-anchor-id="접선-방향-축척-왜곡"><span class="header-section-number">8.3.2.4</span> 접선 방향 축척 왜곡</h4>
+</section>
+</section>
+<section id="외부적-기하-왜곡" class="level3" data-number="8.3.3">
+<h3 data-number="8.3.3" class="anchored" data-anchor-id="외부적-기하-왜곡"><span class="header-section-number">8.3.3</span> 외부적 기하 왜곡</h3>
+<section id="고도-변화" class="level4" data-number="8.3.3.1">
+<h4 data-number="8.3.3.1" class="anchored" data-anchor-id="고도-변화"><span class="header-section-number">8.3.3.1</span> 고도 변화</h4>
+</section>
+<section id="자세-변화" class="level4" data-number="8.3.3.2">
+<h4 data-number="8.3.3.2" class="anchored" data-anchor-id="자세-변화"><span class="header-section-number">8.3.3.2</span> 자세 변화</h4>
+</section>
+</section>
+<section id="단순-기하-보정" class="level3" data-number="8.3.4">
+<h3 data-number="8.3.4" class="anchored" data-anchor-id="단순-기하-보정"><span class="header-section-number">8.3.4</span> 단순 기하 보정</h3>
+<section id="개념" class="level4" data-number="8.3.4.1">
+<h4 data-number="8.3.4.1" class="anchored" data-anchor-id="개념"><span class="header-section-number">8.3.4.1</span> 개념</h4>
+</section>
+<section id="절차" class="level4" data-number="8.3.4.2">
+<h4 data-number="8.3.4.2" class="anchored" data-anchor-id="절차"><span class="header-section-number">8.3.4.2</span> 절차</h4>
+</section>
+</section>
+<section id="모자이크-영상-제작mosaicking" class="level3" data-number="8.3.5">
+<h3 data-number="8.3.5" class="anchored" data-anchor-id="모자이크-영상-제작mosaicking"><span class="header-section-number">8.3.5</span> 모자이크 영상 제작(mosaicking)</h3>
+<ul>
+<li><p><code>terra</code> 패키지의 <code>mosaic()</code> 함수</p></li>
+<li><p><code>rsat</code> 패키지의 <code>rsat_mosaic()</code> 함수</p></li>
+<li><p><code>RStoolbox</code> 패키지의 <code>histMatch()</code> 함수</p></li>
+</ul>
 
 
+</section>
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
@@ -688,8 +780,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./3_2_image_exploration.html" class="pagination-link" aria-label="<span class='chapter-number'>9</span>&nbsp; <span class='chapter-title'>영상 탐색</span>">
-        <span class="nav-page-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">영상 탐색</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./3_2_image_mapping.html" class="pagination-link" aria-label="<span class='chapter-number'>9</span>&nbsp; <span class='chapter-title'>영상 매핑</span>">
+        <span class="nav-page-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">영상 매핑</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

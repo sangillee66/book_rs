@@ -283,5 +283,38 @@
       "RS 데이터의 탐색 및 시각화",
       "<span class='chapter-number'>11</span>  <span class='chapter-title'>영상 강조</span>"
     ]
+  },
+  {
+    "objectID": "3_1_image_correction.html",
+    "href": "3_1_image_correction.html",
+    "title": "8  영상 보정",
+    "section": "",
+    "text": "8.1 개요",
+    "crumbs": [
+      "RS 데이터의 탐색 및 시각화",
+      "<span class='chapter-number'>8</span>  <span class='chapter-title'>영상 보정</span>"
+    ]
+  },
+  {
+    "objectID": "3_1_image_correction.html#방사-보정radiometric-correction",
+    "href": "3_1_image_correction.html#방사-보정radiometric-correction",
+    "title": "8  영상 보정",
+    "section": "8.2 방사 보정(radiometric correction)",
+    "text": "8.2 방사 보정(radiometric correction)\n\n8.2.1 개요\n\n\n8.2.2 절대적 방사(대기) 보정\n\nRStoolbox 패키지의 radCor() 함수\n\n\n\n8.2.3 지형 효과 방사 보정\n\nRStoolbox 패키지의 topCor() 함수\n\n\n\n8.2.4 내부 오류 방사 보정",
+    "crumbs": [
+      "RS 데이터의 탐색 및 시각화",
+      "<span class='chapter-number'>8</span>  <span class='chapter-title'>영상 보정</span>"
+    ]
+  },
+  {
+    "objectID": "3_1_image_correction.html#기하-보정geometric-correction",
+    "href": "3_1_image_correction.html#기하-보정geometric-correction",
+    "title": "8  영상 보정",
+    "section": "8.3 기하 보정(geometric correction)",
+    "text": "8.3 기하 보정(geometric correction)\n\n8.3.1 개요\n\n\n8.3.2 내부적 기하 왜곡\n\n8.3.2.1 휨 현상\n\n\n8.3.2.2 비일률적 공간해상도 및 축척의 문제\n\n\n8.3.2.3 1차원 기복 변위\n\n\n8.3.2.4 접선 방향 축척 왜곡\n\n\n\n8.3.3 외부적 기하 왜곡\n\n8.3.3.1 고도 변화\n\n\n8.3.3.2 자세 변화\n\n\n\n8.3.4 단순 기하 보정\n\n8.3.4.1 개념\n\n\n8.3.4.2 절차\n\n\n\n8.3.5 모자이크 영상 제작(mosaicking)\n\nterra 패키지의 mosaic() 함수\nrsat 패키지의 rsat_mosaic() 함수\nRStoolbox 패키지의 histMatch() 함수",
+    "crumbs": [
+      "RS 데이터의 탐색 및 시각화",
+      "<span class='chapter-number'>8</span>  <span class='chapter-title'>영상 보정</span>"
+    ]
   }
 ]

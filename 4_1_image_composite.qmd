@@ -1,5 +1,5 @@
 ---
-title: "영상 보정"
+title: "영상 합성"
 author: Sang-Il Lee
 date-modified: last-modified
 number-sections: true
