@@ -1,0 +1,17 @@
+{
+  "hash": "1c72930de696ddd41a3d99d498313e6f",
+  "result": {
+    "engine": "knitr",
+    "markdown": "---\ntitle: \"인공위성 RS 시스템\"\nauthor: Sang-Il Lee\ndate-modified: last-modified\nnumber-sections: true\nformat: \n  html: \n    toc: true\ncode-link: true\ncode-copy: true\nlightbox: true\nexecute: \n  warning: false\n  error: false\n  freeze: auto\neditor: visual\neditor_options: \n  chunk_output_type: console\n---\n\n\n## 시스템 설계\n\n## Landsat 시스템\n\n### WRS(World Reference System\n\n기본 패키지를 설치한다.\n\n\n::: {.cell}\n\n```{.r .cell-code}\nlibrary(tidyverse)\nlibrary(sf)\nlibrary(tmap)\nlibrary(rnaturalearth)\nlibrary(spData)\n```\n:::\n\n\nWRS 셰이프 파일을 불러온다.\n\n\n::: {.cell}\n\n```{.r .cell-code}\nwrs2_desc <- st_read(\"D:/My R/World Data Manupulation/USGS Landsat Systems/WRS2_descending_0/WRS2_descending.shp\", options = \"ENCODING=CP949\")\n```\n:::\n\n\n이름을 위한 새로운 컬럼을 만든다.\n\n\n::: {.cell}\n\n```{.r .cell-code}\nwrs2_desc <- wrs2_desc |> \n  mutate(\n    PATH_ROW = str_c(\n      PATH, ROW, sep = \"-\"\n    ), .after = ROW\n  ) \n```\n:::\n\n\nwrs2 데이터가 너무 커서 여기에 나타내지는 않는다.\n\n\n::: {.cell}\n\n:::\n\n\n한반도와 관련된 지도만 제작한다. 국가 바운더리 파일을 불러온다.\n\n\n::: {.cell}\n\n```{.r .cell-code}\nworld_map <- st_read(\"D:/My R/World Data Manupulation/NaturalEarth/new_1_ne_50m_admin_0_countries.shp\")\n```\n:::\n\n\n지도를 생성한다.\n\n\n::: {.cell}\n\n```{.r .cell-code}\nkoreas <- world_map |> \n  filter(\n    str_detect(ADMIN, \"Korea\")\n  )\n\nwrs2_desc |> \n  st_intersects(koreas) |> lengths() > 0 -> sel_index\n\nwrs2_koreas <- wrs2_desc |> \n  filter(\n    sel_index\n  )\n\ntm_shape(world_map) + tm_polygons(col = \"gray95\") +\n  tm_shape(koreas) + tm_polygons() +\n  tm_shape(wrs2_koreas, is.master = TRUE) + tm_polygons(border.col = \"#984ea3\", lwd = 1, alpha = 0) + tm_text(\"PATH_ROW\") +\n  tm_scale_bar(color.dark = \"gray60\", position = c(0.52, 0.01), breaks = seq(0, 400, 100))\n```\n\n::: {.cell-output-display}\n![](2_2_satellite_systems_files/figure-html/unnamed-chunk-6-1.png){width=4200}\n:::\n:::\n\n::: {.cell}\n\n:::\n\n\n## SPOT 시스템\n\n## Sentinel-2 시스템\n\n## GOES 시스템\n\n## AVHRR 시스템\n\n## MODIS 시스템\n",
+    "supporting": [
+      "2_2_satellite_systems_files"
+    ],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

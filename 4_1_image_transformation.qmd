@@ -272,8 +272,6 @@ PCA_map <- PCA_res$map |> stretch(minv = 0, maxv = 255, minq = 0.05, maxq = 0.95
 PCA의 결과를 일반적인 형식으로 변경한다.
 
 ```{r}
-PCA_res$model$loadings
-PCA_res$model$sdev
 
 snu_PCA_res_recal <- function(PCA_RES){
   res <- PCA_RES
