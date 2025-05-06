@@ -1,0 +1,233 @@
+---
+title: "영상 매핑"
+author: Sang-Il Lee
+date-modified: last-modified
+number-sections: true
+format: 
+  html: 
+    toc: true
+code-link: true
+code-copy: true
+lightbox: true
+execute: 
+  warning: false
+  error: false
+  freeze: auto
+editor: visual
+editor_options: 
+  chunk_output_type: console
+---
+
+## 개요
+
+필수적인 패키지를 설치한다. RS 영상의 기본적으로 래스터 데이터이므로 `terra` 패키지를 사용하여 기본적인 오퍼레이션을 수행한다.
+
+```{r}
+library(tidyverse)
+library(terra)
+library(tidyterra)
+library(sf)
+library(tmap)
+options(scipen = 999)
+```
+
+서울의 행정구역 바운더리 파일을 불러온다.
+
+```{r}
+#| results: hide 
+seoul <- st_read("D:/My R/Korean Administrative Areas/행정구역 셰이프 파일/2 Original Cleaning/2023_2Q/SEOUL_SIDO_2023_2Q.shp")
+seoul_gu <- st_read("D:/My R/Korean Administrative Areas/행정구역 셰이프 파일/2 Original Cleaning/2023_2Q/SEOUL_GU_2023_2Q.shp")
+seoul_dong <- st_read("D:/My R/Korean Administrative Areas/행정구역 셰이프 파일/2 Original Cleaning/2023_2Q/SEOUL_EMD_2023_2Q.shp")
+```
+
+Level-2 데이터를 불러와 마스킹한다.
+
+```{r}
+level2_landsat_seoul_st <- rast("D:/My R/World Data Manupulation/USGS EarthExplorer/level2_landsat_seoul_stack.tif")
+level2_landsat_seoul_st_mask <- level2_landsat_seoul_st |> 
+  mask(seoul)
+```
+
+대비 확장을 시행한다.
+
+```{r}
+level2_landsat_seoul_st_mask_str <- level2_landsat_seoul_st_mask |> 
+  stretch(minv = 0, maxv = 255, minq = 0.05, maxq = 0.95)
+```
+
+## 밴드 조합
+
+### 천연컬러(Natural Color)
+
+R(4, Red) + G(3, Green) + B(2, Blue) 조합의 영상을 생성한다.
+
+```{r}
+#| fig-width: 15
+#| fig-height: 12
+#| fig-dpi: 300
+my.map <- tm_shape(level2_landsat_seoul_st_mask_str, 
+                   raster.downsample = FALSE) + 
+  tm_rgb(r = 4, g = 3, b = 2, legend.show = FALSE) +
+  tm_shape(seoul) + tm_borders(lwd = 2, col = "gray20") +
+  tm_layout(frame = TRUE, 
+            title = "Natural Color", 
+            title.size = 2, title.position = c("left", "top"), 
+            bg.color = "white", 
+            inner.margins = c(0.05, 0.05, 0.05, 0.05)) +
+  tm_scale_bar(color.dark = "gray60", position = c(0.01, 0.01), 
+               size = 0.6, breaks = seq(0, 20, 5)) + 
+  tm_credits("SANG-IL LEE, Geography Education at SNU, 2025", 
+             size = 0.7)
+my.map
+```
+
+```{r}
+#| eval: false
+#| echo: false
+my.title <- "영상_매핑_밴드_조합_1"
+my.path.name <- "D:/My Classes/2025년 1학기/원격탐사와 지리자료분석/이미지/"
+my.file.name <- paste0(my.path.name, my.title, ".jpg")
+tmap_save(
+  my.map, filename = my.file.name, width = 15, height = 12, dpi = 600
+)
+```
+
+### 컬러-적외선(Color-Infrared)
+
+R(5, NIR) + G(4, Red) + B(3, Green)
+
+```{r}
+#| fig-width: 15
+#| fig-height: 12
+#| fig-dpi: 300
+my.map <- tm_shape(level2_landsat_seoul_st_mask_str, 
+                   raster.downsample = FALSE) + 
+  tm_rgb(r = 5, g = 4, b = 3, legend.show = FALSE) +
+  tm_shape(seoul) + tm_borders(lwd = 2, col = "gray20") +
+  tm_layout(frame = TRUE, 
+            title = "Color Infrared", 
+            title.size = 2, title.position = c("left", "top"), 
+            bg.color = "white", 
+            inner.margins = c(0.05, 0.05, 0.05, 0.05)) +
+  tm_scale_bar(color.dark = "gray60", position = c(0.01, 0.01), 
+               size = 0.6, breaks = seq(0, 20, 5)) + 
+  tm_credits("SANG-IL LEE, Geography Education at SNU, 2025", 
+             size = 0.7)
+my.map
+```
+
+```{r}
+#| eval: false
+#| echo: false
+my.title <- "영상_매핑_밴드_조합_2"
+my.path.name <- "D:/My Classes/2025년 1학기/원격탐사와 지리자료분석/이미지/"
+my.file.name <- paste0(my.path.name, my.title, ".jpg")
+tmap_save(
+  my.map, filename = my.file.name, width = 15, height = 12, dpi = 600
+)
+```
+
+### 폴스-컬러(도시)
+
+R(7, SWIR2) + G(6, SWIR1) + B(4, Red)
+
+```{r}
+#| fig-width: 15
+#| fig-height: 12
+#| fig-dpi: 300
+my.map <- tm_shape(level2_landsat_seoul_st_mask_str, 
+                   raster.downsample = FALSE) + 
+  tm_rgb(r = 7, g = 6, b = 4, legend.show = FALSE) +
+  tm_shape(seoul) + tm_borders(lwd = 2, col = "gray20") +
+  tm_layout(frame = TRUE, 
+            title = "False Color (Urban)", 
+            title.size = 2, title.position = c("left", "top"), 
+            bg.color = "white", 
+            inner.margins = c(0.05, 0.05, 0.05, 0.05)) +
+  tm_scale_bar(color.dark = "gray60", position = c(0.01, 0.01), 
+               size = 0.6, breaks = seq(0, 20, 5)) + 
+  tm_credits("SANG-IL LEE, Geography Education at SNU, 2025", 
+             size = 0.7)
+my.map
+```
+
+```{r}
+#| eval: false
+#| echo: false
+my.title <- "영상_매핑_밴드_조합_3"
+my.path.name <- "D:/My Classes/2025년 1학기/원격탐사와 지리자료분석/이미지/"
+my.file.name <- paste0(my.path.name, my.title, ".jpg")
+tmap_save(
+  my.map, filename = my.file.name, width = 15, height = 12, dpi = 600
+)
+```
+
+### 폴스-컬러(식생 분석)
+
+R(6, SWIR1) + G(5, NIR) + B(4, Red)
+
+```{r}
+#| fig-width: 15
+#| fig-height: 12
+#| fig-dpi: 300
+my.map <- tm_shape(level2_landsat_seoul_st_mask_str, 
+                   raster.downsample = FALSE) + 
+  tm_rgb(r = 6, g = 5, b = 4, legend.show = FALSE) +
+  tm_shape(seoul) + tm_borders(lwd = 2, col = "gray20") +
+  tm_layout(frame = TRUE, 
+            title = "False Color (Vegitatitve Analysis)", 
+            title.size = 2, title.position = c("left", "top"), 
+            bg.color = "white", 
+            inner.margins = c(0.05, 0.05, 0.05, 0.05)) +
+  tm_scale_bar(color.dark = "gray60", position = c(0.01, 0.01), 
+               size = 0.6, breaks = seq(0, 20, 5)) + 
+  tm_credits("SANG-IL LEE, Geography Education at SNU, 2025", 
+             size = 0.7)
+my.map
+```
+
+```{r}
+#| eval: false
+#| echo: false
+my.title <- "영상_매핑_밴드_조합_4"
+my.path.name <- "D:/My Classes/2025년 1학기/원격탐사와 지리자료분석/이미지/"
+my.file.name <- paste0(my.path.name, my.title, ".jpg")
+tmap_save(
+  my.map, filename = my.file.name, width = 15, height = 12, dpi = 600
+)
+```
+
+### 폴스-컬러(단파 적외선)
+
+R(7, SWIR2) + G(5, NIR) + B(4, Red)
+
+```{r}
+#| fig-width: 15
+#| fig-height: 12
+#| fig-dpi: 300
+my.map <- tm_shape(level2_landsat_seoul_st_mask_str, 
+                   raster.downsample = FALSE) + 
+  tm_rgb(r = 7, g = 5, b = 4, legend.show = FALSE) +
+  tm_shape(seoul) + tm_borders(lwd = 2, col = "gray20") +
+  tm_layout(frame = TRUE, 
+            title = "Shortwave Infrared", 
+            title.size = 2, title.position = c("left", "top"), 
+            bg.color = "white", 
+            inner.margins = c(0.05, 0.05, 0.05, 0.05)) +
+  tm_scale_bar(color.dark = "gray60", position = c(0.01, 0.01), 
+               size = 0.6, breaks = seq(0, 20, 5)) + 
+  tm_credits("SANG-IL LEE, Geography Education at SNU, 2025", 
+             size = 0.7)
+my.map
+```
+
+```{r}
+#| eval: false
+#| echo: false
+my.title <- "영상_매핑_밴드_조합_5"
+my.path.name <- "D:/My Classes/2025년 1학기/원격탐사와 지리자료분석/이미지/"
+my.file.name <- paste0(my.path.name, my.title, ".jpg")
+tmap_save(
+  my.map, filename = my.file.name, width = 15, height = 12, dpi = 600
+)
+```
