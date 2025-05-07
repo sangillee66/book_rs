@@ -448,5 +448,49 @@
       "RS 데이터의 분석 및 모델링",
       "<span class='chapter-number'>14</span>  <span class='chapter-title'>영상 분류</span>"
     ]
+  },
+  {
+    "objectID": "2_4_data_acquisition.html",
+    "href": "2_4_data_acquisition.html",
+    "title": "7  데이터의 표준과 구득",
+    "section": "",
+    "text": "7.1 데이터 표준",
+    "crumbs": [
+      "RS 데이터의 획득",
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>데이터의 표준과 구득</span>"
+    ]
+  },
+  {
+    "objectID": "2_4_data_acquisition.html#데이터-표준",
+    "href": "2_4_data_acquisition.html#데이터-표준",
+    "title": "7  데이터의 표준과 구득",
+    "section": "",
+    "text": "7.1.1 저장 포맷\n\n\n7.1.2 압축 포맷\n\n\n7.1.3 공통 포맷\n\n\n7.1.4 수준\n\n\n7.1.5 메타 데이터",
+    "crumbs": [
+      "RS 데이터의 획득",
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>데이터의 표준과 구득</span>"
+    ]
+  },
+  {
+    "objectID": "2_4_data_acquisition.html#데이터-공급",
+    "href": "2_4_data_acquisition.html#데이터-공급",
+    "title": "7  데이터의 표준과 구득",
+    "section": "7.2 데이터 공급",
+    "text": "7.2 데이터 공급\n\n7.2.1 웹사이트\n\nEarthExplore\n\nUSGS\nhttps://earthexplorer.usgs.gov/\nLandsat, AVHRR, SRTM, NLCD, GLCC, RADAR\n\nEarthData\n\nNASA\nhttps://www.earthdata.nasa.gov/\n\nThe Copernicus Data Space Ecosystem\n\nESA\nhttps://browser.dataspace.copernicus.eu/\n\n3DEP LidarExplorer\n\nUSGS\nhttps://apps.nationalmap.gov/lidar-explorer/\n\n\n\n\n7.2.2 구글 어스 엔진(Google Earth Engine)\n\nhttps://earthengine.google.com/",
+    "crumbs": [
+      "RS 데이터의 획득",
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>데이터의 표준과 구득</span>"
+    ]
+  },
+  {
+    "objectID": "2_4_data_acquisition.html#데이터-구득",
+    "href": "2_4_data_acquisition.html#데이터-구득",
+    "title": "7  데이터의 표준과 구득",
+    "section": "7.3 데이터 구득",
+    "text": "7.3 데이터 구득\n\n7.3.1 구글 어스 엔진\n\nQGIS Plug in for Earth Engine\n\nhttps://gee-community.github.io/qgis-earthengine-plugin/\n\nrgee: Google Earth Engine for R\n\nhttps://r-spatial.github.io/rgee/#quick-start-users-guide-for-rgee\n\n\n\n\n\n7.3.2 R 패키지\n\nCDSE: Copernicus Data Space Ecosystem API Wrapper\n\nhttps://zivankaraman.github.io/CDSE/\nSentinel\n\ngetSpatialData\n\nhttps://github.com/16EAGLE/getSpatialData\nLandsat, Sentinel, MODIS, SRTM\n\nopeneo: Client Interface for openEO Servers\n\nhttps://github.com/Open-EO/openeo-r-client\n\nrsi: spectral indices\n\nhttps://permian-global-research.github.io/rsi/\n\nrstac: R client library for STAC\n\nSpatioTemporal Asset Catalog (STAC)\nhttps://brazil-data-cube.github.io/rstac/reference/rstac.html",
+    "crumbs": [
+      "RS 데이터의 획득",
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>데이터의 표준과 구득</span>"
+    ]
   }
 ]

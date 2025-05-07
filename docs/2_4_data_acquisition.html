@@ -8,7 +8,7 @@
 
 <meta name="author" content="Sang-Il Lee">
 
-<title>Remote Sensing - 7&nbsp; 데이터 구득</title>
+<title>Remote Sensing - 7&nbsp; 데이터의 표준과 구득</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -42,6 +42,9 @@ ul.task-list li input[type="checkbox"] {
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script src="site_libs/quarto-contrib/glightbox/glightbox.min.js"></script>
+<link href="site_libs/quarto-contrib/glightbox/glightbox.min.css" rel="stylesheet">
+<link href="site_libs/quarto-contrib/glightbox/lightbox.css" rel="stylesheet">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -84,7 +87,7 @@ ul.task-list li input[type="checkbox"] {
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
         <a class="flex-grow-1 no-decor" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="사이드바 전환" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
-          <h1 class="quarto-secondary-nav-title"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">데이터 구득</span></h1>
+          <h1 class="quarto-secondary-nav-title"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">데이터의 표준과 구득</span></h1>
         </a>     
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
         <i class="bi bi-search"></i>
@@ -173,7 +176,7 @@ ul.task-list li input[type="checkbox"] {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./2_4_data_acquisition.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">데이터 구득</span></span></a>
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">데이터의 표준과 구득</span></span></a>
   </div>
 </li>
       </ul>
@@ -254,14 +257,37 @@ ul.task-list li input[type="checkbox"] {
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">목차</h2>
+   
+  <ul>
+  <li><a href="#데이터-표준" id="toc-데이터-표준" class="nav-link active" data-scroll-target="#데이터-표준"><span class="header-section-number">7.1</span> 데이터 표준</a>
+  <ul class="collapse">
+  <li><a href="#저장-포맷" id="toc-저장-포맷" class="nav-link" data-scroll-target="#저장-포맷"><span class="header-section-number">7.1.1</span> 저장 포맷</a></li>
+  <li><a href="#압축-포맷" id="toc-압축-포맷" class="nav-link" data-scroll-target="#압축-포맷"><span class="header-section-number">7.1.2</span> 압축 포맷</a></li>
+  <li><a href="#공통-포맷" id="toc-공통-포맷" class="nav-link" data-scroll-target="#공통-포맷"><span class="header-section-number">7.1.3</span> 공통 포맷</a></li>
+  <li><a href="#수준" id="toc-수준" class="nav-link" data-scroll-target="#수준"><span class="header-section-number">7.1.4</span> 수준</a></li>
+  <li><a href="#메타-데이터" id="toc-메타-데이터" class="nav-link" data-scroll-target="#메타-데이터"><span class="header-section-number">7.1.5</span> 메타 데이터</a></li>
+  </ul></li>
+  <li><a href="#데이터-공급" id="toc-데이터-공급" class="nav-link" data-scroll-target="#데이터-공급"><span class="header-section-number">7.2</span> 데이터 공급</a>
+  <ul class="collapse">
+  <li><a href="#웹사이트" id="toc-웹사이트" class="nav-link" data-scroll-target="#웹사이트"><span class="header-section-number">7.2.1</span> 웹사이트</a></li>
+  <li><a href="#구글-어스-엔진google-earth-engine" id="toc-구글-어스-엔진google-earth-engine" class="nav-link" data-scroll-target="#구글-어스-엔진google-earth-engine"><span class="header-section-number">7.2.2</span> 구글 어스 엔진(Google Earth Engine)</a></li>
+  </ul></li>
+  <li><a href="#데이터-구득" id="toc-데이터-구득" class="nav-link" data-scroll-target="#데이터-구득"><span class="header-section-number">7.3</span> 데이터 구득</a>
+  <ul class="collapse">
+  <li><a href="#구글-어스-엔진" id="toc-구글-어스-엔진" class="nav-link" data-scroll-target="#구글-어스-엔진"><span class="header-section-number">7.3.1</span> 구글 어스 엔진</a></li>
+  <li><a href="#r-패키지" id="toc-r-패키지" class="nav-link" data-scroll-target="#r-패키지"><span class="header-section-number">7.3.2</span> R 패키지</a></li>
+  </ul></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title d-none d-lg-block"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">데이터 구득</span></h1>
+<h1 class="title d-none d-lg-block"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">데이터의 표준과 구득</span></h1>
 </div>
 
 
@@ -279,7 +305,7 @@ ul.task-list li input[type="checkbox"] {
     <div>
     <div class="quarto-title-meta-heading">Modified</div>
     <div class="quarto-title-meta-contents">
-      <p class="date-modified">2025년 3월 15일</p>
+      <p class="date-modified">2025년 5월 7일</p>
     </div>
   </div>
     
@@ -290,8 +316,106 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
+<section id="데이터-표준" class="level2" data-number="7.1">
+<h2 data-number="7.1" class="anchored" data-anchor-id="데이터-표준"><span class="header-section-number">7.1</span> 데이터 표준</h2>
+<section id="저장-포맷" class="level3" data-number="7.1.1">
+<h3 data-number="7.1.1" class="anchored" data-anchor-id="저장-포맷"><span class="header-section-number">7.1.1</span> 저장 포맷</h3>
+</section>
+<section id="압축-포맷" class="level3" data-number="7.1.2">
+<h3 data-number="7.1.2" class="anchored" data-anchor-id="압축-포맷"><span class="header-section-number">7.1.2</span> 압축 포맷</h3>
+</section>
+<section id="공통-포맷" class="level3" data-number="7.1.3">
+<h3 data-number="7.1.3" class="anchored" data-anchor-id="공통-포맷"><span class="header-section-number">7.1.3</span> 공통 포맷</h3>
+</section>
+<section id="수준" class="level3" data-number="7.1.4">
+<h3 data-number="7.1.4" class="anchored" data-anchor-id="수준"><span class="header-section-number">7.1.4</span> 수준</h3>
+</section>
+<section id="메타-데이터" class="level3" data-number="7.1.5">
+<h3 data-number="7.1.5" class="anchored" data-anchor-id="메타-데이터"><span class="header-section-number">7.1.5</span> 메타 데이터</h3>
+</section>
+</section>
+<section id="데이터-공급" class="level2" data-number="7.2">
+<h2 data-number="7.2" class="anchored" data-anchor-id="데이터-공급"><span class="header-section-number">7.2</span> 데이터 공급</h2>
+<section id="웹사이트" class="level3" data-number="7.2.1">
+<h3 data-number="7.2.1" class="anchored" data-anchor-id="웹사이트"><span class="header-section-number">7.2.1</span> 웹사이트</h3>
+<ul>
+<li><p>EarthExplore</p>
+<ul>
+<li><p><a href="https://www.usgs.gov/">USGS</a></p></li>
+<li><p><a href="https://earthexplorer.usgs.gov/" class="uri">https://earthexplorer.usgs.gov/</a></p></li>
+<li><p>Landsat, AVHRR, SRTM, NLCD, GLCC, RADAR</p></li>
+</ul></li>
+<li><p>EarthData</p>
+<ul>
+<li><p><a href="https://www.nasa.gov/">NASA</a></p></li>
+<li><p><a href="https://www.earthdata.nasa.gov/" class="uri">https://www.earthdata.nasa.gov/</a></p></li>
+</ul></li>
+<li><p>The Copernicus Data Space Ecosystem</p>
+<ul>
+<li><p><a href="https://dataspace.copernicus.eu/">ESA</a></p></li>
+<li><p><a href="https://browser.dataspace.copernicus.eu/" class="uri">https://browser.dataspace.copernicus.eu/</a></p></li>
+</ul></li>
+<li><p>3DEP LidarExplorer</p>
+<ul>
+<li><p><a href="https://www.usgs.gov/">USGS</a></p></li>
+<li><p><a href="https://apps.nationalmap.gov/lidar-explorer/" class="uri">https://apps.nationalmap.gov/lidar-explorer/</a></p></li>
+</ul></li>
+</ul>
+</section>
+<section id="구글-어스-엔진google-earth-engine" class="level3" data-number="7.2.2">
+<h3 data-number="7.2.2" class="anchored" data-anchor-id="구글-어스-엔진google-earth-engine"><span class="header-section-number">7.2.2</span> 구글 어스 엔진(Google Earth Engine)</h3>
+<ul>
+<li><a href="https://earthengine.google.com/" class="uri">https://earthengine.google.com/</a></li>
+</ul>
+</section>
+</section>
+<section id="데이터-구득" class="level2" data-number="7.3">
+<h2 data-number="7.3" class="anchored" data-anchor-id="데이터-구득"><span class="header-section-number">7.3</span> 데이터 구득</h2>
+<section id="구글-어스-엔진" class="level3" data-number="7.3.1">
+<h3 data-number="7.3.1" class="anchored" data-anchor-id="구글-어스-엔진"><span class="header-section-number">7.3.1</span> 구글 어스 엔진</h3>
+<ul>
+<li><p>QGIS Plug in for Earth Engine</p>
+<ul>
+<li><a href="https://gee-community.github.io/qgis-earthengine-plugin/" class="uri">https://gee-community.github.io/qgis-earthengine-plugin/</a></li>
+</ul></li>
+<li><p><code>rgee</code>: Google Earth Engine for R</p>
+<ul>
+<li><a href="https://r-spatial.github.io/rgee/#quick-start-users-guide-for-rgee" class="uri">https://r-spatial.github.io/rgee/#quick-start-users-guide-for-rgee</a></li>
+</ul></li>
+</ul>
+<p><a href="images/clipboard-393918566.png" class="lightbox" data-gallery="quarto-lightbox-gallery-1"><img src="images/clipboard-393918566.png" class="img-fluid"></a></p>
+</section>
+<section id="r-패키지" class="level3" data-number="7.3.2">
+<h3 data-number="7.3.2" class="anchored" data-anchor-id="r-패키지"><span class="header-section-number">7.3.2</span> R 패키지</h3>
+<ul>
+<li><p><code>CDSE</code>: Copernicus Data Space Ecosystem API Wrapper</p>
+<ul>
+<li><p><a href="https://zivankaraman.github.io/CDSE/" class="uri">https://zivankaraman.github.io/CDSE/</a></p></li>
+<li><p>Sentinel</p></li>
+</ul></li>
+<li><p><code>getSpatialData</code></p>
+<ul>
+<li><p><a href="https://github.com/16EAGLE/getSpatialData" class="uri">https://github.com/16EAGLE/getSpatialData</a></p></li>
+<li><p>Landsat, Sentinel, MODIS, SRTM</p></li>
+</ul></li>
+<li><p><code>openeo</code>: Client Interface for openEO Servers</p>
+<ul>
+<li><a href="https://github.com/Open-EO/openeo-r-client" class="uri">https://github.com/Open-EO/openeo-r-client</a></li>
+</ul></li>
+<li><p><code>rsi</code>: spectral indices</p>
+<ul>
+<li><a href="https://permian-global-research.github.io/rsi/" class="uri">https://permian-global-research.github.io/rsi/</a></li>
+</ul></li>
+<li><p><code>rstac</code>: R client library for STAC</p>
+<ul>
+<li><p>SpatioTemporal Asset Catalog (STAC)</p></li>
+<li><p><a href="https://brazil-data-cube.github.io/rstac/reference/rstac.html" class="uri">https://brazil-data-cube.github.io/rstac/reference/rstac.html</a></p></li>
+</ul></li>
+</ul>
 
 
+</section>
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
@@ -694,6 +818,31 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   </div>
 </nav>
 </div> <!-- /content -->
+<script>var lightboxQuarto = GLightbox({"closeEffect":"zoom","loop":false,"descPosition":"bottom","openEffect":"zoom","selector":".lightbox"});
+window.onload = () => {
+  lightboxQuarto.on('slide_before_load', (data) => {
+    const { slideIndex, slideNode, slideConfig, player, trigger } = data;
+    const href = trigger.getAttribute('href');
+    if (href !== null) {
+      const imgEl = window.document.querySelector(`a[href="${href}"] img`);
+      if (imgEl !== null) {
+        const srcAttr = imgEl.getAttribute("src");
+        if (srcAttr && srcAttr.startsWith("data:")) {
+          slideConfig.href = srcAttr;
+        }
+      }
+    } 
+  });
+
+  lightboxQuarto.on('slide_after_load', (data) => {
+    const { slideIndex, slideNode, slideConfig, player, trigger } = data;
+    if (window.Quarto?.typesetMath) {
+      window.Quarto.typesetMath(slideNode);
+    }
+  });
+
+};
+          </script>
 
 
 
