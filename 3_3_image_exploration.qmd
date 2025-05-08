@@ -71,7 +71,7 @@ tm_shape(level1_landsat_seoul_st, raster.downsample = FALSE) +
 B4(Red)만 분리해낸다.
 
 ```{r}
-level1_B4 <- level1_landsat_seoul_st |> select(B4)
+level1_B4 <- level1_landsat_seoul_st |> select(`B4(Red)`)
 ```
 
 `tmap` 패키지를 이용하여 B4(Red)에 대한 기본 지도를 제작한다.
@@ -150,7 +150,7 @@ tmap_save(
 B4(Red)만 분리해낸다.
 
 ```{r}
-level2_B4 <- level2_landsat_seoul_st |> select(B4)
+level2_B4 <- level2_landsat_seoul_st |> select(`B4(Red)`)
 ```
 
 `tmap` 패키지를 이용하여 B4(Red)에 대한 기본 지도를 제작한다.
@@ -337,7 +337,7 @@ df_long <- df_1 |>
     cols = everything(), names_to = "band", values_to = "DN"
   ) |> 
   mutate(
-    band = fct(band, levels = str_c("B", 1:11))
+    band = fct(band, levels = unique(band))
   )
 ggplot(df_long, aes(x = DN)) +
   geom_histogram(bins = 100) +
@@ -369,7 +369,7 @@ df_long <- df_2 |>
     cols = everything(), names_to = "band", values_to = "DN"
   ) |> 
   mutate(
-    band = fct(band, levels = str_c("B", 1:11))
+    band = fct(band, levels = unique(band))
   )
 ggplot(df_long, aes(x = DN)) +
   geom_histogram(bins = 100) +
@@ -437,7 +437,7 @@ ggcorrplot(cor_matrix_2, hc.order = TRUE, tl.cex = 18,
 #| fig-width: 19.4
 #| fig-asp: 0.618
 #| fig-dpi: 600
-ggplot(df_2, aes(x = B4, y = B5)) +
+ggplot(df_2, aes(x = `B4(Red)`, y = `B5(NIR)`)) +
   geom_point(alpha = 0.3, color = "darkblue", size = 0.5) +
   coord_fixed() +
   theme_minimal() +
@@ -485,7 +485,7 @@ points_sf <- line_sf |>
 #| fig-width: 15
 #| fig-height: 12
 #| fig-dpi: 600
-my_map <- tm_shape(level2_landsat_seoul_st_mask$B5, 
+my_map <- tm_shape(level2_landsat_seoul_st_mask$`B5(NIR)`, 
                    raster.downsample = FALSE) + 
   tm_raster(style = "cont", palette = "-Greys", title = "DN") +
   tm_shape(line_sf) + tm_lines(col = "red", lwd = 2) +
@@ -511,7 +511,7 @@ my_map
 #| fig-dpi: 600
 
 # 래스터로부터 각 포인트에 해당하는 값을 추출한다.
-profile <- level2_landsat_seoul_st_mask$B5 |> 
+profile <- level2_landsat_seoul_st_mask$`B5(NIR)` |> 
   extract(points_sf) |> 
   mutate(
     distance = ID * 10 / 1000, # 10m 당 하나이므로 10을 곱해 거리(m)로 만들고, 1,000으로 나누어 km 단위
@@ -519,7 +519,7 @@ profile <- level2_landsat_seoul_st_mask$B5 |>
   )
 
 # 시각화
-ggplot(profile, aes(x = distance, y = B5)) +
+ggplot(profile, aes(x = distance, y = `B5(NIR)`)) +
   geom_line() +
   # theme_minimal() +
   theme(
@@ -557,7 +557,7 @@ points_sf <- tibble(lon = c(126.956525, 126.800839, 126.976255, 126.974984), lat
 #| fig-height: 12
 #| fig-dpi: 300
 
-my_map <- tm_shape(level2_landsat_seoul_st_mask$B5, 
+my_map <- tm_shape(level2_landsat_seoul_st_mask$`B5(NIR)`, 
                    raster.downsample = FALSE) + 
   tm_raster(style = "cont", palette = "-Greys", 
             title = "DN", legend.show = FALSE) +
@@ -592,21 +592,21 @@ tmap_save(
 #| fig-dpi: 600
 
 spec_profile <- extract(level2_landsat_seoul_st_mask, points_sf) |> 
-  as.data.frame() |> select(-B10)
+  as.data.frame() |> select(-`B10(TIR)`)
 
 df_spec <- spec_profile |> 
   pivot_longer(
-    cols = B1:B7,
+    cols = `B1(Coastal)`:`B7(SWIR2)`,
     names_to = "band",
     values_to = "DN"
   ) |> 
   mutate(
-    band = fct(band, levels = str_c("B", 1:7)),
+    band = fct(band, levels = unique(band)),
     ID = as_factor(ID)
   )
 
 ggplot(df_spec, aes(x = band, y = DN, group = ID, color = ID)) +
-  geom_line(size = 1) +
+  geom_line(linewidth = 1) +
   geom_point(size = 2) +
   # theme_minimal() +
   scale_x_discrete(

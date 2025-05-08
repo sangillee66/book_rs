@@ -73,7 +73,7 @@ df_long <- df_2 |>
     cols = everything(), names_to = "band", values_to = "DN"
   ) |> 
   mutate(
-    band = fct(band, levels = str_c("B", 1:11))
+    band = fct(band, levels = unique(band))
   )
 ggplot(df_long, aes(x = DN)) +
   geom_histogram(bins = 100) +
@@ -148,7 +148,7 @@ df_long <- df_2 |>
     cols = everything(), names_to = "band", values_to = "DN"
   ) |> 
   mutate(
-    band = fct(band, levels = str_c("B", 1:11))
+    band = fct(band, levels = unique(band))
   )
 ggplot(df_long, aes(x = DN)) +
   geom_histogram(bins = 100) +
@@ -215,7 +215,7 @@ df_long <- df_2 |>
     cols = everything(), names_to = "band", values_to = "DN"
   ) |> 
   mutate(
-    band = fct(band, levels = str_c("B", 1:11))
+    band = fct(band, levels = unique(band))
   )
 ggplot(df_long, aes(x = DN)) +
   geom_histogram(bins = 100) +
@@ -284,7 +284,7 @@ df_long <- df_2 |>
     cols = everything(), names_to = "band", values_to = "DN"
   ) |> 
   mutate(
-    band = fct(band, levels = str_c("B", 1:11))
+    band = fct(band, levels = unique(band))
   )
 ggplot(df_long, aes(x = DN)) +
   geom_histogram(bins = 100) +
@@ -344,7 +344,7 @@ gwanak_gu <- seoul_gu |>
 
 ```{r}
 gwanak_5 <- level2_landsat_seoul_st |> crop(gwanak_gu) |>  mask(gwanak_gu) |> 
-  stretch(minv = 0, maxv = 255, minq = 0.01, maxq = 0.99) |> select(B5)
+  stretch(minv = 0, maxv = 255, minq = 0.01, maxq = 0.99) |> select(`B5(NIR)`)
 ```
 
 지도를 제작한다.
