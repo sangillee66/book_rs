@@ -163,5 +163,15 @@
       "RS 데이터의 분석 및 모델링",
       "<span class='chapter-number'>15</span>  <span class='chapter-title'>변화 탐지</span>"
     ]
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Remote Sensing",
+    "section": "",
+    "text": "Preface\n이것은 RS 웹북이다.",
+    "crumbs": [
+      "Preface"
+    ]
   }
 ]
