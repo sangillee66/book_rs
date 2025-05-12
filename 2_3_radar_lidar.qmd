@@ -37,7 +37,7 @@ library(rayshader)
 
 ```{r}
 #| results: hide
-las <- readLAS("D:/R_Books/RS/lidar_data/snu_lidar/lidars/terra_las/cloud850fccd1a896259f.las")
+las <- readLAS("D:/My R/Raster Data Manipulation Korea/lidar_data/snu_lidar/lidars/terra_las/cloud850fccd1a896259f.las")
 las_check(las)
 ```
 
@@ -51,7 +51,7 @@ plot(las, color = "ScanAngleRank", bg = "white", axis = TRUE, legend = TRUE)
 
 ```{r}
 #| results: hide
-las <- readLAS("D:/R_Books/RS/lidar_data/snu_lidar/lidars/terra_las/cloud850fccd1a896259f.las", select = "xyzrn")
+las <- readLAS("D:/My R/Raster Data Manipulation Korea/lidar_data/snu_lidar/lidars/terra_las/cloud850fccd1a896259f.las", select = "xyzrn")
 las <- classify_ground(las, algorithm = pmf(ws = 5, th = 3))
 ```
 

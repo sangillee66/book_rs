@@ -1,0 +1,17 @@
+{
+  "hash": "d7a44776e99cd82ee0531538ba0799da",
+  "result": {
+    "engine": "knitr",
+    "markdown": "---\ntitle: \"레이더와 라이다 시스템\"\nauthor: Sang-Il Lee\ndate-modified: last-modified\nnumber-sections: true\nformat: \n  html: \n    toc: true\ncode-link: true\ncode-copy: true\nlightbox: true\nexecute: \n  warning: false\n  error: false\n  freeze: auto\neditor: visual\neditor_options: \n  chunk_output_type: console\n---\n\n\n## LiDAR 데이터 분석\n\n필수적인 패키지를 설치한다.\n\n\n::: {.cell}\n\n```{.r .cell-code}\nlibrary(tidyverse)\nlibrary(sf)\nlibrary(terra)\nlibrary(tmap)\nlibrary(RStoolbox)\nlibrary(lidR)\nlibrary(raster)\nlibrary(rayshader)\n```\n:::\n\n\n수업의 특강에서 이하은이 수집한 las 파일을 불러온다.\n\n\n::: {.cell}\n\n```{.r .cell-code}\nlas <- readLAS(\"D:/My R/Raster Data Manipulation Korea/lidar_data/snu_lidar/lidars/terra_las/cloud850fccd1a896259f.las\")\nlas_check(las)\n```\n:::\n\n\n시각화한다.\n\n\n::: {.cell}\n\n```{.r .cell-code}\nplot(las, color = \"ScanAngleRank\", bg = \"white\", axis = TRUE, legend = TRUE)\n```\n:::\n\n\n그라운드(ground) 포인트를 추출한다.\n\n\n::: {.cell}\n\n```{.r .cell-code}\nlas <- readLAS(\"D:/My R/Raster Data Manipulation Korea/lidar_data/snu_lidar/lidars/terra_las/cloud850fccd1a896259f.las\", select = \"xyzrn\")\nlas <- classify_ground(las, algorithm = pmf(ws = 5, th = 3))\n```\n:::\n\n\nDTM을 생성한다.\n\n\n::: {.cell}\n\n```{.r .cell-code}\ndtm_idw <- rasterize_terrain(las, algorithm = knnidw(k = 10L, p = 2))\nplot_dtm3d(dtm_idw, bg = \"white\") \n```\n:::\n\n\nDTM을 시각화한다.\n\n\n::: {.cell}\n\n```{.r .cell-code}\ndtm_prod <- terrain(dtm_idw, v = c(\"slope\", \"aspect\"), unit = \"radians\")\ndtm_hillshade <- shade(slope = dtm_prod$slope, aspect = dtm_prod$aspect)\nterra::plot(dtm_hillshade, col = gray(0:30/30), legend = FALSE)\n```\n\n::: {.cell-output-display}\n![](2_3_radar_lidar_files/figure-html/unnamed-chunk-6-1.png){width=672}\n:::\n\n::: {.cell-output .cell-output-error}\n\n```\nError in add_more(fun, y): could not find function \"add_more\"\n```\n\n\n:::\n:::\n\n\n[`rayshader`](https://www.rayshader.com/) 패키지를 활용하여 시각화한다.\n\n\n::: {.cell}\n\n```{.r .cell-code}\ndtm <- rasterize_terrain(las, algorithm = tin())\ndtm <- raster(dtm)\nelmat <- raster_to_matrix(dtm)\nmap <- elmat |> \n  sphere_shade(texture = \"imhof1\", progbar = FALSE) |> \n  add_water(detect_water(elmat), color = \"imhof1\") |>\n  add_shadow(ray_shade(elmat, progbar = FALSE), 0.5) |>\n  add_shadow(ambient_shade(elmat, progbar = FALSE), 0)\n```\n:::\n\n\n2D 플롯을 생성한다.\n\n\n::: {.cell}\n\n```{.r .cell-code}\nplot_map(map)\n```\n\n::: {.cell-output-display}\n![](2_3_radar_lidar_files/figure-html/unnamed-chunk-8-1.png){width=672}\n:::\n:::\n\n\n3D 플롯을 생성한다.\n\n\n::: {.cell}\n\n```{.r .cell-code}\nplot_3d(map, elmat, zscale = 1, windowsize = c(800, 800))\n```\n:::\n",
+    "supporting": [
+      "2_3_radar_lidar_files"
+    ],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

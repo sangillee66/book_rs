@@ -1,0 +1,855 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ko" xml:lang="ko"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.4.549">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<meta name="author" content="Sang-Il Lee">
+<title>Remote Sensing - 5&nbsp; 인공위성 RS 시스템</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./2_3_radar_lidar.html" rel="next">
+<link href="./2_1_collection_systems.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script src="site_libs/quarto-contrib/glightbox/glightbox.min.js"></script>
+<link href="site_libs/quarto-contrib/glightbox/glightbox.min.css" rel="stylesheet">
+<link href="site_libs/quarto-contrib/glightbox/lightbox.css" rel="stylesheet"><script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "일치 없음",
+    "search-matching-documents-text": "일치된 문서",
+    "search-copy-link-title": "검색 링크 복사",
+    "search-hide-matches-text": "추가 검색 결과 숨기기",
+    "search-more-match-text": "추가 검색결과",
+    "search-more-matches-text": "추가 검색결과",
+    "search-clear-button-title": "제거",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "취소",
+    "search-submit-button-title": "검색",
+    "search-label": "검색"
+  }
+}</script><link href="site_libs/htmltools-fill-0.5.8.1/fill.css" rel="stylesheet">
+<script src="site_libs/htmlwidgets-1.6.4/htmlwidgets.js"></script><script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script><link href="site_libs/leaflet-1.3.1/leaflet.css" rel="stylesheet">
+<script src="site_libs/leaflet-1.3.1/leaflet.js"></script><link href="site_libs/leafletfix-1.0.0/leafletfix.css" rel="stylesheet">
+<script src="site_libs/proj4-2.6.2/proj4.min.js"></script><script src="site_libs/Proj4Leaflet-1.0.1/proj4leaflet.js"></script><link href="site_libs/rstudio_leaflet-1.3.1/rstudio_leaflet.css" rel="stylesheet">
+<script src="site_libs/leaflet-binding-2.2.2/leaflet.js"></script><link rel="stylesheet" href="styles.css">
+</head>
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top"><nav class="quarto-secondary-nav"><div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="사이드바 전환" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <a class="flex-grow-1 no-decor" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="사이드바 전환" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+          <h1 class="quarto-secondary-nav-title">
+<span class="chapter-number">5</span>&nbsp; <span class="chapter-title">인공위성 RS 시스템</span>
+</h1>
+        </a>     
+      <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav></header><!-- content --><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto"><div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">Remote Sensing</a> 
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="검색"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Preface</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./part_1.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">RS의 개념과 원리</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="토글 섹션">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./1_1_overview.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">RS의 개요</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./1_2_electromagnetic_radiation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">전자기 복사와 지표면의 상호작용</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./1_3_resolution.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">원격탐사 데이터와 해상도</span></span></a>
+  </div>
+</li>
+      </ul>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./part_2.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">RS 데이터의 획득</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="토글 섹션">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./2_1_collection_systems.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">데이터 수집 시스템의 유형</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./2_2_satellite_systems.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">인공위성 RS 시스템</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./2_3_radar_lidar.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">레이더와 라이다 시스템</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./2_4_data_acquisition.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">데이터의 표준과 구득</span></span></a>
+  </div>
+</li>
+      </ul>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./part_3.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">RS 데이터의 탐색 및 시각화</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true" aria-label="토글 섹션">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./3_1_image_correction.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">영상 보정</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./3_2_image_mapping.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">영상 매핑</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./3_3_image_exploration.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">영상 탐색</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./3_4_image_enhancement.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">영상 강조</span></span></a>
+  </div>
+</li>
+      </ul>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./part_4.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">RS 데이터의 분석 및 모델링</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true" aria-label="토글 섹션">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./4_1_image_transformation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">영상 변환</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./4_2_image_composite.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">영상 합성</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./4_3_image_classification.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">영상 분류</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./4_4_change_detection.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">변화 탐지</span></span></a>
+  </div>
+</li>
+      </ul>
+</li>
+    </ul>
+</div>
+</nav><div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">목차</h2>
+   
+  <ul>
+<li><a href="#%EC%8B%9C%EC%8A%A4%ED%85%9C-%EC%84%A4%EA%B3%84" id="toc-시스템-설계" class="nav-link active" data-scroll-target="#%EC%8B%9C%EC%8A%A4%ED%85%9C-%EC%84%A4%EA%B3%84"><span class="header-section-number">5.1</span> 시스템 설계</a></li>
+  <li>
+<a href="#landsat-%EC%8B%9C%EC%8A%A4%ED%85%9C" id="toc-landsat-시스템" class="nav-link" data-scroll-target="#landsat-%EC%8B%9C%EC%8A%A4%ED%85%9C"><span class="header-section-number">5.2</span> Landsat 시스템</a>
+  <ul class="collapse">
+<li><a href="#wrsworld-reference-system" id="toc-wrsworld-reference-system" class="nav-link" data-scroll-target="#wrsworld-reference-system"><span class="header-section-number">5.2.1</span> WRS(World Reference System</a></li>
+  </ul>
+</li>
+  <li><a href="#spot-%EC%8B%9C%EC%8A%A4%ED%85%9C" id="toc-spot-시스템" class="nav-link" data-scroll-target="#spot-%EC%8B%9C%EC%8A%A4%ED%85%9C"><span class="header-section-number">5.3</span> SPOT 시스템</a></li>
+  <li><a href="#sentinel-2-%EC%8B%9C%EC%8A%A4%ED%85%9C" id="toc-sentinel-2-시스템" class="nav-link" data-scroll-target="#sentinel-2-%EC%8B%9C%EC%8A%A4%ED%85%9C"><span class="header-section-number">5.4</span> Sentinel-2 시스템</a></li>
+  <li><a href="#goes-%EC%8B%9C%EC%8A%A4%ED%85%9C" id="toc-goes-시스템" class="nav-link" data-scroll-target="#goes-%EC%8B%9C%EC%8A%A4%ED%85%9C"><span class="header-section-number">5.5</span> GOES 시스템</a></li>
+  <li><a href="#avhrr-%EC%8B%9C%EC%8A%A4%ED%85%9C" id="toc-avhrr-시스템" class="nav-link" data-scroll-target="#avhrr-%EC%8B%9C%EC%8A%A4%ED%85%9C"><span class="header-section-number">5.6</span> AVHRR 시스템</a></li>
+  <li><a href="#modis-%EC%8B%9C%EC%8A%A4%ED%85%9C" id="toc-modis-시스템" class="nav-link" data-scroll-target="#modis-%EC%8B%9C%EC%8A%A4%ED%85%9C"><span class="header-section-number">5.7</span> MODIS 시스템</a></li>
+  </ul></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
+<h1 class="title d-none d-lg-block">
+<span class="chapter-number">5</span>&nbsp; <span class="chapter-title">인공위성 RS 시스템</span>
+</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">저자</div>
+    <div class="quarto-title-meta-contents">
+             <p>Sang-Il Lee </p>
+          </div>
+  </div>
+    
+  
+    <div>
+    <div class="quarto-title-meta-heading">Modified</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date-modified">2025년 5월 12일</p>
+    </div>
+  </div>
+    
+  </div>
+  
+
+
+</header><section id="시스템-설계" class="level2" data-number="5.1"><h2 data-number="5.1" class="anchored" data-anchor-id="시스템-설계">
+<span class="header-section-number">5.1</span> 시스템 설계</h2>
+</section><section id="landsat-시스템" class="level2" data-number="5.2"><h2 data-number="5.2" class="anchored" data-anchor-id="landsat-시스템">
+<span class="header-section-number">5.2</span> Landsat 시스템</h2>
+<section id="wrsworld-reference-system" class="level3" data-number="5.2.1"><h3 data-number="5.2.1" class="anchored" data-anchor-id="wrsworld-reference-system">
+<span class="header-section-number">5.2.1</span> WRS(World Reference System</h3>
+<p>기본 패키지를 설치한다.</p>
+<div class="cell">
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org">tidyverse</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://r-spatial.github.io/sf/">sf</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://r-tmap.github.io/tmap/">tmap</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://docs.ropensci.org/rnaturalearth/">rnaturalearth</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://jakubnowosad.com/spData/">spData</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://rstudio.github.io/leaflet/">leaflet</a></span><span class="op">)</span></span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>WRS 셰이프 파일을 불러온다.</p>
+<div class="cell">
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">wrs2_desc</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_read.html">st_read</a></span><span class="op">(</span><span class="st">"D:/My R/World Data Manupulation/USGS Landsat Systems/WRS2_descending_0/WRS2_descending.shp"</span>, options <span class="op">=</span> <span class="st">"ENCODING=CP949"</span><span class="op">)</span></span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>이름을 위한 새로운 컬럼을 만든다.</p>
+<div class="cell">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">wrs2_desc</span> <span class="op">&lt;-</span> <span class="va">wrs2_desc</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span></span>
+<span>    PATH_ROW <span class="op">=</span> <span class="fu"><a href="https://stringr.tidyverse.org/reference/str_c.html">str_c</a></span><span class="op">(</span></span>
+<span>      <span class="va">PATH</span>, <span class="va">ROW</span>, sep <span class="op">=</span> <span class="st">"-"</span></span>
+<span>    <span class="op">)</span>, .after <span class="op">=</span> <span class="va">ROW</span></span>
+<span>  <span class="op">)</span> </span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>wrs2 데이터가 너무 커서 여기에 나타내지는 않는다.</p>
+<p>한반도와 관련된 지도만 제작한다. 국가 바운더리 파일을 불러온다.</p>
+<div class="cell">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">world_map</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_read.html">st_read</a></span><span class="op">(</span><span class="st">"D:/My R/World Data Manupulation/NaturalEarth/new_1_ne_50m_admin_0_countries.shp"</span><span class="op">)</span></span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>지도를 생성한다.</p>
+<div class="cell">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">koreas</span> <span class="op">&lt;-</span> <span class="va">world_map</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span></span>
+<span>    <span class="fu"><a href="https://stringr.tidyverse.org/reference/str_detect.html">str_detect</a></span><span class="op">(</span><span class="va">ADMIN</span>, <span class="st">"Korea"</span><span class="op">)</span></span>
+<span>  <span class="op">)</span></span>
+<span></span>
+<span><span class="va">wrs2_desc</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://r-spatial.github.io/sf/reference/geos_binary_pred.html">st_intersects</a></span><span class="op">(</span><span class="va">koreas</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/lengths.html">lengths</a></span><span class="op">(</span><span class="op">)</span> <span class="op">&gt;</span> <span class="fl">0</span> <span class="op">-&gt;</span> <span class="va">sel_index</span></span>
+<span></span>
+<span><span class="va">wrs2_koreas</span> <span class="op">&lt;-</span> <span class="va">wrs2_desc</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span></span>
+<span>    <span class="va">sel_index</span></span>
+<span>  <span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_shape.html">tm_shape</a></span><span class="op">(</span><span class="va">world_map</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_polygons.html">tm_polygons</a></span><span class="op">(</span>col <span class="op">=</span> <span class="st">"gray95"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_shape.html">tm_shape</a></span><span class="op">(</span><span class="va">koreas</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_polygons.html">tm_polygons</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_shape.html">tm_shape</a></span><span class="op">(</span><span class="va">wrs2_koreas</span>, is.master <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_polygons.html">tm_polygons</a></span><span class="op">(</span>border.col <span class="op">=</span> <span class="st">"#984ea3"</span>, lwd <span class="op">=</span> <span class="fl">1</span>, alpha <span class="op">=</span> <span class="fl">0</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_text.html">tm_text</a></span><span class="op">(</span><span class="st">"PATH_ROW"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_scale_bar.html">tm_scale_bar</a></span><span class="op">(</span>color.dark <span class="op">=</span> <span class="st">"gray60"</span>, position <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0.52</span>, <span class="fl">0.01</span><span class="op">)</span>, breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">400</span>, <span class="fl">100</span><span class="op">)</span><span class="op">)</span></span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure"><p><a href="2_2_satellite_systems_files/figure-html/unnamed-chunk-6-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-1"><img src="2_2_satellite_systems_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid figure-img" width="4200"></a></p>
+</figure>
+</div>
+</div>
+</div>
+<p>인터랙티브 지도를 생성한다.</p>
+<div class="cell">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tmap_mode.html">tmap_mode</a></span><span class="op">(</span><span class="st">"view"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_shape.html">tm_shape</a></span><span class="op">(</span><span class="va">wrs2_koreas</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>  <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_polygons.html">tm_polygons</a></span><span class="op">(</span>border.col <span class="op">=</span> <span class="st">"#984ea3"</span>, lwd <span class="op">=</span> <span class="fl">3</span>, alpha <span class="op">=</span> <span class="fl">0</span>,</span>
+<span>              id <span class="op">=</span> <span class="st">"PATH_ROW"</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>  <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_text.html">tm_text</a></span><span class="op">(</span><span class="st">"PATH_ROW"</span>, size <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_tiles.html">tm_basemap</a></span><span class="op">(</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"OpenStreetMap"</span>, <span class="st">"Esri.WorldImagery"</span>, <span class="st">"Esri.WorldGrayCanvas"</span><span class="op">)</span></span>
+<span>  <span class="op">)</span>  </span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rstudio.github.io/leaflet/reference/leaflet.html">leaflet</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">wrs2_koreas</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://rstudio.github.io/leaflet/reference/map-layers.html">addTiles</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://rstudio.github.io/leaflet/reference/map-layers.html">addPolygons</a></span><span class="op">(</span>color <span class="op">=</span> <span class="st">"#984ea3"</span>, weight <span class="op">=</span> <span class="fl">3</span>, fillOpacity <span class="op">=</span> <span class="fl">0</span>,</span>
+<span>              label <span class="op">=</span> <span class="op">~</span><span class="va">PATH_ROW</span>,</span>
+<span>              highlight <span class="op">=</span> <span class="fu"><a href="https://rstudio.github.io/leaflet/reference/map-layers.html">highlightOptions</a></span><span class="op">(</span>weight <span class="op">=</span> <span class="fl">5</span>, color <span class="op">=</span> <span class="st">"#984ea3"</span>, bringToFront <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://rstudio.github.io/leaflet/reference/map-layers.html">addLabelOnlyMarkers</a></span><span class="op">(</span></span>
+<span>    lng <span class="op">=</span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_coordinates.html">st_coordinates</a></span><span class="op">(</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/geos_unary.html">st_centroid</a></span><span class="op">(</span><span class="va">wrs2_koreas</span><span class="op">)</span><span class="op">)</span><span class="op">[</span>,<span class="fl">1</span><span class="op">]</span>,</span>
+<span>    lat <span class="op">=</span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_coordinates.html">st_coordinates</a></span><span class="op">(</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/geos_unary.html">st_centroid</a></span><span class="op">(</span><span class="va">wrs2_koreas</span><span class="op">)</span><span class="op">)</span><span class="op">[</span>,<span class="fl">2</span><span class="op">]</span>,</span>
+<span>    label <span class="op">=</span> <span class="op">~</span><span class="fu"><a href="https://rdrr.io/r/base/character.html">as.character</a></span><span class="op">(</span><span class="va">PATH_ROW</span><span class="op">)</span>,</span>
+<span>    labelOptions <span class="op">=</span> <span class="fu"><a href="https://rstudio.github.io/leaflet/reference/map-options.html">labelOptions</a></span><span class="op">(</span>noHide <span class="op">=</span> <span class="cn">TRUE</span>, direction <span class="op">=</span> <span class="st">"center"</span>, textOnly <span class="op">=</span> <span class="cn">TRUE</span>, textsize <span class="op">=</span> <span class="st">"12px"</span><span class="op">)</span></span>
+<span>  <span class="op">)</span></span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="leaflet html-widget html-fill-item" id="htmlwidget-b7bab72d1999695f0954" style="width:100%;height:742px;"></div>
+<script type="application/json" data-for="htmlwidget-b7bab72d1999695f0954">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addTiles","args":["https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"attribution":"&copy; <a href=\"https://openstreetmap.org/copyright/\">OpenStreetMap<\/a>,  <a href=\"https://opendatacommons.org/licenses/odbl/\">ODbL<\/a>"}]},{"method":"addPolygons","args":[[[[{"lng":[123.1112103725174,123.111,123.1179255079004,123.133472254799,123.1728124712037,123.4753498369264,123.4999118085821,123.566,123.5671244684972,124.284,124.5510345618244,125.0680881914179,125.725,125.7080577208263,125.3955004404813,125.3482325061989,125.3210121479687,125.2277741146956,125.225,124.2842775017743,124.0172784780712,123.2478338452168,123.1112103725174],"lat":[39.73586939945643,39.7359,39.75880744920908,39.81023130433501,39.94035663551993,40.94105715291029,41.02230059761764,41.2409,41.2407363557194,41.1364092172302,41.09754758715831,41.02230059761764,40.9267,40.8759307662282,39.93932161994636,39.79767852807562,39.71611000260312,39.43671291209701,39.4284,39.56523640880057,39.60407377861547,39.71599630680976,39.73586939945643]}]],[[{"lng":[124.8386184587238,124.8123414806433,124.765,124.7648368906179,124.2841159874608,124.0174108417232,123.7556345577523,122.692,122.7137768657688,123.1112103725174,123.1179255079004,123.133,123.133472254799,123.2205595544718,124.284,124.5509359210558,125.249,125.2277741146956,124.8386184587238],"lat":[38.23057159076763,38.14912924610123,38.0024,38.00242372285513,38.07234043887148,38.11113040579858,38.14920351222271,38.3039,38.37828700814987,39.73586939945643,39.75880744920908,39.8103,39.81023130433501,39.79756331244498,39.64287192816635,39.60404259144565,39.5025,39.43671291209701,38.23057159076763]}]],[[{"lng":[127.3747975058457,127.1074742965846,127.0807413291635,127.08,127.1028292435185,127.104039293103,127.3741909365933,127.566,127.5668830028569,129.821,129.8036512664162,129.2930360258863,129.283,127.696273183751,127.3747975058457],"lat":[42.55297170228085,42.59189920365668,42.59579204793661,42.5959,42.66645457564763,42.67019427621556,43.50510738017095,44.0979,44.09777136743304,43.7694,43.7212137312375,42.30297515517078,42.2751,42.50615853956091,42.55297170228085]}]],[[{"lng":[126.634467229435,126.634,126.6498958744079,126.6572151357128,127.0526996563054,127.0781911218104,127.0807413291635,127.1028292435185,127.104,127.104039293103,127.3745,127.6418647770333,127.6708070799567,129.309,129.2930360258863,128.7980577208267,128.79,128.1826282939907,127.3745538952115,127.1076236747997,126.634467229435],"lat":[41.16653197434153,41.1666,41.21745326970162,41.24086867671874,42.50608256004409,42.58763355479616,42.59579204793661,42.66645457564763,42.6702,42.67019427621556,42.63079655328799,42.59184981116413,42.58763381674282,42.349,42.30297515517078,40.87593076622927,40.8527,40.94112948910776,41.05878002425469,41.09764338055677,41.16653197434153]}]],[[{"lng":[126.2021220526312,126.201,126.2628837421824,126.5661875304404,126.5908059879721,126.634467229435,126.6498958744079,126.657,126.6572151357128,127.374333796618,127.6413065491149,128.1580741815411,128.815,128.7980577208267,128.4855004404813,128.4382325061989,128.4110121479687,128.3177741146957,128.315,127.3742775017743,127.1072784780713,126.3378338452168,126.2021220526312],"lat":[39.73573678751936,39.7359,39.94014349119397,40.9411790204229,41.02243072784661,41.16653197434153,41.21745326970162,41.2409,41.24086867671874,41.13645779476489,41.09758715582395,41.02234693797951,40.9267,40.87593076622927,39.93932161994636,39.79767852807562,39.71611000260312,39.43671291209701,39.4284,39.56523640880057,39.60407377861547,39.71599630680976,39.73573678751936]}]],[[{"lng":[127.1074108417232,126.8456345577523,125.782,125.8038242415544,126.2021220526312,126.224,126.3105105191179,127.3742280784684,127.6411008724315,128.339,128.3177741146957,127.9286184587238,127.9023414806433,127.8789429467198,127.855,127.3741159874608,127.1074108417232],"lat":[38.11113040579858,38.14920351222271,38.3039,38.37828017528848,39.73573678751936,39.8103,39.79770995849433,39.64290510517608,39.60406659643762,39.5025,39.43671291209701,38.23057159076763,38.14912924610123,38.07660829416184,38.0024,38.07234043887148,38.11113040579858]}]],[[{"lng":[127.3356245748805,127.3351951321232,125.3743211544779,125.374,125.3866780808668,125.3952162808183,125.803,125.8038242415544,126.8193574355949,127.374378463021,127.6412122706349,127.8789429467198,127.879,127.4387738397971,127.4133754251195,127.41,127.4095352398905,127.3745,127.3356245748805],"lat":[36.58550927715758,36.58557168978621,36.8705533253389,36.8706,36.91515946464084,36.94516855062426,38.3784,38.37828017528848,38.23064630343808,38.14995972054926,38.11116856296839,38.07660829416184,38.0766,36.66684377396854,36.58550927715758,36.5747,36.57476754544028,36.57985935658153,36.58550927715758]}]],[[{"lng":[127.4095352398905,127.374,126.9820655526989,126.977,124.977,124.9976401393458,125.3743211544779,125.3866780808668,125.395,125.3952162808183,127.3102708618613,127.3740142331288,127.432,127.4127588624467,127.4095352398905],"lat":[36.57476754544028,36.45734505494506,35.16223859007208,35.1455,35.4363,35.51080695277241,36.8705533253389,36.91515946464084,36.9452,36.94516855062426,36.66670062381772,36.65743170552147,36.649,36.58541966964538,36.57476754544028]}]],[[{"lng":[124.5892668298989,124.589,124.6011676104188,124.6091756080639,124.997,124.9976401393458,126.999,126.9820655526989,126.557,126.5567246677193,124.5892668298989],"lat":[34.00076123644914,34.0008,34.04583506983676,34.07547447484617,35.5109,35.51080695277241,35.2199,35.16223859007208,33.7149,33.7149399987292,34.00076123644914]}]],[[{"lng":[124.2106832996948,124.21,124.5892668298989,124.6011676104188,124.609,124.6091756080639,126.578,126.5567246677193,126.1563810222549,126.147,124.2106832996948],"lat":[32.56420073281667,32.5643,34.00076123644914,34.04583506983676,34.0755,34.07547447484617,33.7893,33.7149399987292,32.31568786989494,32.2829,32.56420073281667]}]],[[{"lng":[130.4647975058457,130.1974742965846,130.1707413291635,130.17,130.1928292435185,130.194039293103,130.4644936253787,130.656,130.6568830028569,132.911,132.8936512664169,132.3830360258863,132.373,130.786273183751,130.4647975058457],"lat":[42.55297170228085,42.59189920365667,42.59579204793661,42.5959,42.66645457564763,42.67019427621556,43.50604285045006,44.0979,44.09777136743304,43.7694,43.72121373123939,42.30297515517079,42.2751,42.50615853956091,42.55297170228085]}]],[[{"lng":[129.7245145600675,129.724,129.7403706272625,129.7472151400505,130.1426996563054,130.1681911218105,130.1707413291635,130.1928292435185,130.194,130.194039293103,130.4645,130.7318647770333,130.7608070799567,132.399,132.3830360258863,131.905683299134,131.88,131.2726282939907,130.4645538952115,130.1976236747996,129.7245145600675],"lat":[41.16652508330001,41.1666,41.21897207479119,41.24086869059571,42.50608256004409,42.58763355479615,42.59579204793661,42.66645457564763,42.6702,42.67019427621556,42.63079655328798,42.59184981116413,42.58763381674282,42.349,42.30297515517079,40.92674608958411,40.8527,40.94112948910775,41.05878002425469,41.09764338055677,41.16652508330001]}]],[[{"lng":[129.2921629822453,129.292,129.2977657657654,129.3144722453932,129.3533376425188,129.6563958426374,129.6809578309995,129.7245145600675,129.7403706272625,129.747,129.7472151400505,130.4645,130.7315346485997,131.2480421690005,131.905683299134,131.906,131.5756623574812,131.5284915721298,131.5012139943936,131.407621554702,131.405,130.4645,130.1975641898545,129.4277860056064,129.2921629822453],"lat":[39.73587628157102,39.7359,39.75497137907021,39.81023127322363,39.93878604833145,40.94120932564655,41.02245282561373,41.16652508330001,41.21897207479119,41.2409,41.24086869059571,41.13648198239927,41.09762033969893,41.02245282561373,40.92674608958411,40.9267,39.93878604833146,39.79771621261887,39.71613937684621,39.43624007067879,39.4284,39.56526878845244,39.60411533914802,39.71613937684621,39.73587628157102]}]],[[{"lng":[130.4256245748805,130.4252392645249,128.4643211544779,128.464,128.4756748893179,128.4852637668423,128.8727237923931,128.894,129.9102219314781,130.4645,130.7315891582768,130.9689429479516,130.969,130.5287738397971,130.5033754251195,130.5,130.4995352398905,130.4645,130.4256245748805],"lat":[36.58550927715758,36.58556527584827,36.8705533253389,36.8706,36.91153813514781,36.94516164568548,38.30379473062878,38.3784,38.23059480533972,38.14997739759036,38.11113040579858,38.07660829797985,38.0766,36.66684377396854,36.58550927715758,36.5747,36.57476754544028,36.57985935658153,36.58550927715758]}]],[[{"lng":[130.4995352398905,130.4640636663008,130.0720655526989,130.067,128.067,128.0876401393458,128.4643211544779,128.4756748893179,128.485,128.4852637668423,130.4002708618613,130.4640142331288,130.522,130.5027588624467,130.4995352398905],"lat":[36.57476754544028,36.4575554335895,35.16223859007204,35.1455,35.4363,35.51080695277241,36.8705533253389,36.91153813514781,36.9452,36.94516164568548,36.66670062381771,36.65743170552147,36.649,36.58541966964537,36.57476754544028]}]],[[{"lng":[127.6793144639643,127.679,127.6919459671506,127.6991756080639,128.087,128.0876401393458,130.089,130.0720655526989,129.647,129.6467246677193,127.6793144639643],"lat":[34.00075431643933,34.0008,34.04871594361292,34.07547447484617,35.5109,35.51080695277241,35.2199,35.16223859007204,33.7149,33.7149399987292,34.00075431643933]}]],[[{"lng":[125.5626236747997,125.089,125.1121716290511,125.5077340091517,125.5331911218104,125.5357413291635,125.5578292435186,125.559,125.559039293103,125.8295,126.0963709842276,126.1258070799567,127.764,127.7480360258859,127.2530577208263,127.245,126.6376282939907,125.8295538952115,125.5626236747997],"lat":[41.09764338055677,41.1666,41.24072949242805,42.50619245991596,42.58763355479615,42.59579204793661,42.66645457564815,42.6702,42.67019427621556,42.63079655328798,42.59192174143587,42.58763381674282,42.349,42.30297515516973,40.87593076622819,40.8527,40.94112948910776,41.05878002425469,41.09764338055677]}]],[[{"lng":[124.6562103725174,124.656,124.6629255079004,124.678472254799,124.7178124712037,125.0203498369264,125.0449118085821,125.111,125.1121716290511,125.829,126.0960345618243,126.6130881914179,127.27,127.2530577208263,126.9405004404813,126.8932325061989,126.8660121479687,126.7727741146957,126.77,125.8292775017743,125.5622784780712,124.7928338452168,124.6562103725174],"lat":[39.73586939945643,39.7359,39.75880744920908,39.81023130433501,39.94035663551993,40.94105715291029,41.02230059761764,41.2409,41.24072949242805,41.1364092172302,41.09754758715831,41.02230059761764,40.9267,40.87593076622819,39.93932161994636,39.79767852807562,39.71611000260312,39.43671291209701,39.4284,39.56523640880057,39.60407377861547,39.71599630680976,39.73586939945643]}]],[[{"lng":[126.3836184587238,126.3573414806433,126.3339429467198,126.31,125.8291159874608,125.5624108417232,125.3006345577523,124.237,124.2587768810521,124.6562103725174,124.6629255079004,124.678,124.678472254799,124.7655595544718,125.829,126.0959359210558,126.794,126.7727741146957,126.3836184587238],"lat":[38.23057159076763,38.14912924610123,38.07660829416184,38.0024,38.07234043887148,38.11113040579858,38.14920351222271,38.3039,38.37828706035572,39.73586939945643,39.75880744920908,39.8103,39.81023130433501,39.79756331244498,39.64287192816635,39.60404259144565,39.5025,39.43671291209701,38.23057159076763]}]],[[{"lng":[125.7902394700423,123.8293211483701,123.829,123.8416780808668,123.8502162808183,124.258,124.2587768810521,125.2743574355949,125.829378463021,126.0962122706349,126.3339429467198,126.334,125.8927933145907,125.8796259530507,125.8673370348235,125.864,125.829,125.7906704029703,125.7902394700423],"lat":[36.58542517976142,36.87055330329105,36.8706,36.91515946464084,36.94516855062426,38.3784,38.37828706035572,38.23064630343808,38.14995972054926,38.11116856296839,38.07660829416184,38.0766,36.66670995571025,36.62463323167415,36.58536360127975,36.5747,36.57978918918919,36.58536251978431,36.58542517976142]}]],[[{"lng":[128.9197975058457,128.6524742965846,128.6257413291635,128.625,128.6478292435187,128.649039293103,128.9191909365933,129.111,129.1118830028569,131.366,131.3486512664169,130.8380360258863,130.828,129.241273183751,128.9197975058457],"lat":[42.55297170228085,42.59189920365668,42.59579204793661,42.5959,42.6664545756483,42.67019427621556,43.50510738017097,44.0979,44.09777136743304,43.7694,43.72121373123937,42.30297515517081,42.2751,42.50615853956091,42.55297170228085]}]],[[{"lng":[128.179467229435,128.179,128.1948958744081,128.2022151400505,128.5976996563053,128.6231911218104,128.6257413291635,128.6478292435187,128.649,128.649039293103,128.9195,129.1868647770333,129.2158070799567,130.854,130.8380360258863,130.360683299134,130.335,129.7276282939907,128.9195538952115,128.6526236747997,128.179467229435],"lat":[41.16653197434154,41.1666,41.21745326970214,41.2408686905957,42.50608256004409,42.58763355479616,42.59579204793661,42.6664545756483,42.6702,42.67019427621556,42.63079655328799,42.59184981116413,42.58763381674282,42.349,42.30297515517081,40.92674608958411,40.8527,40.94112948910776,41.05878002425469,41.09764338055677,41.16653197434154]}]],[[{"lng":[127.7471220526312,127.746,127.8078837421824,128.1111875304404,128.1358059879721,128.179467229435,128.1948958744081,128.202,128.2022151400505,128.9195,129.1865346485997,129.7030421690005,130.360683299134,130.361,130.0306623574812,129.9834915721298,129.9562139943936,129.8626215547013,129.86,128.9192775017743,128.6522784780712,127.8828338452168,127.7471220526312],"lat":[39.73573678751936,39.7359,39.94014349119397,40.9411790204229,41.02243072784661,41.16653197434154,41.21745326970214,41.2409,41.2408686905957,41.13648198239926,41.09762033969893,41.02245282561373,40.92674608958411,40.9267,39.93878604833148,39.79771621261888,39.71613937684621,39.43624007067654,39.4284,39.56523640880057,39.60407377861547,39.71599630680976,39.73573678751936]}]],[[{"lng":[128.6524108417232,128.3915812095969,127.327,127.3488242415544,127.7471220526312,127.769,127.8555105191179,128.9192280784684,129.1861008724315,129.884,129.8626215547013,129.4736184587238,129.4473162058212,129.4239429467198,129.4,128.9195,128.6524108417232],"lat":[38.11113040579858,38.14906582986326,38.3039,38.37828017528848,39.73573678751936,39.8103,39.79770995849433,39.64290510517608,39.60406659643763,39.5025,39.43624007067654,38.23057159076763,38.14905090981915,38.07660829416184,38.0024,38.07228458755427,38.11113040579858]}]],[[{"lng":[128.8806245748805,128.8801951321232,126.9193211544779,126.919,126.9316780808668,126.9402162808183,127.348,127.3488242415544,128.3652470971259,128.919378463021,129.1865319637625,129.4239429467198,129.424,128.9837738397971,128.9583754251195,128.955,128.9545352398905,128.9195,128.8806245748805],"lat":[36.58550927715759,36.58557168978622,36.8705533253389,36.8706,36.91515946464084,36.94516855062426,38.3784,38.37828017528848,38.23051696825019,38.14995972054926,38.11112208734897,38.07660829416184,38.0766,36.66684377396855,36.58550927715759,36.5747,36.57476754544028,36.57985935658154,36.58550927715759]}]],[[{"lng":[128.9545352398905,128.919,128.5270655526998,128.522,126.522,126.5426401393458,126.9193211544779,126.9316780808668,126.94,126.9402162808183,128.8552708618613,128.9190142331288,128.977,128.9577588624467,128.9545352398905],"lat":[36.57476754544028,36.45734505494504,35.16223859007517,35.1455,35.4363,35.51080695277241,36.8705533253389,36.91515946464084,36.9452,36.94516855062426,36.66670062381772,36.65743170552147,36.649,36.58541966964538,36.57476754544028]}]],[[{"lng":[126.1343144639643,126.134,126.1469459671505,126.1541756080639,126.542,126.5426401393458,128.544,128.5270655526998,128.102,128.1017246677193,126.1343144639643],"lat":[34.00075431643933,34.0008,34.04871594361284,34.07547447484617,35.5109,35.51080695277241,35.2199,35.16223859007517,33.7149,33.7149399987292,34.00075431643933]}]],[[{"lng":[125.7756740376994,126.1343144639643,126.1469459671505,126.154,126.1541756080639,128.123,128.1017246677193,127.7013810222549,127.692,125.756,125.7756740376994],"lat":[32.63900202455113,34.00075431643933,34.04871594361284,34.0755,34.07547447484617,33.7893,33.7149399987292,32.31568786989496,32.2829,32.5643,32.63900202455113]}]],[[{"lng":[131.9702392645249,130.0093211544779,130.009,130.0206748893179,130.0302637719957,130.4177237923931,130.439,131.4553815412762,132.0095,132.2765891582768,132.5139429479516,132.514,132.0737738397971,132.0611853357082,132.0483754251194,132.045,132.0095,131.9706245748805,131.9702392645249],"lat":[36.58556527584827,36.8705533253389,36.8706,36.91153813514781,36.94516166375607,38.30379473062878,38.3784,38.23057159076763,38.14997739759036,38.11113040579858,38.07660829797985,38.0766,36.66684377396854,36.62653103560794,36.58550927715758,36.5747,36.57985935658153,36.58550927715758,36.58556527584827]}]]],null,null,{"interactive":true,"className":"","stroke":true,"color":"#984ea3","weight":3,"opacity":0.5,"fill":true,"fillColor":"#984ea3","fillOpacity":0,"smoothFactor":1,"noClip":false},null,null,["118-32","118-33","116-30","116-31","116-32","116-33","116-34","116-35","116-36","116-37","114-30","114-31","114-32","114-34","114-35","114-36","117-31","117-32","117-33","117-34","115-30","115-31","115-32","115-33","115-34","115-35","115-36","115-37","113-34"],{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},{"color":"#984ea3","weight":5,"bringToFront":true}]},{"method":"addMarkers","args":[[40.33482133338801,38.90683238816341,43.18896604878126,41.76224637739845,40.33476581436846,38.90677751472506,37.47816708643941,36.04810429559865,34.61574732605634,33.18187335886481,43.18896593780863,41.76221503968098,40.33486470072922,37.47807607412631,36.04810420080361,34.61574723452362,41.76224639349211,40.33482131892332,38.90683195355351,37.47822409895296,43.18896604878142,41.76221504543887,40.33481079247392,38.90677803227617,37.47816746347026,36.04810429559856,34.61574723452375,33.1819408305965,37.47807606694351],[124.4069986100997,123.9596019379098,128.4378230037748,127.9591691656446,127.4972121470807,127.0498164446132,126.6162430704516,126.1955150516777,125.7856249527834,125.3861505236146,131.5278226735973,131.0492508813415,130.5877384025338,129.7065425299364,129.2855148437556,128.8756248807213,126.4141688520765,125.9519986199205,125.5046023845723,125.0710237724996,129.9828230037745,129.5042508930096,129.0424516821533,128.5948174407715,128.161242913027,127.7405150516778,127.3306248807212,126.9315109443248,131.2515425734372],{"iconUrl":{"data":"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR4nGP6zwAAAgcBApocMXEAAAAASUVORK5CYII=","index":0},"iconWidth":1,"iconHeight":1},null,null,{"interactive":true,"draggable":false,"keyboard":true,"title":"","alt":"","zIndexOffset":0,"opacity":1,"riseOnHover":false,"riseOffset":250},null,null,null,null,["118-32","118-33","116-30","116-31","116-32","116-33","116-34","116-35","116-36","116-37","114-30","114-31","114-32","114-34","114-35","114-36","117-31","117-32","117-33","117-34","115-30","115-31","115-32","115-33","115-34","115-35","115-36","115-37","113-34"],{"interactive":false,"permanent":true,"direction":"center","opacity":1,"offset":[0,0],"textsize":"12px","textOnly":true,"className":"","sticky":true},null]}],"limits":{"lat":[32.2829,44.0979],"lng":[122.692,132.911]}},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+</section></section><section id="spot-시스템" class="level2" data-number="5.3"><h2 data-number="5.3" class="anchored" data-anchor-id="spot-시스템">
+<span class="header-section-number">5.3</span> SPOT 시스템</h2>
+</section><section id="sentinel-2-시스템" class="level2" data-number="5.4"><h2 data-number="5.4" class="anchored" data-anchor-id="sentinel-2-시스템">
+<span class="header-section-number">5.4</span> Sentinel-2 시스템</h2>
+</section><section id="goes-시스템" class="level2" data-number="5.5"><h2 data-number="5.5" class="anchored" data-anchor-id="goes-시스템">
+<span class="header-section-number">5.5</span> GOES 시스템</h2>
+</section><section id="avhrr-시스템" class="level2" data-number="5.6"><h2 data-number="5.6" class="anchored" data-anchor-id="avhrr-시스템">
+<span class="header-section-number">5.6</span> AVHRR 시스템</h2>
+</section><section id="modis-시스템" class="level2" data-number="5.7"><h2 data-number="5.7" class="anchored" data-anchor-id="modis-시스템">
+<span class="header-section-number">5.7</span> MODIS 시스템</h2>
+
+
+</section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "복사완료!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "복사완료!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script><nav class="page-navigation"><div class="nav-page nav-page-previous">
+      <a href="./2_1_collection_systems.html" class="pagination-link  aria-label=">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">데이터 수집 시스템의 유형</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./2_3_radar_lidar.html" class="pagination-link" aria-label="<span class='chapter-number'>6</span>&nbsp; <span class='chapter-title'>레이더와 라이다 시스템</span>">
+        <span class="nav-page-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">레이더와 라이다 시스템</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+<script>var lightboxQuarto = GLightbox({"selector":".lightbox","descPosition":"bottom","openEffect":"zoom","loop":false,"closeEffect":"zoom"});
+window.onload = () => {
+  lightboxQuarto.on('slide_before_load', (data) => {
+    const { slideIndex, slideNode, slideConfig, player, trigger } = data;
+    const href = trigger.getAttribute('href');
+    if (href !== null) {
+      const imgEl = window.document.querySelector(`a[href="${href}"] img`);
+      if (imgEl !== null) {
+        const srcAttr = imgEl.getAttribute("src");
+        if (srcAttr && srcAttr.startsWith("data:")) {
+          slideConfig.href = srcAttr;
+        }
+      }
+    } 
+  });
+
+  lightboxQuarto.on('slide_after_load', (data) => {
+    const { slideIndex, slideNode, slideConfig, player, trigger } = data;
+    if (window.Quarto?.typesetMath) {
+      window.Quarto.typesetMath(slideNode);
+    }
+  });
+
+};
+          </script>
+
+
+</body></html>
