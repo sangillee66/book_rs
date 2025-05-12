@@ -42,6 +42,7 @@ seoul_dong <- st_read("D:/My R/Korean Administrative Areas/행정구역 셰이�
 Level-1 데이터를 불러와 마스킹한다.
 
 ```{r}
+#| eval: false
 level1_landsat_seoul_st_30 <- rast("D:/My R/World Data Manupulation/USGS EarthExplorer/level1_landsat_seoul_stack_30_2024.tif")
 level1_landsat_seoul_st_30_mask <- level1_landsat_seoul_st_30 |> 
   mask(seoul)
