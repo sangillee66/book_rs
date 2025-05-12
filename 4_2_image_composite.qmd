@@ -1,0 +1,236 @@
+---
+title: "영상 합성"
+author: Sang-Il Lee
+date-modified: last-modified
+number-sections: true
+format: 
+  html: 
+    toc: true
+code-link: true
+code-copy: true
+lightbox: true
+execute: 
+  warning: false
+  error: false
+  freeze: auto
+editor: visual
+editor_options: 
+  chunk_output_type: console
+---
+
+## 고해상도 컬러 영상 합성
+
+필수적인 패키지를 설치한다.
+
+```{r}
+library(tidyverse)
+library(sf)
+library(tmap)
+library(terra)
+library(RStoolbox)
+```
+
+서울의 행정구역 바운더리 파일을 불러온다.
+
+```{r}
+#| output: false
+seoul <- st_read("D:/My R/Korean Administrative Areas/행정구역 셰이프 파일/2 Original Cleaning/2023_2Q/SEOUL_SIDO_2023_2Q.shp")
+seoul_gu <- st_read("D:/My R/Korean Administrative Areas/행정구역 셰이프 파일/2 Original Cleaning/2023_2Q/SEOUL_GU_2023_2Q.shp")
+seoul_dong <- st_read("D:/My R/Korean Administrative Areas/행정구역 셰이프 파일/2 Original Cleaning/2023_2Q/SEOUL_EMD_2023_2Q.shp")
+```
+
+Level-1 데이터를 불러와 마스킹한다.
+
+```{r}
+level1_landsat_seoul_st_30 <- rast("D:/My R/World Data Manupulation/USGS EarthExplorer/level1_landsat_seoul_stack_30.tif")
+level1_landsat_seoul_st_30_mask <- level1_landsat_seoul_st_30 |> 
+  mask(seoul)
+level1_landsat_seoul_st_15 <- rast("D:/My R/World Data Manupulation/USGS EarthExplorer/level1_landsat_seoul_stack_15.tif")
+level1_landsat_seoul_st_15_mask <- level1_landsat_seoul_st_15 |> 
+  mask(seoul)
+```
+
+대비확장을 시행한다.
+
+```{r}
+level1_landsat_seoul_st_30_mask_str <- level1_landsat_seoul_st_30_mask |> 
+  stretch(minv = 0, maxv = 255, minq = 0.05, maxq = 0.95)
+level1_landsat_seoul_st_15_mask_str <- level1_landsat_seoul_st_15_mask |> 
+  stretch(minv = 0, maxv = 255, minq = 0.05, maxq = 0.95)
+panchrom <- level1_landsat_seoul_st_15_mask_str
+```
+
+기본적인 천연컬러 영상을 생성한다.
+
+```{r}
+#| fig-width: 15
+#| fig-height: 12
+#| fig-dpi: 300
+my_map <- tm_shape(level1_landsat_seoul_st_30_mask_str, 
+                   raster.downsample = FALSE) + 
+  tm_rgb(r = 4, g = 3, b = 2, legend.show = FALSE) +
+  tm_shape(seoul) + tm_borders(lwd = 2, col = "gray20") +
+  tm_layout(frame = TRUE, title = "Natural Color", 
+            title.size = 2, title.position = c("left", "top"), 
+            bg.color = "white", 
+            inner.margins = c(0.05, 0.05, 0.05, 0.05)) +
+  tm_scale_bar(color.dark = "gray60", position = c(0.01, 0.01), 
+               text.size = 0.6, breaks = seq(0, 20, 5)) + 
+  tm_credits("SANG-IL LEE, Geography Education at SNU, 2025", 
+             size = 0.7)
+my_map
+```
+
+```{r}
+#| eval: false
+#| echo: false
+my.title <- "영상_합성_팬샤프닝_1"
+my.path.name <- "D:/My Classes/2025년 1학기/원격탐사와 지리자료분석/이미지/"
+my.file.name <- paste0(my.path.name, my.title, ".jpg")
+tmap_save(
+  my_map, filename = my.file.name, width = 15, height = 12, dpi = 600
+)
+```
+
+### RGB-IHS 변환
+
+[`RStoolbox`](https://bleutner.github.io/RStoolbox/) 패키지의 `panSharpen()` 함수를 이용하여 RGB-IHS 변환을 시행한다.
+
+```{r}
+#| eval: false
+panchrom <- level1_landsat_seoul_st_15_mask_str
+pan_ihs <- panSharpen(
+  level1_landsat_seoul_st_30_mask_str, 
+  panchrom, 
+  r = 4, g = 3, b = 2,
+  method = "ihs"
+)
+```
+
+변환의 결과를 지도로 나타낸다.
+
+```{r}
+#| fig-width: 15
+#| fig-height: 12
+#| fig-dpi: 300
+#| eval: false
+my_map <- tm_shape(pan_ihs, 
+                   raster.downsample = FALSE) + 
+  tm_rgb(r = 3, g = 2, b = 1, legend.show = FALSE) +
+  tm_shape(seoul) + tm_borders(lwd = 2, col = "gray20") +
+  tm_layout(frame = TRUE, title = "RGB-IHS Transformation", 
+            title.size = 2, title.position = c("left", "top"), 
+            bg.color = "white", 
+            inner.margins = c(0.05, 0.05, 0.05, 0.05)) +
+  tm_scale_bar(color.dark = "gray60", position = c(0.01, 0.01), 
+               text.size = 0.6, breaks = seq(0, 20, 5)) + 
+  tm_credits("SANG-IL LEE, Geography Education at SNU, 2025", 
+             size = 0.7)
+my_map
+```
+
+```{r}
+#| eval: false
+#| echo: false
+my.title <- "영상_합성_팬샤프닝_2"
+my.path.name <- "D:/My Classes/2025년 1학기/원격탐사와 지리자료분석/이미지/"
+my.file.name <- paste0(my.path.name, my.title, ".jpg")
+tmap_save(
+  my_map, filename = my.file.name, width = 15, height = 12, dpi = 600
+)
+```
+
+### 브로비(Brovey) 변환
+
+브로비 변환을 실시한다.
+
+```{r}
+#| eval: false
+pan_brovey <- panSharpen(
+  level1_landsat_seoul_st_30_mask_str, 
+  panchrom, 
+  r = 4, g = 3, b = 2,
+  method = "brovey"
+)
+```
+
+변환의 결과를 지도로 나타낸다.
+
+```{r}
+#| fig-width: 15
+#| fig-height: 12
+#| fig-dpi: 300
+#| eval: false
+my_map <- tm_shape(pan_brovey, 
+                   raster.downsample = FALSE) + 
+  tm_rgb(r = 3, g = 2, b = 1, legend.show = FALSE) +
+  tm_shape(seoul) + tm_borders(lwd = 2, col = "gray20") +
+  tm_layout(frame = TRUE, title = "Brovey Transformation", 
+            title.size = 2, title.position = c("left", "top"), 
+            bg.color = "white", 
+            inner.margins = c(0.05, 0.05, 0.05, 0.05)) +
+  tm_scale_bar(color.dark = "gray60", position = c(0.01, 0.01), 
+               text.size = 0.6, breaks = seq(0, 20, 5)) + 
+  tm_credits("SANG-IL LEE, Geography Education at SNU, 2025", 
+             size = 0.7)
+my_map
+```
+
+```{r}
+#| eval: false
+#| echo: false
+my.title <- "영상_합성_팬샤프닝_3"
+my.path.name <- "D:/My Classes/2025년 1학기/원격탐사와 지리자료분석/이미지/"
+my.file.name <- paste0(my.path.name, my.title, ".jpg")
+tmap_save(
+  my_map, filename = my.file.name, width = 15, height = 12, dpi = 600
+)
+```
+
+### PCA 변환
+
+PCA 변환을 실시한다.
+
+```{r}
+pan_pca <- panSharpen(
+  level1_landsat_seoul_st_30_mask_str, 
+  panchrom, 
+  method = "pca"
+)
+```
+
+변환의 결과를 지도로 나타낸다.
+
+```{r}
+#| fig-width: 15
+#| fig-height: 12
+#| fig-dpi: 300
+my_map <- tm_shape(pan_pca, 
+                   raster.downsample = FALSE) + 
+  tm_rgb(r = 4, g = 3, b = 2, legend.show = FALSE) +
+  tm_shape(seoul) + tm_borders(lwd = 2, col = "gray20") +
+  tm_layout(frame = TRUE, title = "PCA Transformation", 
+            title.size = 2, title.position = c("left", "top"), 
+            bg.color = "white", 
+            inner.margins = c(0.05, 0.05, 0.05, 0.05)) +
+  tm_scale_bar(color.dark = "gray60", position = c(0.01, 0.01), 
+               text.size = 0.6, breaks = seq(0, 20, 5)) + 
+  tm_credits("SANG-IL LEE, Geography Education at SNU, 2025", 
+             size = 0.7)
+my_map
+```
+
+```{r}
+#| eval: false
+#| echo: false
+my.title <- "영상_합성_팬샤프닝_4"
+my.path.name <- "D:/My Classes/2025년 1학기/원격탐사와 지리자료분석/이미지/"
+my.file.name <- paste0(my.path.name, my.title, ".jpg")
+tmap_save(
+  my_map, filename = my.file.name, width = 15, height = 12, dpi = 600
+)
+```
+
+## 시계열 영상 합성
+
+## 이종 센서 데이터의 융합

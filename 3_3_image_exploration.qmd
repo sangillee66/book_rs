@@ -1,0 +1,636 @@
+---
+title: "영상 탐색"
+author: Sang-Il Lee
+date-modified: last-modified
+number-sections: true
+format: 
+  html: 
+    toc: true
+code-link: true
+code-copy: true
+lightbox: true
+execute: 
+  warning: false
+  error: false
+  freeze: auto
+editor: visual
+editor_options: 
+  chunk_output_type: console
+---
+
+## 개요
+
+필수적인 패키지를 설치한다.
+
+```{r}
+library(tidyverse)
+library(terra)
+library(tidyterra)
+library(sf)
+library(tmap)
+options(scipen = 999)
+```
+
+서울의 행정구역 바운더리 파일을 불러온다.
+
+```{r}
+#| results: hide
+seoul <- st_read("D:/My R/Korean Administrative Areas/행정구역 셰이프 파일/2 Original Cleaning/2023_2Q/SEOUL_SIDO_2023_2Q.shp")
+seoul_gu <- st_read("D:/My R/Korean Administrative Areas/행정구역 셰이프 파일/2 Original Cleaning/2023_2Q/SEOUL_GU_2023_2Q.shp")
+seoul_dong <- st_read("D:/My R/Korean Administrative Areas/행정구역 셰이프 파일/2 Original Cleaning/2023_2Q/SEOUL_EMD_2023_2Q.shp")
+```
+
+### Level-1 데이터
+
+Level-1 데이터를 불러온다.
+
+```{r}
+level1_landsat_seoul_st <- rast("D:/My R/World Data Manupulation/USGS EarthExplorer/level1_landsat_seoul_stack.tif")
+```
+
+Base R의 `plot()` 함수를 이용하여 단순 플롯을 제작한다.
+
+```{r}
+plot(level1_landsat_seoul_st, col = grey(0:100/100)) # 어두움
+```
+
+`tmap` 패키지를 이용하여 모든 밴드의 지도를 한꺼 번에 제작한다.
+
+```{r}
+#| fig-width: 15
+#| fig-height: 10
+#| fig-dpi: 600
+tm_shape(level1_landsat_seoul_st, raster.downsample = FALSE) +
+  tm_raster(style = "cont", palette = "-Greys", title = "DN") +
+  tm_facets(ncol = 4, free.scales = FALSE) +
+  tm_layout(legend.show = FALSE, panel.label.size = 2, 
+            attr.outside = T, attr.outside.position = "bottom") +
+  tm_credits(text = "SANG-IL LEE, Geography Education at SNU, 2025", size = 1.5, position = c(0.75, "top"))
+```
+
+B4(Red)만 분리해낸다.
+
+```{r}
+level1_B4 <- level1_landsat_seoul_st |> select(`B4(Red)`)
+```
+
+`tmap` 패키지를 이용하여 B4(Red)에 대한 기본 지도를 제작한다.
+
+```{r}
+#| fig-width: 15
+#| fig-height: 12
+#| fig-dpi: 300
+my_map <- tm_shape(level1_B4, raster.downsample = FALSE) + 
+  tm_raster(style = "cont", palette = "-Greys", title = "DN") +
+  tm_shape(seoul) + tm_borders(col = "black", lwd = 2) +
+  tm_legend(legend.position = c(0.87, 0.05), 
+            legend.bg.color = "white", legend.bg.alpha = 0.6, 
+            legend.title.size = 1.5, legend.text.size = 1.2) +
+  tm_layout(inner.margins = c(0.05, 0.04, 0.06, 0.04), 
+            title = "Level-1: B4", title.size = 2,
+            title.position = c(0.02, 0.97)) + 
+  tm_scale_bar(breaks = seq(0, 20, 5), text.size = 0.6, 
+               color.dark = "gray60", position = c(0.03, 0.01)) +
+  tm_credits(text = "SANG-IL LEE, Geography Education at SNU, 2025",
+             size = 0.8, position = c(0.76, 0.01))
+my_map
+```
+
+```{r}
+#| eval: false
+#| echo: false
+my.title <- "영상_탐색_개요_1"
+my.path.name <- "D:/My Classes/2025년 1학기/원격탐사와 지리자료분석/이미지/"
+my.file.name <- paste0(my.path.name, my.title, ".jpg")
+tmap_save(
+  my_map, filename = my.file.name, width = 15, height = 12, dpi = 600
+)
+```
+
+### Level-2 데이터
+
+Level-2 데이터를 불러온다.
+
+```{r}
+level2_landsat_seoul_st <- rast("D:/My R/World Data Manupulation/USGS EarthExplorer/level2_landsat_seoul_stack.tif")
+```
+
+Base R의 `plot()` 함수를 이용하여 단순 플롯을 제작한다.
+
+```{r}
+plot(level2_landsat_seoul_st, col = grey(0:100/100)) # 어두움
+```
+
+`tmap` 패키지를 이용하여 모든 밴드의 지도를 한꺼 번에 제작한다.
+
+```{r}
+#| fig-width: 15
+#| fig-height: 6.6
+#| fig-dpi: 300
+my_map <- tm_shape(level2_landsat_seoul_st, raster.downsample = FALSE) +
+  tm_raster(style = "cont", palette = "-Greys", title = "DN") +
+  tm_facets(ncol = 4, free.scales = FALSE) +
+  tm_layout(legend.show = FALSE, panel.label.size = 2, 
+            attr.outside = T, attr.outside.position = "bottom") +
+  tm_credits(text = "SANG-IL LEE, Geography Education at SNU, 2025", size = 1.5, position = c(0.65, "top"))
+my_map
+```
+
+```{r}
+#| eval: false
+#| echo: false
+my.title <- "영상_탐색_개요_2"
+my.path.name <- "D:/My Classes/2025년 1학기/원격탐사와 지리자료분석/이미지/"
+my.file.name <- paste0(my.path.name, my.title, ".jpg")
+tmap_save(
+  my_map, filename = my.file.name, width = 15, height = 12, dpi = 600
+)
+```
+
+B4(Red)만 분리해낸다.
+
+```{r}
+level2_B4 <- level2_landsat_seoul_st |> select(`B4(Red)`)
+```
+
+`tmap` 패키지를 이용하여 B4(Red)에 대한 기본 지도를 제작한다.
+
+```{r}
+#| fig-width: 15
+#| fig-height: 12
+#| fig-dpi: 300
+my_map <- tm_shape(level2_B4, raster.downsample = FALSE) + 
+  tm_raster(style = "cont", palette = "-Greys", title = "DN") +
+  tm_shape(seoul) + tm_borders(col = "black", lwd = 2) +
+  tm_legend(legend.position = c(0.87, 0.05), 
+            legend.bg.color = "white", legend.bg.alpha = 0.6, 
+            legend.title.size = 1.5, legend.text.size = 1.2) +
+  tm_layout(inner.margins = c(0.05, 0.04, 0.06, 0.04), 
+            title = "Level-2: B4", title.size = 2,
+            title.position = c(0.02, 0.97)) + 
+  tm_scale_bar(breaks = seq(0, 20, 5), text.size = 0.6, 
+               color.dark = "gray60", position = c(0.03, 0.01)) +
+  tm_credits(text = "SANG-IL LEE, Geography Education at SNU, 2025",
+             size = 0.8, position = c(0.76, 0.01))
+my_map
+```
+
+```{r}
+#| eval: false
+#| echo: false
+my.title <- "영상_탐색_개요_3"
+my.path.name <- "D:/My Classes/2025년 1학기/원격탐사와 지리자료분석/이미지/"
+my.file.name <- paste0(my.path.name, my.title, ".jpg")
+tmap_save(
+  my_map, filename = my.file.name, width = 15, height = 12, dpi = 600
+)
+```
+
+## 개별 픽셀값의 확인
+
+Level-2의 B4를 기준으로 기본적인 사항을 알아본다.
+
+```{r}
+level2_B4 
+```
+
+개별 파라미터 값을 다음과 같이 확인해 볼 수 있다.
+
+```{r}
+#| eval: false
+ext(level2_B4) # 범역
+res(level2_B4) # 공간 해상도
+dim(level2_B4) # 가로 세로 그리드 셀 수
+ncell(level2_B4) # 총 그리드 셀 수
+```
+
+셀 일련번호와 셀위치 좌표계를 왕래할 수 있다. 다음과 같은 방식으로 가능하다.
+
+```{r}
+#| eval: false
+rowFromCell(level2_B4, 10000)
+colFromCell(level2_B4, 10000)
+cellFromRowCol(level2_B4, 9, 120)
+xyFromCell(level2_B4, 10000)
+cellFromXY(level2_B4, cbind(938618.2, 1966734))
+colFromX(level2_B4, 938618.2)
+rowFromY(level2_B4, 1966734)
+```
+
+[`extract()`](https://rspatial.github.io/terra/reference/extract.html) 함수를 이용하면 셀 값을 얻을 수 있다. 가장 단순한 방법은 셀 일련번호를 아는 경우이다.
+
+```{r}
+level2_B4 |> extract(10000)
+```
+
+그리드 좌표를 아는 경우는 다음과 같이 구할 수 있다.
+
+```{r}
+level2_B4 |> extract(cbind(938618.2, 1966734))
+```
+
+셀위치 좌표를 아는 경우 막바로 구할 수 없고, 먼저 셀 일련번호로 전환한 후 구할 수 있다.
+
+```{r}
+cell_num <- cellFromRowCol(level2_B4, 9, 120)
+level2_B4 |> extract(cell_num)
+```
+
+내 연구실의 DN를 확인하고자 한다. 우선 경위도 좌표를 평면직각좌표로 전환한다.
+
+```{r}
+points_sf <- tibble(lon = 126.955184, lat = 37.460422) |> 
+  st_as_sf(coords = c("lon", "lat"), crs = 4326) |> 
+  st_transform(crs = 5179) 
+st_coordinates(points_sf)
+```
+
+내 연구실의 DN를 산출한다.
+
+```{r}
+level1_landsat_seoul_st |> extract(st_coordinates(points_sf))
+```
+
+```{r}
+level2_landsat_seoul_st |> extract(st_coordinates(points_sf))
+```
+
+모든 밴드에 대한 값을 동시에 얻고 싶으면 다음과 같이 하면 된다.
+
+```{r}
+level2_landsat_seoul_st |> extract(st_coordinates(points_sf))
+```
+
+## 영상 통계 및 그래프
+
+### 단변량
+
+우선, 서울시 내부 영역만 마스킹하도록 한다. 우선 Level-1에 적용한다.
+
+```{r}
+level1_landsat_seoul_st_mask <- level1_landsat_seoul_st |> 
+  mask(seoul)
+```
+
+기본 플롯을 제작한다.
+
+```{r}
+plot(level1_landsat_seoul_st_mask, col = grey(0:100/100))
+```
+
+Level-2에 적용한다.
+
+```{r}
+level2_landsat_seoul_st_mask <- level2_landsat_seoul_st |> 
+  mask(seoul)
+```
+
+```{r}
+plot(level2_landsat_seoul_st_mask, col = grey(0:100/100))
+```
+
+Level-1에 대한 요약 통계량을 계산한다.
+
+```{r}
+global(level1_landsat_seoul_st_mask, fun = max, na.rm = TRUE) |> round(digits = 1)
+global(level1_landsat_seoul_st_mask, fun = min, na.rm = TRUE) |> round(digits = 1)
+global(level1_landsat_seoul_st_mask, fun = mean, na.rm = TRUE) |> round(digits = 1)
+global(level1_landsat_seoul_st_mask, fun = range, na.rm = TRUE) |> 
+  mutate(range = X2 - X1) |> round(digits = 1)
+global(level1_landsat_seoul_st_mask, fun = var, na.rm = TRUE) |> round(digits = 1)
+global(level1_landsat_seoul_st_mask, fun = sd, na.rm = TRUE) |> round(digits = 1)
+```
+
+Level-2에 대한 요약 통계량을 계산한다.
+
+```{r}
+global(level2_landsat_seoul_st_mask, fun = max, na.rm = TRUE) |> round(digits = 1)
+global(level2_landsat_seoul_st_mask, fun = min, na.rm = TRUE) |> round(digits = 1)
+global(level2_landsat_seoul_st_mask, fun = mean, na.rm = TRUE) |> round(digits = 1)
+global(level2_landsat_seoul_st_mask, fun = range, na.rm = TRUE) |> 
+  mutate(range = X2 - X1) |> round(digits = 1)
+global(level2_landsat_seoul_st_mask, fun = var, na.rm = TRUE) |> round(digits = 1)
+global(level2_landsat_seoul_st_mask, fun = sd, na.rm = TRUE) |> round(digits = 1)
+```
+
+Level-1에 대한 히스토그램을 제작한다.
+
+```{r}
+hist(level1_landsat_seoul_st_mask, breaks = 100)
+```
+
+Level-2에 대한 히스토그램을 제작한다.
+
+```{r}
+hist(level2_landsat_seoul_st_mask, breaks = 100)
+```
+
+`ggplot`으로 Level-1에 대한 히스토그램을 제작한다.
+
+```{r}
+#| fig-width: 19.4
+#| fig-asp: 0.618
+#| fig-dpi: 600
+df_1 <- as.data.frame(level1_landsat_seoul_st_mask, xy = FALSE, na.rm = TRUE)
+df_long <- df_1 |> 
+  pivot_longer(
+    cols = everything(), names_to = "band", values_to = "DN"
+  ) |> 
+  mutate(
+    band = fct(band, levels = unique(band))
+  )
+ggplot(df_long, aes(x = DN)) +
+  geom_histogram(bins = 100) +
+  facet_wrap(~ band, scales = "free_y") +
+  theme(
+    plot.title = element_text(size = 30), 
+    axis.title = element_text(size = 20),
+    axis.text.x = element_text(size = 16), 
+    axis.text.y = element_text(size = 16),
+    legend.title = element_text(size = 17), 
+    legend.text = element_text(size = 16),
+    strip.text = element_text(size = 20)
+  ) +
+  labs(
+    x = "DN", 
+    y = "Frequencies", 
+    caption ="SANG-IL LEE, Geography Education at SNU, 2025") 
+```
+
+`ggplot`으로 Level-2에 대한 히스토그램을 제작한다.
+
+```{r}
+#| fig-width: 19.4
+#| fig-asp: 0.618
+#| fig-dpi: 600
+df_2 <- as.data.frame(level2_landsat_seoul_st_mask, xy = FALSE, na.rm = TRUE)
+df_long <- df_2 |> 
+  pivot_longer(
+    cols = everything(), names_to = "band", values_to = "DN"
+  ) |> 
+  mutate(
+    band = fct(band, levels = unique(band))
+  )
+ggplot(df_long, aes(x = DN)) +
+  geom_histogram(bins = 100) +
+  facet_wrap(~ band, scales = "free_y") +
+  theme(
+    plot.title = element_text(size = 30), 
+    axis.title = element_text(size = 20),
+    axis.text.x = element_text(size = 16), 
+    axis.text.y = element_text(size = 16),
+    legend.title = element_text(size = 17), 
+    legend.text = element_text(size = 16),
+    strip.text = element_text(size = 20)
+  ) +
+  labs(
+    x = "DN", 
+    y = "Frequencies", 
+    caption ="SANG-IL LEE, Geography Education at SNU, 2025") 
+```
+
+### 다변량
+
+Level-1에 대한 밴드간 Pearson's r을 계산한다.
+
+```{r}
+cor_matrix_1 <- cor(df_1, use = "complete.obs", method = "pearson")
+cor_matrix_1
+```
+
+상관관계 매트릭스 그래프를 생성한다.
+
+```{r}
+#| fig-width: 19.4
+#| fig-asp: 0.618
+#| fig-dpi: 600
+library(ggcorrplot)
+ggcorrplot(cor_matrix_1, hc.order = TRUE, tl.cex = 18, 
+           lab = TRUE, lab_size = 6, outline.color = "gray80", 
+           colors = c("#6D9EC1", "white", "#E46726"), digits = 3) + 
+  labs(caption = "SANG-IL LEE, Geography Education at SNU, 2025")
+```
+
+Level-2에 대한 밴드간 Pearson's r을 계산한다.
+
+```{r}
+cor_matrix_2 <- cor(df_2, use = "complete.obs", method = "pearson")
+cor_matrix_2
+```
+
+동일한 그래프를 생성한다.
+
+```{r}
+#| fig-width: 19.4
+#| fig-asp: 0.618
+#| fig-dpi: 600
+library(ggcorrplot)
+ggcorrplot(cor_matrix_2, hc.order = TRUE, tl.cex = 18, 
+           lab = TRUE, lab_size = 6, outline.color = "gray80", 
+           colors = c("#6D9EC1", "white", "#E46726"), digits = 3) + 
+  labs(caption = "SANG-IL LEE, Geography Education at SNU, 2025")
+```
+
+두 밴드 간의 산포도(feature space plot)를 제작한다(Level-2).
+
+```{r}
+#| fig-width: 19.4
+#| fig-asp: 0.618
+#| fig-dpi: 600
+ggplot(df_2, aes(x = `B4(Red)`, y = `B5(NIR)`)) +
+  geom_point(alpha = 0.3, color = "darkblue", size = 0.5) +
+  coord_fixed() +
+  theme_minimal() +
+    theme(
+    plot.title = element_text(size = 30), 
+    axis.title = element_text(size = 20),
+    axis.text.x = element_text(size = 16), 
+    axis.text.y = element_text(size = 16),
+    legend.title = element_text(size = 17), 
+    legend.text = element_text(size = 16),
+    strip.text = element_text(size = 20)
+  ) +
+  labs(
+    x = "Band 4 (Red)", 
+    y = "Band 5 (NIR)", 
+    title = "Feature Space: B4 vs B5",
+    caption = "SANG-IL LEE, Geography Education at SNU, 2025")
+```
+
+## 영상 프로파일링
+
+### 공간적(선형) 프로파일
+
+두 지점을 설정하여 라인을 생성하고, 라인 상에 일정한 간격의 포인트를 생성한다.
+
+```{r}
+# 두 지점을 연결하는 라인 sf를 만든다.
+line_sf <- tibble(x = c(126.961091, 126.992310), y = c(37.442904, 37.660032)) |> 
+  as.matrix() |> # st_linestring()은 매트릭스만 받음
+  st_linestring() |> 
+  st_sfc(crs = 4326) |> 
+  st_sf(geometry = _) |> # _ 표시는 직전에 만들어진 것을 인풋으로 받는다는 의미
+  st_transform(crs = 5179)
+
+# 라인 상에 적절한 간격의 포인트를 생성한다.
+points_sf <- line_sf |> 
+  st_line_sample(density = 0.1) |> # '단위 길이 당 포인트의 수'를 의미, 10m당 하나씩을 택한다는 의미.
+  st_cast("POINT") |> 
+  st_sf() 
+```
+
+선을 지도에 표시한다.
+
+```{r}
+#| fig-width: 15
+#| fig-height: 12
+#| fig-dpi: 600
+my_map <- tm_shape(level2_landsat_seoul_st_mask$`B5(NIR)`, 
+                   raster.downsample = FALSE) + 
+  tm_raster(style = "cont", palette = "-Greys", title = "DN") +
+  tm_shape(line_sf) + tm_lines(col = "red", lwd = 2) +
+  tm_shape(seoul) + tm_borders(col = "black", lwd = 2) +
+  tm_legend(legend.position = c(0.87, 0.05), 
+            legend.bg.color = "white", legend.bg.alpha = 0.6, 
+            legend.title.size = 1.5, legend.text.size = 1.2) +
+  tm_layout(inner.margins = c(0.05, 0.04, 0.06, 0.04), 
+            title = "Level-2: B5 (NIR)", title.size = 2,
+            title.position = c(0.02, 0.97)) + 
+  tm_scale_bar(breaks = seq(0, 20, 5), text.size = 0.6, 
+               color.dark = "gray60", position = c(0.03, 0.01)) +
+  tm_credits(text = "SANG-IL LEE, Geography Education at SNU, 2025",
+             size = 0.8, position = c(0.76, 0.01))
+my_map
+```
+
+공간(선형) 프로파일을 생성한다.
+
+```{r}
+#| fig-width: 19.4
+#| fig-asp: 0.618
+#| fig-dpi: 600
+
+# 래스터로부터 각 포인트에 해당하는 값을 추출한다.
+profile <- level2_landsat_seoul_st_mask$`B5(NIR)` |> 
+  extract(points_sf) |> 
+  mutate(
+    distance = ID * 10 / 1000, # 10m 당 하나이므로 10을 곱해 거리(m)로 만들고, 1,000으로 나누어 km 단위
+    .keep = "unused"
+  )
+
+# 시각화
+ggplot(profile, aes(x = distance, y = `B5(NIR)`)) +
+  geom_line() +
+  # theme_minimal() +
+  theme(
+    plot.title = element_text(size = 30), 
+    axis.title = element_text(size = 20),
+    axis.text.x = element_text(size = 16), 
+    axis.text.y = element_text(size = 16),
+    legend.title = element_text(size = 17), 
+    legend.text = element_text(size = 16),
+    strip.text = element_text(size = 20)
+  ) +
+  labs(
+    x = "Distance (km)", 
+    y = "DV", 
+    title = "Spatial Profile",
+    caption = "SANG-IL LEE, Geography Education at SNU, 2025"
+  )
+```
+
+### 분광 프로파일
+
+서울시 4곳(관악산, 공항, 한강, 청와대)의 분광 프로파일을 추출하고자 한다. 우선 포인트 셰이프 파일을 생성한다.
+
+```{r}
+points_sf <- tibble(lon = c(126.956525, 126.800839, 126.976255, 126.974984), lat = c(37.451518, 37.567958, 37.510931, 37.585714)) |> 
+  st_as_sf(coords = c("lon", "lat"), crs = 4326) |> 
+  st_transform(crs = 5179) |> 
+  mutate(ID = 1:4)
+```
+
+지도를 제작한다.
+
+```{r}
+#| fig-width: 15
+#| fig-height: 12
+#| fig-dpi: 300
+
+my_map <- tm_shape(level2_landsat_seoul_st_mask$`B5(NIR)`, 
+                   raster.downsample = FALSE) + 
+  tm_raster(style = "cont", palette = "-Greys", 
+            title = "DN", legend.show = FALSE) +
+  tm_shape(points_sf) + tm_text("ID", col = "red", size = 2) +
+  tm_shape(seoul) + tm_borders(col = "black", lwd = 2) +
+  tm_layout(inner.margins = c(0.05, 0.04, 0.06, 0.04), 
+            title = "Level-2: B5 (NIR)", title.size = 2,
+            title.position = c(0.02, 0.97)) + 
+  tm_scale_bar(breaks = seq(0, 20, 5), text.size = 0.6, 
+               color.dark = "gray60", position = c(0.03, 0.01)) +
+  tm_credits(text = "SANG-IL LEE, Geography Education at SNU, 2025",
+             size = 0.8, position = c(0.76, 0.01))
+my_map
+```
+
+```{r}
+#| eval: false
+#| echo: false
+my.title <- "영상_탐색_분광_프로파일_1"
+my.path.name <- "D:/My Classes/2025년 1학기/원격탐사와 지리자료분석/이미지/"
+my.file.name <- paste0(my.path.name, my.title, ".jpg")
+tmap_save(
+  my_map, filename = my.file.name, width = 15, height = 12, dpi = 600
+)
+```
+
+4개 지점에 대해 Level-2의 DN를 추출하고 분광 프로파일을 완성한다.
+
+```{r}
+#| fig-width: 19.4
+#| fig-asp: 0.618
+#| fig-dpi: 600
+
+spec_profile <- extract(level2_landsat_seoul_st_mask, points_sf) |> 
+  as.data.frame() |> select(-`B10(TIR)`)
+
+df_spec <- spec_profile |> 
+  pivot_longer(
+    cols = `B1(Coastal)`:`B7(SWIR2)`,
+    names_to = "band",
+    values_to = "DN"
+  ) |> 
+  mutate(
+    band = fct(band, levels = unique(band)),
+    ID = as_factor(ID)
+  )
+
+ggplot(df_spec, aes(x = band, y = DN, group = ID, color = ID)) +
+  geom_line(linewidth = 1) +
+  geom_point(size = 2) +
+  # theme_minimal() +
+  scale_x_discrete(
+    labels = c("B1\n(Aerosol)", "B2\n(Blue)", "B3\n(Green)", 
+               "B4\n(Red)", "B5\n(NIR)", "B6\n(SWIR1)", 
+               "B7\n(SWIR2)")
+  ) +
+  scale_color_discrete(
+    name = "Locations", 
+    labels = c("1" = "관악산", "2" = "공항", "3" = "한강", "4" = "청와대")
+  ) +
+  theme(
+    plot.title = element_text(size = 30), 
+    axis.title = element_text(size = 20),
+    axis.text.x = element_text(size = 16), 
+    axis.text.y = element_text(size = 16),
+    legend.title = element_text(size = 17), 
+    legend.text = element_text(size = 16),
+    strip.text = element_text(size = 20)
+  ) +
+  labs(
+    title = "Spectral Profile", 
+    x = "Band", 
+    y = "DN",
+    caption = "SANG-IL LEE, Geography Education at SNU, 2025"
+  )
+```

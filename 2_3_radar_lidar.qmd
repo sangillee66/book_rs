@@ -1,0 +1,99 @@
+---
+title: "레이더와 라이다 시스템"
+author: Sang-Il Lee
+date-modified: last-modified
+number-sections: true
+format: 
+  html: 
+    toc: true
+code-link: true
+code-copy: true
+lightbox: true
+execute: 
+  warning: false
+  error: false
+  freeze: auto
+editor: visual
+editor_options: 
+  chunk_output_type: console
+---
+
+## LiDAR 데이터 분석
+
+필수적인 패키지를 설치한다.
+
+```{r}
+library(tidyverse)
+library(sf)
+library(terra)
+library(tmap)
+library(RStoolbox)
+library(lidR)
+library(raster)
+library(rayshader)
+```
+
+수업의 특강에서 이하은이 수집한 las 파일을 불러온다.
+
+```{r}
+#| results: hide
+las <- readLAS("D:/R_Books/RS/lidar_data/snu_lidar/lidars/terra_las/cloud850fccd1a896259f.las")
+las_check(las)
+```
+
+시각화한다.
+
+```{r}
+plot(las, color = "ScanAngleRank", bg = "white", axis = TRUE, legend = TRUE)
+```
+
+그라운드(ground) 포인트를 추출한다.
+
+```{r}
+#| results: hide
+las <- readLAS("D:/R_Books/RS/lidar_data/snu_lidar/lidars/terra_las/cloud850fccd1a896259f.las", select = "xyzrn")
+las <- classify_ground(las, algorithm = pmf(ws = 5, th = 3))
+```
+
+DTM을 생성한다.
+
+```{r}
+dtm_idw <- rasterize_terrain(las, algorithm = knnidw(k = 10L, p = 2))
+plot_dtm3d(dtm_idw, bg = "white") 
+```
+
+DTM을 시각화한다.
+
+```{r}
+#| error: true
+#| message: false
+#| warning: false
+dtm_prod <- terrain(dtm_idw, v = c("slope", "aspect"), unit = "radians")
+dtm_hillshade <- shade(slope = dtm_prod$slope, aspect = dtm_prod$aspect)
+terra::plot(dtm_hillshade, col = gray(0:30/30), legend = FALSE)
+```
+
+[`rayshader`](https://www.rayshader.com/) 패키지를 활용하여 시각화한다.
+
+```{r}
+dtm <- rasterize_terrain(las, algorithm = tin())
+dtm <- raster(dtm)
+elmat <- raster_to_matrix(dtm)
+map <- elmat |> 
+  sphere_shade(texture = "imhof1", progbar = FALSE) |> 
+  add_water(detect_water(elmat), color = "imhof1") |>
+  add_shadow(ray_shade(elmat, progbar = FALSE), 0.5) |>
+  add_shadow(ambient_shade(elmat, progbar = FALSE), 0)
+```
+
+2D 플롯을 생성한다.
+
+```{r}
+plot_map(map)
+```
+
+3D 플롯을 생성한다.
+
+```{r}
+plot_3d(map, elmat, zscale = 1, windowsize = c(800, 800))
+```

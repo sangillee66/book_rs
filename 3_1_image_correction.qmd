@@ -1,0 +1,69 @@
+---
+title: "영상 보정"
+author: Sang-Il Lee
+date-modified: last-modified
+number-sections: true
+format: 
+  html: 
+    toc: true
+code-link: true
+code-copy: true
+lightbox: true
+execute: 
+  warning: false
+  error: false
+  freeze: auto
+editor: visual
+editor_options: 
+  chunk_output_type: console
+---
+
+## 개요
+
+## 방사 보정(radiometric correction)
+
+### 개요
+
+### 절대적 방사(대기) 보정
+
+-   `RStoolbox` 패키지의 `radCor()` 함수
+
+### 지형 효과 방사 보정
+
+-   `RStoolbox` 패키지의 `topCor()` 함수
+
+### 내부 오류 방사 보정
+
+## 기하 보정(geometric correction)
+
+### 개요
+
+### 내부적 기하 왜곡
+
+#### 휨 현상
+
+#### 비일률적 공간해상도 및 축척의 문제
+
+#### 1차원 기복 변위
+
+#### 접선 방향 축척 왜곡
+
+### 외부적 기하 왜곡
+
+#### 고도 변화
+
+#### 자세 변화
+
+### 단순 기하 보정
+
+#### 개념
+
+#### 절차
+
+### 모자이크 영상 제작(mosaicking)
+
+-   `terra` 패키지의 `mosaic()` 함수
+
+-   `rsat` 패키지의 `rsat_mosaic()` 함수
+
+-   `RStoolbox` 패키지의 `histMatch()` 함수

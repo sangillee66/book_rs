@@ -1,0 +1,302 @@
+---
+title: "영상 분류"
+author: Sang-Il Lee
+date-modified: last-modified
+number-sections: true
+format: 
+  html: 
+    toc: true
+code-link: true
+code-copy: true
+lightbox: true
+execute: 
+  warning: false
+  error: false
+  freeze: auto
+editor: visual
+editor_options: 
+  chunk_output_type: console
+---
+
+## 개요
+
+필수적인 패키지를 불러온다.
+
+```{r}
+library(tidyverse)
+library(sf)
+library(terra)
+library(tmap)
+library(RStoolbox)
+# library(randomForest)
+# library(kernlab)
+# library(RSNNS)
+# library(C50)
+```
+
+예제 데이터를 불러온다.
+
+```{r}
+#| echo: false
+#| eval: false
+train <- readRDS(system.file("external/trainingPolygons_lsat.rds", package="RStoolbox"))
+ggRGB(lsat, r = 3, g = 2, b=1, stretch = "lin") 
+```
+
+```{r}
+#| fig-width: 12
+#| fig-height: 12
+#| fig-dpi: 600
+train <- readRDS(system.file("external/trainingPolygons_lsat.rds", package="RStoolbox"))
+lsat_str <- lsat |> 
+  stretch(minv = 0, maxv = 255, minq = 0.05, maxq = 0.95)
+
+my_map <- tm_shape(lsat_str) + tm_rgb(r = 3, g =2, b =1) +
+  tm_layout(legend.outside = TRUE)
+my_map
+```
+
+## 감독 분류
+
+훈련 데이터를 불러온다.
+
+```{r}
+#| fig-width: 12
+#| fig-height: 8
+#| fig-dpi: 600
+
+my_map <- tm_shape(lsat_str) + 
+  tm_rgb(r = 3, g =2, b =1) +
+  tm_shape(train) + 
+  tm_polygons(col = "class", 
+              palette = c("yellow", "sandybrown", "darkgreen", "blue")) +
+  tm_layout(legend.outside = TRUE)
+my_map
+```
+
+최대 우도(maximum likelihood) 분류 알고리즘을 적용하여 감독 분류를 실행한다.
+
+```{r}
+#| fig-width: 12
+#| fig-height: 8
+#| fig-dpi: 600
+sc_mlc <- superClass(
+  lsat, 
+  trainData = train, 
+  responseCol = "class",
+  model = "mlc", 
+  tuneLength = 1, trainPartition = 0.7
+  )
+
+sc_mlc$modelFit
+sc_mlc$validation$performance
+```
+
+결과를 지도를 제작한다.
+
+```{r}
+#| fig-width: 12
+#| fig-height: 8
+#| fig-dpi: 600
+r <- as.factor(sc_mlc$map)
+levels(r) <- data.frame(ID = 1:4, class_supervised = levels(train$class))
+
+tm_shape(r) + tm_raster(
+  palette = c("yellow", "sandybrown", "darkgreen", "blue"), 
+  title = "Supervised: \n Maximum Likelihood") +
+  tm_layout(legend.outside = TRUE) 
+```
+
+## 무감독 분류
+
+*k*-평균 분류법을 적용한다. 우선 클래스의 개수를 3개로 한 무감독 분류를 실행한다.
+
+```{r}
+#| fig-width: 12
+#| fig-height: 8
+#| fig-dpi: 600
+uc <- unsuperClass(lsat, nClasses = 3)
+uc_r <- as.factor(uc$map)
+tm_shape(uc_r) + 
+  tm_raster(palette = "Set1", title = "Classes") +
+  tm_layout(legend.outside = TRUE, 
+            title = "K-Means Clustering: \n3 Classes")
+```
+
+클래스 개수를 4개로 한다.
+
+```{r}
+#| fig-width: 12
+#| fig-height: 8
+#| fig-dpi: 600
+uc <- unsuperClass(lsat, nClasses = 4)
+uc_r <- as.factor(uc$map)
+tm_shape(uc_r) + tm_raster(palette = "Set1", title = "Classes") +
+  tm_layout(legend.outside = TRUE, title = "K-Means Clustering: \n4 Classes")
+```
+
+클래스 개수를 5개로 한다.
+
+```{r}
+#| fig-width: 12
+#| fig-height: 8
+#| fig-dpi: 600
+uc <- unsuperClass(lsat, nClasses = 5)
+uc_r <- as.factor(uc$map)
+tm_shape(uc_r) + tm_raster(palette = "Set1", title = "Classes") +
+  tm_layout(
+    legend.outside = TRUE, 
+    title = "K-Means Clustering: \n5 Classes")
+```
+
+## 혼합 분류
+
+## 분광혼합분석
+
+[`RStoolbox`](https://bleutner.github.io/RStoolbox/) 패키지의 `mesma()` 함수를 활용하면 spectral unmixing이 가능하다.
+
+## 객체-기반 분류
+
+## 인공지능-기반 분류
+
+인공지능-기반 분류법은 모두 감독 분류이기 때문에 위의 최대 우도법과 마찬가지로 훈련 데이터가 필요하다.
+
+### 결정 트리(decision tree)
+
+결정 트리 알고리즘을 적용한다.
+
+```{r}
+sc_dt <- superClass(
+  lsat, 
+  trainData = train, 
+  responseCol = "class",
+  model = "C5.0", 
+  tuneLength = 1, 
+  trainPartition = 0.7)
+
+sc_dt$modelFit
+sc_dt$validation$performance
+```
+
+분류 결과를 지도로 나타낸다.
+
+```{r}
+#| fig-width: 12
+#| fig-height: 8
+#| fig-dpi: 600
+r <- as.factor(sc_dt$map)
+levels(r) <- data.frame(ID = 1:4, class_supervised = levels(train$class))
+
+tm_shape(r) + tm_raster(
+  palette = c("yellow", "sandybrown", "darkgreen", "blue"),
+  title = "Classes") +
+  tm_layout(
+    legend.outside = TRUE, 
+    title = "AI-based Classification: \nDecision Tree")
+```
+
+### 랜덤 포레스트(random forest)
+
+랜덤 포레스트 알고리즘을 적용한다.
+
+```{r}
+sc_rf <- superClass(
+  lsat, 
+  trainData = train, 
+  responseCol = "class",
+  model = "rf", 
+  tuneLength = 1, 
+  trainPartition = 0.7)
+
+sc_rf$modelFit
+sc_rf$validation$performance
+```
+
+분류 결과를 지도로 나타낸다.
+
+```{r}
+#| fig-width: 12
+#| fig-height: 8
+#| fig-dpi: 600
+r <- as.factor(sc_rf$map)
+levels(r) <- data.frame(ID = 1:4, class_supervised = levels(train$class))
+
+tm_shape(r) + tm_raster(
+  palette = c("yellow", "sandybrown", "darkgreen", "blue"),
+  title = "Classes") +
+  tm_layout(
+    legend.outside = TRUE, 
+    title = "AI-based Classification: \n Random Forest")
+```
+
+### 스포트 벡터 머신(support vector machine)
+
+스포트 벡터 머신 알고리즘을 적용한다.
+
+```{r}
+sc_svm <- superClass(
+  lsat, 
+  trainData = train, 
+  responseCol = "class",
+  model = "svmRadial", 
+  tuneLength = 1, 
+  trainPartition = 0.7)
+
+sc_svm$modelFit
+sc_svm$validation$performance
+```
+
+결과를 지도로 나타낸다.
+
+```{r}
+#| fig-width: 12
+#| fig-height: 8
+#| fig-dpi: 600
+r <- as.factor(sc_svm$map)
+levels(r) <- data.frame(ID = 1:4, class_supervised = levels(train$class))
+
+tm_shape(r) + tm_raster(
+  palette = c("yellow", "sandybrown", "darkgreen", "blue"),
+  title = "Classes") +
+  tm_layout(
+    legend.outside = TRUE, 
+    title = "AI-based Classification: \n Random Forest")
+```
+
+### 인공신경망(artificial neural network, ANN)
+
+인공신경망 알고리즘을 적용한다.
+
+```{r}
+sc_ann <- superClass(
+  lsat, 
+  trainData = train, 
+  responseCol = "class",
+  model = "nnet", 
+  tuneLength = 3, 
+  trainPartition = 0.7,
+  verbose = FALSE,
+  trace = FALSE)
+
+sc_ann$modelFit
+sc_ann$validation$performance
+```
+
+결과를 지도로 나타낸다.
+
+```{r}
+#| fig-width: 12
+#| fig-height: 8
+#| fig-dpi: 600
+r <- as.factor(sc_ann$map)
+levels(r) <- data.frame(ID = 1:4, class_supervised = levels(train$class))
+
+tm_shape(r) + tm_raster(
+  palette = c("yellow", "sandybrown", "darkgreen", "blue"),
+  title = "Classes") +
+  tm_layout(
+    legend.outside = TRUE, 
+    title = "AI-based Classification: \n ANN")
+```
+
+### 합성곱신경망(convolution neural network, CNN)

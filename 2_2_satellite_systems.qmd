@@ -1,0 +1,155 @@
+---
+title: "인공위성 RS 시스템"
+author: Sang-Il Lee
+date-modified: last-modified
+number-sections: true
+format: 
+  html: 
+    toc: true
+code-link: true
+code-copy: true
+lightbox: true
+execute: 
+  warning: false
+  error: false
+  freeze: auto
+editor: visual
+editor_options: 
+  chunk_output_type: console
+---
+
+## 시스템 설계
+
+## Landsat 시스템
+
+### WRS(World Reference System
+
+기본 패키지를 설치한다.
+
+```{r}
+library(tidyverse)
+library(sf)
+library(tmap)
+library(rnaturalearth)
+library(spData)
+library(leaflet)
+```
+
+WRS 셰이프 파일을 불러온다.
+
+```{r}
+#| results: hide
+wrs2_desc <- st_read("D:/My R/World Data Manupulation/USGS Landsat Systems/WRS2_descending_0/WRS2_descending.shp", options = "ENCODING=CP949")
+```
+
+이름을 위한 새로운 컬럼을 만든다.
+
+```{r}
+wrs2_desc <- wrs2_desc |> 
+  mutate(
+    PATH_ROW = str_c(
+      PATH, ROW, sep = "-"
+    ), .after = ROW
+  ) 
+```
+
+wrs2 데이터가 너무 커서 여기에 나타내지는 않는다.
+
+```{r}
+#| echo: false
+#| eval: false
+# tmap_mode("view")
+wrs2_map <- tm_shape(wrs2_desc) + tm_polygons(
+  col = NA, alpha = 0, border.col = "#984ea3", id = "PATH_ROW") +
+  tm_legend(title = "Landsat WRS2 Lookup Map")
+wrs2_map
+tmap_save(wrs2_map, "D:/My Classes/2025년 1학기/원격탐사와 지리자료분석/wrs2_map.html")
+```
+
+한반도와 관련된 지도만 제작한다. 국가 바운더리 파일을 불러온다.
+
+```{r}
+#| results: hide
+world_map <- st_read("D:/My R/World Data Manupulation/NaturalEarth/new_1_ne_50m_admin_0_countries.shp")
+```
+
+지도를 생성한다.
+
+```{r}
+#| fig-height: 8
+#| fig-dpi: 600
+
+koreas <- world_map |> 
+  filter(
+    str_detect(ADMIN, "Korea")
+  )
+
+wrs2_desc |> 
+  st_intersects(koreas) |> lengths() > 0 -> sel_index
+
+wrs2_koreas <- wrs2_desc |> 
+  filter(
+    sel_index
+  )
+
+tm_shape(world_map) + tm_polygons(col = "gray95") +
+  tm_shape(koreas) + tm_polygons() +
+  tm_shape(wrs2_koreas, is.master = TRUE) + tm_polygons(border.col = "#984ea3", lwd = 1, alpha = 0) + tm_text("PATH_ROW") +
+  tm_scale_bar(color.dark = "gray60", position = c(0.52, 0.01), breaks = seq(0, 400, 100))
+```
+
+```{r}
+#| echo: false
+#| eval: false
+my.title <- "Landsat WRS-2"
+my.map <- tm_shape(world_map) + tm_polygons(col = "gray95") +
+  tm_shape(koreas) + tm_polygons() +
+  tm_shape(wrs2_koreas, is.master = TRUE) + tm_polygons(border.col = "#984ea3", lwd = 1, alpha = 0) + tm_text("PATH_ROW") +
+    tm_layout(frame = TRUE, title = my.title, title.size = 1.8, title.position = c("left", "top"), 
+            bg.color = "white", inner.margins = c(0.05, 0.025, 0.07, 0.04)) +
+  tm_scale_bar(color.dark = "gray60", position = c(0.52, 0.01), breaks = seq(0, 400, 100)) +
+  tm_credits("SANG-IL LEE, Geography Education at SNU, 2025", size = 0.7, position = c(0.025, 0.01))
+
+my.path.name <- "D:/My Classes/2025년 1학기/원격탐사와 지리자료분석/이미지/"
+my.file.name <- paste0(my.path.name, my.title, ".jpg")
+tmap_save(my.map, filename = my.file.name, height = 12.1, dpi = 600)
+```
+
+인터랙티브 지도를 생성한다.
+
+```{r}
+#| eval: false
+tmap_mode("view")
+tm_shape(wrs2_koreas) + 
+  tm_polygons(border.col = "#984ea3", lwd = 3, alpha = 0,
+              id = "PATH_ROW") + 
+  tm_text("PATH_ROW", size = 1) +
+  tm_basemap(
+    c("OpenStreetMap", "Esri.WorldImagery", "Esri.WorldGrayCanvas")
+  )  
+```
+
+```{r}
+#| fig-height: 8
+leaflet(data = wrs2_koreas) %>%
+  addTiles() %>%
+  addPolygons(color = "#984ea3", weight = 3, fillOpacity = 0,
+              label = ~PATH_ROW,
+              highlight = highlightOptions(weight = 5, color = "#984ea3", bringToFront = TRUE)) %>%
+  addLabelOnlyMarkers(
+    lng = st_coordinates(st_centroid(wrs2_koreas))[,1],
+    lat = st_coordinates(st_centroid(wrs2_koreas))[,2],
+    label = ~as.character(PATH_ROW),
+    labelOptions = labelOptions(noHide = TRUE, direction = "center", textOnly = TRUE, textsize = "12px")
+  )
+```
+
+## SPOT 시스템
+
+## Sentinel-2 시스템
+
+## GOES 시스템
+
+## AVHRR 시스템
+
+## MODIS 시스템

@@ -1,0 +1,254 @@
+---
+title: "데이터의 표준과 구득"
+author: Sang-Il Lee
+date-modified: last-modified
+number-sections: true
+format: 
+  html: 
+    toc: true
+code-link: true
+code-copy: true
+lightbox: true
+execute: 
+  warning: false
+  error: false
+  freeze: auto
+editor: visual
+editor_options: 
+  chunk_output_type: console
+---
+
+## 데이터 표준
+
+### 저장 포맷
+
+### 압축 포맷
+
+### 공통 포맷
+
+### 수준
+
+### 메타 데이터
+
+## 데이터 공급
+
+### 웹사이트
+
+-   EarthExplore
+
+    -   [USGS](https://www.usgs.gov/)
+
+    -   <https://earthexplorer.usgs.gov/>
+
+    -   Landsat, AVHRR, SRTM, NLCD, GLCC, RADAR
+
+-   EarthData
+
+    -   [NASA](https://www.nasa.gov/)
+
+    -   <https://www.earthdata.nasa.gov/>
+
+-   The Copernicus Data Space Ecosystem
+
+    -   [ESA](https://dataspace.copernicus.eu/)
+
+    -   <https://browser.dataspace.copernicus.eu/>
+
+-   3DEP LidarExplorer
+
+    -   [USGS](https://www.usgs.gov/)
+
+    -   <https://apps.nationalmap.gov/lidar-explorer/>
+
+### 구글 어스 엔진(Google Earth Engine)
+
+-   <https://earthengine.google.com/>
+
+## 데이터 구득
+
+### 구글 어스 엔진
+
+-   QGIS Plug in for Earth Engine
+
+    -   <https://gee-community.github.io/qgis-earthengine-plugin/>
+
+-   `rgee`: Google Earth Engine for R
+
+    -   <https://r-spatial.github.io/rgee/#quick-start-users-guide-for-rgee>
+
+![](images/clipboard-393918566.png)
+
+### R 패키지
+
+-   `rsat`
+
+    -   <https://docs.ropensci.org/rsat/>
+
+-   `getSpatialData`
+
+    -   <https://github.com/16EAGLE/getSpatialData>
+
+    -   Landsat, Sentinel, MODIS, SRTM
+
+-   `CDSE`: Copernicus Data Space Ecosystem API Wrapper
+
+    -   <https://zivankaraman.github.io/CDSE/>
+
+    -   Sentinel
+
+-   `openeo`: Client Interface for openEO Servers
+
+    -   <https://github.com/Open-EO/openeo-r-client>
+
+-   `rsi`: Spectral Indices
+
+    -   <https://permian-global-research.github.io/rsi/>
+
+-   `rstac`: R client library for STAC
+
+    -   SpatioTemporal Asset Catalog (STAC)
+
+    -   <https://brazil-data-cube.github.io/rstac/reference/rstac.html>
+
+-   `luna`: Toos for Satellite Remote Sensing (Earth Observation) Data Processing
+
+    -   <https://rspatial.r-universe.dev/luna/doc/manual.html>
+
+## Landsat Data 다운로드
+
+### STAC API를 이용한 데이터 취득 1: `rstac` 패키지의 활용
+
+원하는 지역을 설정한다. 셰이프 파일을 이용하는 방법을 정리한다.
+
+```{r}
+#| eval: false
+library(sf)
+seoul <- st_read("D:/My R/Korean Administrative Areas/행정구역 셰이프 파일/2 Original Cleaning/2023_2Q/SEOUL_SIDO_2023_2Q.shp")
+
+seoul_bbox <- seoul |> 
+  st_transform(4326) |> st_bbox()
+```
+
+```{r}
+#| eval: false
+library(tidyverse)
+library(stars)
+library(rstac)
+library(terra)
+library(tmap)
+
+# STAC API를 지정. Landsat 데이터에 대해 두 가지가 존재하는데 후자를 사용함.
+
+stac_obj <- stac("https://landsatlook.usgs.gov/stac-server")
+stac_obj <- stac("https://planetarycomputer.microsoft.com/api/stac/v1")
+
+# 컬렉션 내용 및 ID 확인
+collections <- stac_obj |> 
+  collections() |> 
+  get_request()
+
+map_chr(collections$collections, "id") # "landsat-c2-l1"를 확인
+
+# 특정한 지역과 시간에 대한 검색: 6개가 확인됨
+stac_obj |> 
+  stac_search(
+    collections = "landsat-c2-l2",  
+    bbox = seoul_bbox,
+    datetime = "2024-08-15/2024-09-15",
+    limit = 20
+  ) |> 
+  get_request()
+
+# 네 번째 것을 다운로드 하기로 결정함: 구름 조건 등을 검토할 수도 있음.
+
+items <- stac_obj |> 
+  stac_search(
+    collections = "landsat-c2-l2",  
+    bbox = seoul_bbox,
+    datetime = "2024-08-15/2024-09-15",
+    limit = 20
+  ) |> 
+  get_request()
+
+selected_item <- items$features[[4]]
+
+# Assests 확인: 단순
+selected_item
+
+# Assests 확인: 복잡
+map_dfr(items_assets(selected_item), function(key) {
+  tibble(asset = key, description = selected_item$assets[[key]]$title)
+}) |> print(n = 25)
+
+# Authentication process
+selected_item <- selected_item |> 
+   items_sign_planetary_computer()
+
+# 미리 보기
+
+selected_item$assets[["rendered_preview"]]$href
+selected_item %>% 
+  assets_url(asset_names = "rendered_preview") %>%
+  preview_plot()
+
+# 다운로드
+
+assets_download(selected_item, c("red", "green", "blue"), 
+                output_dir = "D:/My R/World Data Manupulation/stac/")
+
+B4 <- file.path(
+  "D:/My R/World Data Manupulation/stac/",
+  "landsat-c2",
+  "level-2",
+  "standard",
+  "oli-tirs",
+  "2024",
+  "116", 
+  "034",
+  "LC08_L2SP_116034_20240829_20240905_02_T1",
+  "LC08_L2SP_116034_20240829_20240905_02_T1_SR_B4.tif"
+) |> rast()
+
+landsat_image <- c(B2, B3, B4)
+names(landsat_image) <- c("B2", "B3", "B4")
+
+seoul_crs <- "+proj=tmerc +lat_0=38 +lon_0=127.5 +k=0.9996 +x_0=1000000 +y_0=2000000 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs"
+
+landsat_image_seoul <- landsat_image |> 
+  project(seoul_crs) |> crop(seoul)
+
+landsat_image_seoul_mask <- landsat_image_seoul |> 
+  mask(seoul)
+
+plotRGB(landsat_image_seoul_mask, r = "B4", g = "B3", b = "B2", stretch = "lin")
+
+landsat_image_seoul_mask_str <- 
+  stretch(landsat_image_seoul_mask, minv = 0, maxv = 255, minq = 0.1, maxq = 0.95)
+
+tm_shape(landsat_image_seoul_mask_str, raster.downsample = FALSE) + 
+  tm_rgb(r = 3, g = 2, b = 1) + 
+  tm_shape(seoul) + tm_borders(lwd = 2, col = "gray20")
+```
+
+### STAC API를 이용한 데이터 취득 1: [`rsi`](https://permian-global-research.github.io/rsi/) 패키지의 활용
+
+빠르고 crop이 이루어진다는 점에서 편리하지만 해상도가 떨어짐.
+
+```{r}
+#| eval: false
+library(rsi)
+
+seoul <- st_read("D:/My R/Korean Administrative Areas/행정구역 셰이프 파일/2 Original Cleaning/2023_2Q/SEOUL_SIDO_2023_2Q.shp")
+aoi <- seoul 
+
+landsat_image_2024 <- get_landsat_imagery(
+  aoi,
+  start_date = "2024-08-15",
+  end_date = "2024-09-15",
+  output_filename = tempfile(fileext = ".tif")
+)
+
+seoul_2024 <- rast(landsat_image_2024)
+
+plotRGB(seoul_2024, r = "R", g = "G", b = "B", stretch = "lin")
+```

@@ -1,0 +1,50 @@
+project:
+  type: book
+  output-dir: docs
+
+lang: ko
+
+book:
+  title: "Remote Sensing"
+  author: "Sang-Il Lee"
+  date: last-modified
+  bread-crumbs: false
+  chapters:
+    - index.qmd
+    - part: part_1.qmd
+      chapters: 
+        - 1_1_overview.qmd
+        - 1_2_electromagnetic_radiation.qmd
+        - 1_3_resolution.qmd
+    - part: part_2.qmd
+      chapters: 
+        - 2_1_collection_systems.qmd
+        - 2_2_satellite_systems.qmd
+        - 2_3_radar_lidar.qmd
+        - 2_4_data_acquisition.qmd
+    - part: part_3.qmd
+      chapters: 
+        - 3_1_image_correction.qmd
+        - 3_2_image_mapping.qmd
+        - 3_3_image_exploration.qmd
+        - 3_4_image_enhancement.qmd
+    - part: part_4.qmd
+      chapters: 
+        - 4_1_image_transformation.qmd
+        - 4_2_image_composite.qmd
+        - 4_3_image_classification.qmd
+        - 4_4_change_detection.qmd
+
+lightbox: true
+
+execute:
+  freeze: auto
+
+format:
+  html:
+    theme: [cosmo, custom.scss]
+    css: styles.css
+    toc: true
+
+editor: visual
+

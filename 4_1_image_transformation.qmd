@@ -1,0 +1,355 @@
+---
+title: "영상 변환"
+author: Sang-Il Lee
+date-modified: last-modified
+number-sections: true
+format: 
+  html: 
+    toc: true
+code-link: true
+code-copy: true
+lightbox: true
+execute: 
+  warning: false
+  error: false
+  freeze: auto
+editor: visual
+editor_options: 
+  chunk_output_type: console
+---
+
+## 개요
+
+영상 변환(image transformation)에는 다음과 같은 기법이 포함된다.
+
+-   영상 재계산(image recalculation)
+
+-   영상 대수(image algebra)
+
+-   분광 지수(spectral index)
+
+-   질감 변환(texture transformation)
+
+-   경관생태지수(landscape ecology metrics)
+
+-   PCA 변환(principal component analysis transformation)
+
+필수적인 패키지를 설치한다.
+
+```{r}
+library(tidyverse)
+library(sf)
+library(tmap)
+library(terra)
+library(RStoolbox)
+library(RColorBrewer)
+```
+
+서울의 행정구역 바운더리 파일을 불러온다.
+
+```{r}
+#| output: false
+seoul <- st_read("D:/My R/Korean Administrative Areas/행정구역 셰이프 파일/2 Original Cleaning/2023_2Q/SEOUL_SIDO_2023_2Q.shp")
+seoul_gu <- st_read("D:/My R/Korean Administrative Areas/행정구역 셰이프 파일/2 Original Cleaning/2023_2Q/SEOUL_GU_2023_2Q.shp")
+seoul_dong <- st_read("D:/My R/Korean Administrative Areas/행정구역 셰이프 파일/2 Original Cleaning/2023_2Q/SEOUL_EMD_2023_2Q.shp")
+```
+
+Level-2 데이터를 불러와 마스킹한다.
+
+```{r}
+level2_landsat_seoul_st <- rast("D:/My R/World Data Manupulation/USGS EarthExplorer/level2_landsat_seoul_stack.tif")
+level2_landsat_seoul_st_mask <- level2_landsat_seoul_st |> 
+  mask(seoul)
+```
+
+대비 확장을 시행한다.
+
+```{r}
+level2_landsat_seoul_st_mask_str <- level2_landsat_seoul_st_mask |> 
+  stretch(minv = 0, maxv = 255, minq = 0.05, maxq = 0.95)
+```
+
+## 영상 재계산
+
+## 영상 대수
+
+적외선-컬러 영상을 제작한다.
+
+```{r}
+#| fig-width: 15
+#| fig-height: 12
+#| fig-dpi: 300
+my_map <- tm_shape(level2_landsat_seoul_st_mask_str, 
+                   raster.downsample = FALSE) + 
+  tm_rgb(r = 5, g = 4, b = 3, legend.show = FALSE) +
+  tm_shape(seoul) + tm_borders(lwd = 2, col = "gray20") +
+  tm_layout(frame = TRUE, title = "Color Infrared", 
+            title.size = 2, title.position = c("left", "top"), 
+            bg.color = "white", 
+            inner.margins = c(0.05, 0.05, 0.05, 0.05)) +
+  tm_scale_bar(color.dark = "gray60", position = c(0.01, 0.01), size = 0.6, breaks = seq(0, 20, 5)) + 
+  tm_credits("SANG-IL LEE, Geography Education at SNU, 2025", 
+             size = 0.7)
+my_map
+```
+
+```{r}
+#| eval: false
+#| echo: false
+my.title <- "영상_변환_영상_대수_1"
+my.path.name <- "D:/My Classes/2025년 1학기/원격탐사와 지리자료분석/이미지/"
+my.file.name <- paste0(my.path.name, my.title, ".jpg")
+tmap_save(
+  my_map, filename = my.file.name, width = 15, height = 12, dpi = 600
+)
+```
+
+밴드비를 계산한다.
+
+```{r}
+new_R <- level2_landsat_seoul_st_mask["B5"]/level2_landsat_seoul_st_mask["B4"]
+new_G <- level2_landsat_seoul_st_mask["B2"]/level2_landsat_seoul_st_mask["B4"]
+new_B <- level2_landsat_seoul_st_mask["B10"]/level2_landsat_seoul_st_mask["B5"]
+new_RGB <- c(new_R, new_G, new_B)
+new_RGB_str <- new_RGB |> 
+  stretch(minv = 0, maxv = 255, minq = 0.05, maxq = 0.95)
+```
+
+지도를 그린다.
+
+```{r}
+#| fig-width: 15
+#| fig-height: 12
+#| fig-dpi: 300
+my_map <- tm_shape(new_RGB_str, raster.downsample = FALSE) + 
+  tm_rgb(r = 1, g = 2, b = 3, legend.show = FALSE) +
+  tm_shape(seoul) + tm_borders(lwd = 2, col = "gray20") +
+  tm_layout(frame = TRUE, title = "R = 5/4, G = 2/4, B = 10/5", title.size = 2, 
+            title.position = c("left", "top"), bg.color = "white", 
+            inner.margins = c(0.05, 0.05, 0.05, 0.05)) +
+  tm_scale_bar(color.dark = "gray60", position = c(0.01, 0.01), size = 0.6, breaks = seq(0, 20, 5)) + 
+  tm_credits("SANG-IL LEE, Geography Education at SNU, 2025", size = 0.7)
+my_map
+```
+
+```{r}
+#| eval: false
+#| echo: false
+my.title <- "영상_변환_영상_대수_2"
+my.path.name <- "D:/My Classes/2025년 1학기/원격탐사와 지리자료분석/이미지/"
+my.file.name <- paste0(my.path.name, my.title, ".jpg")
+tmap_save(
+  my_map, filename = my.file.name, width = 15, height = 12, dpi = 600
+)
+```
+
+## 분광 지수: 식생 지수
+
+NDVI(normaized difference vegetation index)를 계산한다.
+
+```{r}
+NDVI <- (level2_landsat_seoul_st_mask[[5]]-level2_landsat_seoul_st_mask[[4]])/(level2_landsat_seoul_st_mask[[5]]+level2_landsat_seoul_st_mask[[4]])
+```
+
+지도를 제작한다.
+
+```{r}
+#| fig-width: 15
+#| fig-height: 12
+#| fig-dpi: 300
+my_palette <- colorRampPalette(brewer.pal(11, "RdYlGn"))(100)
+my_map <- tm_shape(NDVI, raster.downsample = FALSE) + 
+  tm_raster(style = "cont", palette = my_palette, title = "NDVI") +
+  tm_shape(seoul) + tm_borders(lwd = 2, col = "gray20") +
+  tm_legend(legend.position = c(0.85, 0.06)) +
+  tm_layout(frame = TRUE, title = "NDVI", title.size = 2, 
+            title.position = c("left", "top"), bg.color = "white", 
+            inner.margins = c(0.05, 0.05, 0.05, 0.05)) +
+  tm_scale_bar(color.dark = "gray60", position = c(0.01, 0.01), size = 0.6, breaks = seq(0, 20, 5)) + 
+  tm_credits("SANG-IL LEE, Geography Education at SNU, 2025", size = 0.7)
+my_map
+```
+
+```{r}
+#| eval: false
+#| echo: false
+my.title <- "영상_변환_식생_지수_1"
+my.path.name <- "D:/My Classes/2025년 1학기/원격탐사와 지리자료분석/이미지/"
+my.file.name <- paste0(my.path.name, my.title, ".jpg")
+tmap_save(
+  my_map, filename = my.file.name, width = 15, height = 12, dpi = 600
+)
+```
+
+## 질감 변환
+
+NIR에 대한 분산을 계산한다.
+
+```{r}
+level2_landsat_seoul_st_mask["B5"] |> 
+  focal(w = 3, fun = var) -> NIR_var
+```
+
+```{r}
+#| fig-width: 15
+#| fig-height: 12
+#| fig-dpi: 300
+my_map <- tm_shape(NIR_var, raster.downsample = FALSE) + 
+  tm_raster(style = "quantile", palette = "Greys", n = 100, title = "Std. Dev.", legend.show = FALSE) +
+  tm_shape(seoul) + tm_borders(lwd = 2, col = "gray20") +
+  tm_legend(legend.position = c(0.85, 0.06)) +
+  tm_layout(frame = TRUE, title = "Variance of NIR", title.size = 2, 
+            title.position = c("left", "top"), bg.color = "white", 
+            inner.margins = c(0.05, 0.05, 0.05, 0.05)) +
+  tm_scale_bar(color.dark = "gray60", position = c(0.01, 0.01), size = 0.6, breaks = seq(0, 20, 5)) + 
+  tm_credits("SANG-IL LEE, Geography Education at SNU, 2025", size = 0.7)
+my_map
+```
+
+```{r}
+#| eval: false
+#| echo: false
+my.title <- "영상_변환_질감_변환_1"
+my.path.name <- "D:/My Classes/2025년 1학기/원격탐사와 지리자료분석/이미지/"
+my.file.name <- paste0(my.path.name, my.title, ".jpg")
+tmap_save(
+  my_map, filename = my.file.name, width = 15, height = 12, dpi = 600
+)
+```
+
+NIR 분산, Red 분산, Green 분산을 구하여 RGB 지도를 만든다.
+
+```{r}
+level2_landsat_seoul_st_mask["B5"] |> 
+  focal(w = 3, fun = var) -> NIR_var
+level2_landsat_seoul_st_mask["B4"] |> 
+  focal(w = 3, fun = var) -> Red_var
+level2_landsat_seoul_st_mask["B3"] |> 
+  focal(w = 3, fun = var) -> Green_var
+var_stack <- c(NIR_var, Red_var, Green_var) |> stretch(minv = 0, maxv = 255, minq = 0.05, maxq = 0.95)
+```
+
+```{r}
+#| fig-width: 15
+#| fig-height: 12
+#| fig-dpi: 300
+my_map <- tm_shape(var_stack, raster.downsample = FALSE) + 
+  tm_rgb(r = 1, g = 2, b = 3, legend.show = FALSE) +
+  tm_shape(seoul) + tm_borders(lwd = 2, col = "gray20") +
+  tm_layout(frame = TRUE, title = "RGB = NIR var, Red var, Green var", 
+            title.size = 2, title.position = c("left", "top"), 
+            bg.color = "white", inner.margins = c(0.05, 0.05, 0.05, 0.05)) +
+  tm_scale_bar(color.dark = "gray60", position = c(0.01, 0.01), size = 0.6, breaks = seq(0, 20, 5)) + 
+  tm_credits("SANG-IL LEE, Geography Education at SNU, 2025", size = 0.7)
+my_map
+```
+
+```{r}
+#| eval: false
+#| echo: false
+my.title <- "영상_변환_질감_변환_2"
+my.path.name <- "D:/My Classes/2025년 1학기/원격탐사와 지리자료분석/이미지/"
+my.file.name <- paste0(my.path.name, my.title, ".jpg")
+tmap_save(
+  my_map, filename = my.file.name, width = 15, height = 12, dpi = 600
+)
+```
+
+## 경관생태지수
+
+## PCA 변환
+
+PCA를 실행한다.
+
+```{r}
+PCA_res <- rasterPCA(
+  level2_landsat_seoul_st_mask,
+  spca = TRUE
+)
+PCA_map <- PCA_res$map |> stretch(minv = 0, maxv = 255, minq = 0.05, maxq = 0.95)
+```
+
+PCA의 결과를 일반적인 형식으로 변경한다.
+
+```{r}
+snu_PCA_res_recal <- function(PCA_RES){
+  res <- PCA_RES
+  n <- length(res$model$center)
+  recal <- bind_rows(as_tibble(res$model$loadings[1:n,]), as_tibble(t(res$model$sdev)))
+  recal <- recal |> mutate(
+    band_id = c(str_c("B", 1:(n() - 1)), "Eigen"), .before = 1
+    ) 
+  recal[1:n, 2:(n+1)] <- recal[1:n, 2:(n+1)] * recal[(n+1), 2:(n+1)][rep(1, n), ]
+  recal[(n + 1), 2:(n+1)] <- recal[(n + 1), 2:(n+1)]^2
+  recal[(n + 2), 2:(n+1)] <- recal[(n + 1), 2:(n+1)]*100/n
+  recal[(n + 2), 1] <- "Pct"
+  recal[(n + 3), 2:(n+1)] <- t(cumsum(as.numeric(recal[(n + 2), 2:(n+1)])))
+  recal[(n + 3), 1] <- "Cum_Pct"
+  recal
+  }
+
+snu_PCA_res_recal(PCA_res)
+```
+
+PCA 지도를 제작한다.
+
+```{r}
+#| fig-width: 15
+#| fig-height: 12
+#| fig-dpi: 300
+my_map <- tm_shape(PCA_map, raster.downsample = FALSE) +
+  tm_raster(style = "cont", palette = "-Greys", title = "DN") +
+  tm_facets(ncol = 4, free.scales = FALSE) +
+  tm_layout(legend.show = FALSE, panel.label.size = 2, 
+            attr.outside = T, attr.outside.position = "bottom") +
+  tm_credits(text = "SANG-IL LEE, Geography Education at SNU, 2025", size = 1.5, position = c(0.75, "top"))
+my_map
+```
+
+```{r}
+#| eval: false
+#| echo: false
+my.title <- "영상_변환_PCA_변환_1"
+my.path.name <- "D:/My Classes/2025년 1학기/원격탐사와 지리자료분석/이미지/"
+my.file.name <- paste0(my.path.name, my.title, ".jpg")
+tmap_save(
+  my_map, filename = my.file.name, width = 15, height = 12, dpi = 600
+)
+```
+
+PCA 1\~3을 결합한 지도를 제작한다.
+
+```{r}
+PCA_R <- PCA_map$PC1
+PCA_G <- PCA_map$PC2
+PCA_B <- PCA_map$PC3
+PCA_stack <- c(PCA_R, PCA_G, PCA_B)
+```
+
+지도를 그린다.
+
+```{r}
+#| fig-width: 15
+#| fig-height: 12
+#| fig-dpi: 300
+my_map <- tm_shape(PCA_stack, raster.downsample = FALSE) + 
+  tm_rgb(r = 1, g = 2, b = 3, legend.show = FALSE) +
+  tm_shape(seoul) + tm_borders(lwd = 2, col = "gray20") +
+  tm_layout(frame = TRUE, title = "RGB = PC1, PC2, PC3", title.size = 2, 
+            title.position = c("left", "top"), 
+            bg.color = "white", inner.margins = c(0.05, 0.05, 0.05, 0.05)) +
+  tm_scale_bar(color.dark = "gray60", position = c(0.01, 0.01), size = 0.6, breaks = seq(0, 20, 5)) + 
+  tm_credits("SANG-IL LEE, Geography Education at SNU, 2025", size = 0.7)
+my_map
+```
+
+```{r}
+#| eval: false
+#| echo: false
+my.title <- "영상_변환_PCA_변환_2"
+my.path.name <- "D:/My Classes/2025년 1학기/원격탐사와 지리자료분석/이미지/"
+my.file.name <- paste0(my.path.name, my.title, ".jpg")
+tmap_save(
+  my_map, filename = my.file.name, width = 15, height = 12, dpi = 600
+)
+```
