@@ -320,7 +320,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div>
     <div class="quarto-title-meta-heading">Modified</div>
     <div class="quarto-title-meta-contents">
-      <p class="date-modified">2025년 5월 7일</p>
+      <p class="date-modified">2025년 5월 15일</p>
     </div>
   </div>
     
@@ -390,7 +390,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell-output cell-output-stdout">
 <pre><code>[[1]]
   TrainAccuracy TrainKappa method
-1     0.9956484   0.992674 custom
+1     0.9977143   0.996428 custom
 
 [[2]]
 Cross-Validated (5 fold) Confusion Matrix 
@@ -399,12 +399,12 @@ Cross-Validated (5 fold) Confusion Matrix
  
             Reference
 Prediction   cleared fallen_dry forest water
-  cleared       97.4        0.0    1.4   0.0
-  fallen_dry     0.0       14.6    0.2   0.2
-  forest         0.2        0.0  261.4   0.0
-  water          0.0        0.0    0.0  84.2
+  cleared      147.8        0.0    0.4   0.0
+  fallen_dry     0.0       23.0    0.2   0.2
+  forest         0.4        0.0  260.6   0.0
+  water          0.0        0.0    0.0  92.0
                             
- Accuracy (average) : 0.9956</code></pre>
+ Accuracy (average) : 0.9977</code></pre>
 </div>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">sc_mlc</span><span class="op">$</span><span class="va">validation</span><span class="op">$</span><span class="va">performance</span></span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -412,41 +412,41 @@ Prediction   cleared fallen_dry forest water
 
             Reference
 Prediction   cleared fallen_dry forest water
-  cleared        446          0      3     0
-  fallen_dry       0         51      0     0
-  forest           0          0    513     0
-  water            0          0      0   178
+  cleared        192          0      1     0
+  fallen_dry       0          9      0     0
+  forest           1          0    526     0
+  water            0          0      0   139
 
 Overall Statistics
                                           
-               Accuracy : 0.9975          
-                 95% CI : (0.9927, 0.9995)
-    No Information Rate : 0.4332          
+               Accuracy : 0.9977          
+                 95% CI : (0.9917, 0.9997)
+    No Information Rate : 0.6071          
     P-Value [Acc &gt; NIR] : &lt; 2.2e-16       
                                           
-                  Kappa : 0.9961          
+                  Kappa : 0.9959          
                                           
  Mcnemar's Test P-Value : NA              
 
 Statistics by Class:
 
                      Class: cleared Class: fallen_dry Class: forest
-Sensitivity                  1.0000           1.00000        0.9942
-Specificity                  0.9960           1.00000        1.0000
-Pos Pred Value               0.9933           1.00000        1.0000
-Neg Pred Value               1.0000           1.00000        0.9956
-Prevalence                   0.3745           0.04282        0.4332
-Detection Rate               0.3745           0.04282        0.4307
-Detection Prevalence         0.3770           0.04282        0.4307
-Balanced Accuracy            0.9980           1.00000        0.9971
+Sensitivity                  0.9948           1.00000        0.9981
+Specificity                  0.9985           1.00000        0.9971
+Pos Pred Value               0.9948           1.00000        0.9981
+Neg Pred Value               0.9985           1.00000        0.9971
+Prevalence                   0.2224           0.01037        0.6071
+Detection Rate               0.2212           0.01037        0.6060
+Detection Prevalence         0.2224           0.01037        0.6071
+Balanced Accuracy            0.9967           1.00000        0.9976
                      Class: water
 Sensitivity                1.0000
 Specificity                1.0000
 Pos Pred Value             1.0000
 Neg Pred Value             1.0000
-Prevalence                 0.1495
-Detection Rate             0.1495
-Detection Prevalence       0.1495
+Prevalence                 0.1601
+Detection Rate             0.1601
+Detection Prevalence       0.1601
 Balanced Accuracy          1.0000</code></pre>
 </div>
 </div>
@@ -537,7 +537,7 @@ Balanced Accuracy          1.0000</code></pre>
 <div class="cell-output cell-output-stdout">
 <pre><code>[[1]]
   TrainAccuracy TrainKappa method
-1     0.9971528  0.9954528   C5.0
+1     0.9977373  0.9963813   C5.0
 
 [[2]]
 Cross-Validated (5 fold) Confusion Matrix 
@@ -546,12 +546,12 @@ Cross-Validated (5 fold) Confusion Matrix
  
             Reference
 Prediction   cleared fallen_dry forest water
-  cleared      126.2        0.0    0.4   0.0
-  fallen_dry     0.4       16.6    0.0   0.2
-  forest         0.4        0.0  255.8   0.0
-  water          0.0        0.0    0.0  91.4
+  cleared      151.6        0.0    0.2   0.0
+  fallen_dry     0.0       14.6    0.2   0.2
+  forest         0.6        0.0  271.0   0.0
+  water          0.0        0.0    0.0  92.0
                             
- Accuracy (average) : 0.9972</code></pre>
+ Accuracy (average) : 0.9977</code></pre>
 </div>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">sc_dt</span><span class="op">$</span><span class="va">validation</span><span class="op">$</span><span class="va">performance</span></span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -559,41 +559,41 @@ Prediction   cleared fallen_dry forest water
 
             Reference
 Prediction   cleared fallen_dry forest water
-  cleared        295          0      3     0
-  fallen_dry       2         41      0     0
-  forest           2          0    375     0
-  water            0          0      0   142
+  cleared        151          0      0     0
+  fallen_dry      18         51      2     0
+  forest           4          0    462     0
+  water            0          0      0   139
 
 Overall Statistics
                                           
-               Accuracy : 0.9919          
-                 95% CI : (0.9833, 0.9967)
-    No Information Rate : 0.4395          
+               Accuracy : 0.971           
+                 95% CI : (0.9571, 0.9813)
+    No Information Rate : 0.5611          
     P-Value [Acc &gt; NIR] : &lt; 2.2e-16       
                                           
-                  Kappa : 0.9876          
+                  Kappa : 0.9526          
                                           
  Mcnemar's Test P-Value : NA              
 
 Statistics by Class:
 
                      Class: cleared Class: fallen_dry Class: forest
-Sensitivity                  0.9866           1.00000        0.9921
-Specificity                  0.9947           0.99756        0.9959
-Pos Pred Value               0.9899           0.95349        0.9947
-Neg Pred Value               0.9929           1.00000        0.9938
-Prevalence                   0.3477           0.04767        0.4395
-Detection Rate               0.3430           0.04767        0.4360
-Detection Prevalence         0.3465           0.05000        0.4384
-Balanced Accuracy            0.9906           0.99878        0.9940
+Sensitivity                  0.8728           1.00000        0.9957
+Specificity                  1.0000           0.97423        0.9890
+Pos Pred Value               1.0000           0.71831        0.9914
+Neg Pred Value               0.9675           1.00000        0.9945
+Prevalence                   0.2092           0.06167        0.5611
+Detection Rate               0.1826           0.06167        0.5586
+Detection Prevalence         0.1826           0.08585        0.5635
+Balanced Accuracy            0.9364           0.98711        0.9923
                      Class: water
 Sensitivity                1.0000
 Specificity                1.0000
 Pos Pred Value             1.0000
 Neg Pred Value             1.0000
-Prevalence                 0.1651
-Detection Rate             0.1651
-Detection Prevalence       0.1651
+Prevalence                 0.1681
+Detection Rate             0.1681
+Detection Prevalence       0.1681
 Balanced Accuracy          1.0000</code></pre>
 </div>
 </div>
@@ -631,7 +631,7 @@ Balanced Accuracy          1.0000</code></pre>
 <div class="cell-output cell-output-stdout">
 <pre><code>[[1]]
   TrainAccuracy TrainKappa method
-1     0.9979279  0.9966294     rf
+1     0.9991744  0.9986552     rf
 
 [[2]]
 Cross-Validated (5 fold) Confusion Matrix 
@@ -640,12 +640,12 @@ Cross-Validated (5 fold) Confusion Matrix
  
             Reference
 Prediction   cleared fallen_dry forest water
-  cleared      117.0        0.0    0.0   0.0
-  fallen_dry     0.2       19.2    0.0   0.0
-  forest         0.8        0.0  261.2   0.0
-  water          0.0        0.0    0.0  84.4
+  cleared      106.0        0.0    0.0   0.0
+  fallen_dry     0.0       21.2    0.0   0.0
+  forest         0.4        0.0  265.0   0.0
+  water          0.0        0.0    0.0  92.2
                             
- Accuracy (average) : 0.9979</code></pre>
+ Accuracy (average) : 0.9992</code></pre>
 </div>
 <div class="sourceCode" id="cb19"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">sc_rf</span><span class="op">$</span><span class="va">validation</span><span class="op">$</span><span class="va">performance</span></span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -653,41 +653,41 @@ Prediction   cleared fallen_dry forest water
 
             Reference
 Prediction   cleared fallen_dry forest water
-  cleared        342          0      0     0
-  fallen_dry       0         28      0     0
-  forest           2          0    434     0
-  water            0          0      0   178
+  cleared        402          0      0     0
+  fallen_dry       0         18      0     0
+  forest           0          0    305     0
+  water            0          0      0   139
 
 Overall Statistics
-                                          
-               Accuracy : 0.998           
-                 95% CI : (0.9927, 0.9998)
-    No Information Rate : 0.4411          
-    P-Value [Acc &gt; NIR] : &lt; 2.2e-16       
-                                          
-                  Kappa : 0.9969          
-                                          
- Mcnemar's Test P-Value : NA              
+                                     
+               Accuracy : 1          
+                 95% CI : (0.9957, 1)
+    No Information Rate : 0.4653     
+    P-Value [Acc &gt; NIR] : &lt; 2.2e-16  
+                                     
+                  Kappa : 1          
+                                     
+ Mcnemar's Test P-Value : NA         
 
 Statistics by Class:
 
                      Class: cleared Class: fallen_dry Class: forest
-Sensitivity                  0.9942           1.00000        1.0000
-Specificity                  1.0000           1.00000        0.9964
-Pos Pred Value               1.0000           1.00000        0.9954
-Neg Pred Value               0.9969           1.00000        1.0000
-Prevalence                   0.3496           0.02846        0.4411
-Detection Rate               0.3476           0.02846        0.4411
-Detection Prevalence         0.3476           0.02846        0.4431
-Balanced Accuracy            0.9971           1.00000        0.9982
+Sensitivity                  1.0000           1.00000         1.000
+Specificity                  1.0000           1.00000         1.000
+Pos Pred Value               1.0000           1.00000         1.000
+Neg Pred Value               1.0000           1.00000         1.000
+Prevalence                   0.4653           0.02083         0.353
+Detection Rate               0.4653           0.02083         0.353
+Detection Prevalence         0.4653           0.02083         0.353
+Balanced Accuracy            1.0000           1.00000         1.000
                      Class: water
 Sensitivity                1.0000
 Specificity                1.0000
 Pos Pred Value             1.0000
 Neg Pred Value             1.0000
-Prevalence                 0.1809
-Detection Rate             0.1809
-Detection Prevalence       0.1809
+Prevalence                 0.1609
+Detection Rate             0.1609
+Detection Prevalence       0.1609
 Balanced Accuracy          1.0000</code></pre>
 </div>
 </div>
@@ -725,7 +725,7 @@ Balanced Accuracy          1.0000</code></pre>
 <div class="cell-output cell-output-stdout">
 <pre><code>[[1]]
   TrainAccuracy TrainKappa    method
-1     0.9991416   0.998611 svmRadial
+1     0.9992285  0.9987971 svmRadial
 
 [[2]]
 Cross-Validated (5 fold) Confusion Matrix 
@@ -734,12 +734,12 @@ Cross-Validated (5 fold) Confusion Matrix
  
             Reference
 Prediction   cleared fallen_dry forest water
-  cleared      107.8        0.0    0.2   0.0
-  fallen_dry     0.0       14.6    0.0   0.0
-  forest         0.2        0.0  249.6   0.0
-  water          0.0        0.0    0.0  94.0
+  cleared      158.0        0.0    0.2   0.0
+  fallen_dry     0.0       18.2    0.0   0.0
+  forest         0.2        0.0  250.0   0.0
+  water          0.0        0.0    0.0  91.6
                             
- Accuracy (average) : 0.9991</code></pre>
+ Accuracy (average) : 0.9992</code></pre>
 </div>
 <div class="sourceCode" id="cb24"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">sc_svm</span><span class="op">$</span><span class="va">validation</span><span class="op">$</span><span class="va">performance</span></span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -747,16 +747,16 @@ Prediction   cleared fallen_dry forest water
 
             Reference
 Prediction   cleared fallen_dry forest water
-  cleared        392          2      0     0
-  fallen_dry       0         49      0     0
-  forest           2          0    437     0
-  water            0          0      0   130
+  cleared        141          1      0     0
+  fallen_dry       0         32      0     0
+  forest           2          0    645     0
+  water            0          0      0   142
 
 Overall Statistics
                                           
-               Accuracy : 0.996           
-                 95% CI : (0.9899, 0.9989)
-    No Information Rate : 0.4318          
+               Accuracy : 0.9969          
+                 95% CI : (0.9909, 0.9994)
+    No Information Rate : 0.6698          
     P-Value [Acc &gt; NIR] : &lt; 2.2e-16       
                                           
                   Kappa : 0.9938          
@@ -766,22 +766,22 @@ Overall Statistics
 Statistics by Class:
 
                      Class: cleared Class: fallen_dry Class: forest
-Sensitivity                  0.9949           0.96078        1.0000
-Specificity                  0.9968           1.00000        0.9965
-Pos Pred Value               0.9949           1.00000        0.9954
-Neg Pred Value               0.9968           0.99792        1.0000
-Prevalence                   0.3893           0.05040        0.4318
-Detection Rate               0.3874           0.04842        0.4318
-Detection Prevalence         0.3893           0.04842        0.4338
-Balanced Accuracy            0.9958           0.98039        0.9983
+Sensitivity                  0.9860           0.96970        1.0000
+Specificity                  0.9988           1.00000        0.9937
+Pos Pred Value               0.9930           1.00000        0.9969
+Neg Pred Value               0.9976           0.99893        1.0000
+Prevalence                   0.1485           0.03427        0.6698
+Detection Rate               0.1464           0.03323        0.6698
+Detection Prevalence         0.1475           0.03323        0.6719
+Balanced Accuracy            0.9924           0.98485        0.9969
                      Class: water
 Sensitivity                1.0000
 Specificity                1.0000
 Pos Pred Value             1.0000
 Neg Pred Value             1.0000
-Prevalence                 0.1285
-Detection Rate             0.1285
-Detection Prevalence       0.1285
+Prevalence                 0.1475
+Detection Rate             0.1475
+Detection Prevalence       0.1475
 Balanced Accuracy          1.0000</code></pre>
 </div>
 </div>
@@ -795,7 +795,7 @@ Balanced Accuracy          1.0000</code></pre>
 <span>  title <span class="op">=</span> <span class="st">"Classes"</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_layout.html">tm_layout</a></span><span class="op">(</span></span>
 <span>    legend.outside <span class="op">=</span> <span class="cn">TRUE</span>, </span>
-<span>    title <span class="op">=</span> <span class="st">"AI-based Classification: \n Random Forest"</span><span class="op">)</span></span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span>    title <span class="op">=</span> <span class="st">"AI-based Classification: \n Support Vector Machine"</span><span class="op">)</span></span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure"><p><a href="4_3_image_classification_files/figure-html/unnamed-chunk-15-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-9"><img src="4_3_image_classification_files/figure-html/unnamed-chunk-15-1.png" class="img-fluid figure-img" width="7200"></a></p>
@@ -821,7 +821,7 @@ Balanced Accuracy          1.0000</code></pre>
 <div class="cell-output cell-output-stdout">
 <pre><code>[[1]]
   TrainAccuracy TrainKappa method
-1     0.9953569  0.9927041   nnet
+1     0.9954531   0.992775   nnet
 
 [[2]]
 Cross-Validated (5 fold) Confusion Matrix 
@@ -830,12 +830,12 @@ Cross-Validated (5 fold) Confusion Matrix
  
             Reference
 Prediction   cleared fallen_dry forest water
-  cleared      128.6        0.2    0.6   0.0
-  fallen_dry     0.0       15.2    0.4   0.0
-  forest         0.6        0.0  236.0   0.0
-  water          0.0        0.2    0.2  92.2
+  cleared      144.6        0.0    0.4   0.0
+  fallen_dry     0.0       21.4    0.2   0.0
+  forest         1.0        0.0  270.8   0.0
+  water          0.0        0.8    0.0  88.8
                             
- Accuracy (average) : 0.9954</code></pre>
+ Accuracy (average) : 0.9955</code></pre>
 </div>
 <div class="sourceCode" id="cb29"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">sc_ann</span><span class="op">$</span><span class="va">validation</span><span class="op">$</span><span class="va">performance</span></span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -843,41 +843,41 @@ Prediction   cleared fallen_dry forest water
 
             Reference
 Prediction   cleared fallen_dry forest water
-  cleared        222          0      0     0
-  fallen_dry       0         46     18     0
-  forest          66          0    720     0
-  water            0          0      0   139
+  cleared        206          0      1     0
+  fallen_dry       0         13      1     0
+  forest           0          0    251     0
+  water            0          0      0   156
 
 Overall Statistics
                                           
-               Accuracy : 0.9306          
-                 95% CI : (0.9148, 0.9443)
-    No Information Rate : 0.6094          
+               Accuracy : 0.9968          
+                 95% CI : (0.9885, 0.9996)
+    No Information Rate : 0.4029          
     P-Value [Acc &gt; NIR] : &lt; 2.2e-16       
                                           
-                  Kappa : 0.8729          
+                  Kappa : 0.9952          
                                           
  Mcnemar's Test P-Value : NA              
 
 Statistics by Class:
 
                      Class: cleared Class: fallen_dry Class: forest
-Sensitivity                  0.7708           1.00000        0.9756
-Specificity                  1.0000           0.98455        0.8605
-Pos Pred Value               1.0000           0.71875        0.9160
-Neg Pred Value               0.9333           1.00000        0.9576
-Prevalence                   0.2378           0.03799        0.6094
-Detection Rate               0.1833           0.03799        0.5945
-Detection Prevalence         0.1833           0.05285        0.6491
-Balanced Accuracy            0.8854           0.99227        0.9180
+Sensitivity                  1.0000           1.00000        0.9921
+Specificity                  0.9976           0.99837        1.0000
+Pos Pred Value               0.9952           0.92857        1.0000
+Neg Pred Value               1.0000           1.00000        0.9947
+Prevalence                   0.3280           0.02070        0.4029
+Detection Rate               0.3280           0.02070        0.3997
+Detection Prevalence         0.3296           0.02229        0.3997
+Balanced Accuracy            0.9988           0.99919        0.9960
                      Class: water
 Sensitivity                1.0000
 Specificity                1.0000
 Pos Pred Value             1.0000
 Neg Pred Value             1.0000
-Prevalence                 0.1148
-Detection Rate             0.1148
-Detection Prevalence       0.1148
+Prevalence                 0.2484
+Detection Rate             0.2484
+Detection Prevalence       0.2484
 Balanced Accuracy          1.0000</code></pre>
 </div>
 </div>
@@ -1301,7 +1301,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   </div>
 </nav>
 </div> <!-- /content -->
-<script>var lightboxQuarto = GLightbox({"closeEffect":"zoom","openEffect":"zoom","selector":".lightbox","loop":false,"descPosition":"bottom"});
+<script>var lightboxQuarto = GLightbox({"descPosition":"bottom","loop":false,"selector":".lightbox","closeEffect":"zoom","openEffect":"zoom"});
 window.onload = () => {
   lightboxQuarto.on('slide_before_load', (data) => {
     const { slideIndex, slideNode, slideConfig, player, trigger } = data;

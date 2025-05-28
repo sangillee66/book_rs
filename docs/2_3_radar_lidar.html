@@ -305,7 +305,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div>
     <div class="quarto-title-meta-heading">Modified</div>
     <div class="quarto-title-meta-contents">
-      <p class="date-modified">2025년 5월 12일</p>
+      <p class="date-modified">2025년 5월 19일</p>
     </div>
   </div>
     
@@ -328,7 +328,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p>수업의 특강에서 이하은이 수집한 las 파일을 불러온다.</p>
 <div class="cell">
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">las</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/lidR/man/readLAS.html">readLAS</a></span><span class="op">(</span><span class="st">"D:/My R/Raster Data Manipulation Korea/lidar_data/snu_lidar/lidars/terra_las/cloud850fccd1a896259f.las"</span><span class="op">)</span></span>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">las</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/lidR/man/readLAS.html">readLAS</a></span><span class="op">(</span><span class="st">"D:/My R/Raster Data Manipulation Korea/lidar_data/snu_lidar/lidars/terra_las/cloud_merged.las"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/lidR/man/las_check.html">las_check</a></span><span class="op">(</span><span class="va">las</span><span class="op">)</span></span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>시각화한다.</p>
@@ -356,13 +356,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </figure>
 </div>
 </div>
-<div class="cell-output cell-output-error">
-<pre><code>Error in add_more(fun, y): could not find function "add_more"</code></pre>
-</div>
 </div>
 <p><a href="https://www.rayshader.com/"><code>rayshader</code></a> 패키지를 활용하여 시각화한다.</p>
 <div class="cell">
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">dtm</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/lidR/man/rasterize.html">rasterize_terrain</a></span><span class="op">(</span><span class="va">las</span>, algorithm <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/lidR/man/dtm_tin.html">tin</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">dtm</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/lidR/man/rasterize.html">rasterize_terrain</a></span><span class="op">(</span><span class="va">las</span>, algorithm <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/lidR/man/dtm_tin.html">tin</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">dtm</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/raster/man/raster.html">raster</a></span><span class="op">(</span><span class="va">dtm</span><span class="op">)</span></span>
 <span><span class="va">elmat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://www.rayshader.com/reference/raster_to_matrix.html">raster_to_matrix</a></span><span class="op">(</span><span class="va">dtm</span><span class="op">)</span></span>
 <span><span class="va">map</span> <span class="op">&lt;-</span> <span class="va">elmat</span> <span class="op">|&gt;</span> </span>
@@ -373,7 +370,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p>2D 플롯을 생성한다.</p>
 <div class="cell">
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://www.rayshader.com/reference/plot_map.html">plot_map</a></span><span class="op">(</span><span class="va">map</span><span class="op">)</span></span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://www.rayshader.com/reference/plot_map.html">plot_map</a></span><span class="op">(</span><span class="va">map</span><span class="op">)</span></span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure"><p><a href="2_3_radar_lidar_files/figure-html/unnamed-chunk-8-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-2"><img src="2_3_radar_lidar_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid figure-img" width="672"></a></p>
@@ -383,7 +380,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p>3D 플롯을 생성한다.</p>
 <div class="cell">
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://www.rayshader.com/reference/plot_3d.html">plot_3d</a></span><span class="op">(</span><span class="va">map</span>, <span class="va">elmat</span>, zscale <span class="op">=</span> <span class="fl">1</span>, windowsize <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">800</span>, <span class="fl">800</span><span class="op">)</span><span class="op">)</span></span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://www.rayshader.com/reference/plot_3d.html">plot_3d</a></span><span class="op">(</span><span class="va">map</span>, <span class="va">elmat</span>, zscale <span class="op">=</span> <span class="fl">1</span>, windowsize <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">800</span>, <span class="fl">800</span><span class="op">)</span><span class="op">)</span></span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 
 
@@ -785,7 +782,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   </div>
 </nav>
 </div> <!-- /content -->
-<script>var lightboxQuarto = GLightbox({"closeEffect":"zoom","loop":false,"descPosition":"bottom","openEffect":"zoom","selector":".lightbox"});
+<script>var lightboxQuarto = GLightbox({"descPosition":"bottom","closeEffect":"zoom","selector":".lightbox","loop":false,"openEffect":"zoom"});
 window.onload = () => {
   lightboxQuarto.on('slide_before_load', (data) => {
     const { slideIndex, slideNode, slideConfig, player, trigger } = data;

@@ -260,7 +260,7 @@ tm_shape(r) + tm_raster(
   title = "Classes") +
   tm_layout(
     legend.outside = TRUE, 
-    title = "AI-based Classification: \n Random Forest")
+    title = "AI-based Classification: \n Support Vector Machine")
 ```
 
 ### 인공신경망(artificial neural network, ANN)

@@ -335,7 +335,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div>
     <div class="quarto-title-meta-heading">Modified</div>
     <div class="quarto-title-meta-contents">
-      <p class="date-modified">2025년 5월 8일</p>
+      <p class="date-modified">2025년 5월 19일</p>
     </div>
   </div>
     
@@ -472,6 +472,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span><span class="va">seoul_bbox</span> <span class="op">&lt;-</span> <span class="va">seoul</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_transform.html">st_transform</a></span><span class="op">(</span><span class="fl">4326</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_bbox.html">st_bbox</a></span><span class="op">(</span><span class="op">)</span></span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+<p><br></p>
 <div class="cell">
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org">tidyverse</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://r-spatial.github.io/stars/">stars</a></span><span class="op">)</span></span>
@@ -481,8 +482,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span></span>
 <span><span class="co"># STAC API를 지정. Landsat 데이터에 대해 두 가지가 존재하는데 후자를 사용함.</span></span>
 <span></span>
-<span><span class="va">stac_obj</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://brazil-data-cube.github.io/rstac/reference/stac.html">stac</a></span><span class="op">(</span><span class="st">"https://landsatlook.usgs.gov/stac-server"</span><span class="op">)</span></span>
-<span><span class="va">stac_obj</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://brazil-data-cube.github.io/rstac/reference/stac.html">stac</a></span><span class="op">(</span><span class="st">"https://planetarycomputer.microsoft.com/api/stac/v1"</span><span class="op">)</span></span>
+<span><span class="va">stac_obj</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://brazil-data-cube.github.io/rstac/reference/stac.html">stac</a></span><span class="op">(</span><span class="st">"https://landsatlook.usgs.gov/stac-server"</span><span class="op">)</span> <span class="co"># 저해상도 혹은 파일이 열리지 않음.</span></span>
+<span><span class="va">stac_obj</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://brazil-data-cube.github.io/rstac/reference/stac.html">stac</a></span><span class="op">(</span><span class="st">"https://planetarycomputer.microsoft.com/api/stac/v1"</span><span class="op">)</span> <span class="co"># 고해상도, 그런데 Level-1은 없음</span></span>
 <span></span>
 <span><span class="co"># 컬렉션 내용 및 ID 확인</span></span>
 <span><span class="va">collections</span> <span class="op">&lt;-</span> <span class="va">stac_obj</span> <span class="op">|&gt;</span> </span>
@@ -492,7 +493,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span><span class="fu"><a href="https://purrr.tidyverse.org/reference/map.html">map_chr</a></span><span class="op">(</span><span class="va">collections</span><span class="op">$</span><span class="va">collections</span>, <span class="st">"id"</span><span class="op">)</span> <span class="co"># "landsat-c2-l1"를 확인</span></span>
 <span></span>
 <span><span class="co"># 특정한 지역과 시간에 대한 검색: 6개가 확인됨</span></span>
-<span><span class="va">stac_obj</span> <span class="op">|&gt;</span> </span>
+<span><span class="va">selected_item</span> <span class="op">&lt;-</span> <span class="va">stac_obj</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="https://brazil-data-cube.github.io/rstac/reference/stac_search.html">stac_search</a></span><span class="op">(</span></span>
 <span>    collections <span class="op">=</span> <span class="st">"landsat-c2-l2"</span>,  </span>
 <span>    bbox <span class="op">=</span> <span class="va">seoul_bbox</span>,</span>
@@ -535,7 +536,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span></span>
 <span><span class="co"># 다운로드</span></span>
 <span></span>
-<span><span class="fu"><a href="https://brazil-data-cube.github.io/rstac/reference/assets_functions.html">assets_download</a></span><span class="op">(</span><span class="va">selected_item</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"red"</span>, <span class="st">"green"</span>, <span class="st">"blue"</span><span class="op">)</span>, </span>
+<span><span class="fu"><a href="https://brazil-data-cube.github.io/rstac/reference/assets_functions.html">assets_download</a></span><span class="op">(</span><span class="va">selected_item</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"red"</span><span class="op">)</span>, </span>
 <span>                output_dir <span class="op">=</span> <span class="st">"D:/My R/World Data Manupulation/stac/"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">B4</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span></span>
@@ -571,11 +572,46 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span>  <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_raster.html">tm_rgb</a></span><span class="op">(</span>r <span class="op">=</span> <span class="fl">3</span>, g <span class="op">=</span> <span class="fl">2</span>, b <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>  <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_shape.html">tm_shape</a></span><span class="op">(</span><span class="va">seoul</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_polygons.html">tm_borders</a></span><span class="op">(</span>lwd <span class="op">=</span> <span class="fl">2</span>, col <span class="op">=</span> <span class="st">"gray20"</span><span class="op">)</span></span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+<p>Landsat의 Level-1 데이터를 USGS의 STAC API를 통해 다운로드한다.</p>
+<div class="cell">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">stac_obj</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://brazil-data-cube.github.io/rstac/reference/stac.html">stac</a></span><span class="op">(</span><span class="st">"https://landsatlook.usgs.gov/stac-server"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">collections</span> <span class="op">&lt;-</span> <span class="va">stac_obj</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://brazil-data-cube.github.io/rstac/reference/collections.html">collections</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://brazil-data-cube.github.io/rstac/reference/request.html">get_request</a></span><span class="op">(</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://purrr.tidyverse.org/reference/map.html">map_chr</a></span><span class="op">(</span><span class="va">collections</span><span class="op">$</span><span class="va">collections</span>, <span class="st">"id"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># landsat-c2l1: Level-1 data</span></span>
+<span></span>
+<span><span class="va">items</span> <span class="op">&lt;-</span> <span class="va">stac_obj</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://brazil-data-cube.github.io/rstac/reference/stac_search.html">stac_search</a></span><span class="op">(</span></span>
+<span>    collections <span class="op">=</span> <span class="st">"landsat-c2l1"</span>,  </span>
+<span>    bbox <span class="op">=</span> <span class="va">seoul_bbox</span>,</span>
+<span>    datetime <span class="op">=</span> <span class="st">"2024-08-29T00:00:00Z/2024-08-29T23:59:59Z"</span>,</span>
+<span>    limit <span class="op">=</span> <span class="fl">5</span></span>
+<span>  <span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://brazil-data-cube.github.io/rstac/reference/request.html">get_request</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://brazil-data-cube.github.io/rstac/reference/items_sign_planetary_computer.html">items_sign_planetary_computer</a></span><span class="op">(</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">selected_item</span> <span class="op">&lt;-</span> <span class="va">items</span><span class="op">$</span><span class="va">features</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span></span>
+<span></span>
+<span><span class="va">selected_item</span><span class="op">$</span><span class="va">assets</span><span class="op">$</span><span class="va">blue</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://brazil-data-cube.github.io/rstac/reference/preview_plot.html">preview_plot</a></span><span class="op">(</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">selected_item</span><span class="op">$</span><span class="va">assets</span><span class="op">[[</span><span class="st">"rendered_preview"</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">href</span></span>
+<span><span class="va">selected_item</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://brazil-data-cube.github.io/rstac/reference/assets_functions.html">assets_url</a></span><span class="op">(</span>asset_names <span class="op">=</span> <span class="st">"thumbnail"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://brazil-data-cube.github.io/rstac/reference/preview_plot.html">preview_plot</a></span><span class="op">(</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://brazil-data-cube.github.io/rstac/reference/assets_functions.html">assets_download</a></span><span class="op">(</span><span class="va">selected_item</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"red"</span><span class="op">)</span>, output_dir <span class="op">=</span> <span class="st">"D:/R_Classes/2025_1_RS/"</span>, overwrite <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># 다운로드는 되지만 파일의 크기가 작음.</span></span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 </section><section id="stac-api를-이용한-데이터-취득-1-rsi-패키지의-활용" class="level3" data-number="7.4.2"><h3 data-number="7.4.2" class="anchored" data-anchor-id="stac-api를-이용한-데이터-취득-1-rsi-패키지의-활용">
 <span class="header-section-number">7.4.2</span> STAC API를 이용한 데이터 취득 1: <a href="https://permian-global-research.github.io/rsi/"><code>rsi</code></a> 패키지의 활용</h3>
 <p>빠르고 crop이 이루어진다는 점에서 편리하지만 해상도가 떨어짐.</p>
 <div class="cell">
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/Permian-Global-Research/rsi">rsi</a></span><span class="op">)</span></span>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/Permian-Global-Research/rsi">rsi</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">seoul</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_read.html">st_read</a></span><span class="op">(</span><span class="st">"D:/My R/Korean Administrative Areas/행정구역 셰이프 파일/2 Original Cleaning/2023_2Q/SEOUL_SIDO_2023_2Q.shp"</span><span class="op">)</span></span>
 <span><span class="va">aoi</span> <span class="op">&lt;-</span> <span class="va">seoul</span> </span>
@@ -991,7 +1027,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   </div>
 </nav>
 </div> <!-- /content -->
-<script>var lightboxQuarto = GLightbox({"openEffect":"zoom","closeEffect":"zoom","loop":false,"descPosition":"bottom","selector":".lightbox"});
+<script>var lightboxQuarto = GLightbox({"openEffect":"zoom","selector":".lightbox","descPosition":"bottom","loop":false,"closeEffect":"zoom"});
 window.onload = () => {
   lightboxQuarto.on('slide_before_load', (data) => {
     const { slideIndex, slideNode, slideConfig, player, trigger } = data;

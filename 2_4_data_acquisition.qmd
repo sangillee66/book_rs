@@ -129,6 +129,8 @@ seoul_bbox <- seoul |>
   st_transform(4326) |> st_bbox()
 ```
 
+\
+
 ```{r}
 #| eval: false
 library(tidyverse)
@@ -139,8 +141,8 @@ library(tmap)
 
 # STAC API를 지정. Landsat 데이터에 대해 두 가지가 존재하는데 후자를 사용함.
 
-stac_obj <- stac("https://landsatlook.usgs.gov/stac-server")
-stac_obj <- stac("https://planetarycomputer.microsoft.com/api/stac/v1")
+stac_obj <- stac("https://landsatlook.usgs.gov/stac-server") # 저해상도 혹은 파일이 열리지 않음.
+stac_obj <- stac("https://planetarycomputer.microsoft.com/api/stac/v1") # 고해상도, 그런데 Level-1은 없음
 
 # 컬렉션 내용 및 ID 확인
 collections <- stac_obj |> 
@@ -150,7 +152,7 @@ collections <- stac_obj |>
 map_chr(collections$collections, "id") # "landsat-c2-l1"를 확인
 
 # 특정한 지역과 시간에 대한 검색: 6개가 확인됨
-stac_obj |> 
+selected_item <- stac_obj |> 
   stac_search(
     collections = "landsat-c2-l2",  
     bbox = seoul_bbox,
@@ -193,7 +195,7 @@ selected_item %>%
 
 # 다운로드
 
-assets_download(selected_item, c("red", "green", "blue"), 
+assets_download(selected_item, c("red"), 
                 output_dir = "D:/My R/World Data Manupulation/stac/")
 
 B4 <- file.path(
@@ -228,6 +230,45 @@ landsat_image_seoul_mask_str <-
 tm_shape(landsat_image_seoul_mask_str, raster.downsample = FALSE) + 
   tm_rgb(r = 3, g = 2, b = 1) + 
   tm_shape(seoul) + tm_borders(lwd = 2, col = "gray20")
+```
+
+Landsat의 Level-1 데이터를 USGS의 STAC API를 통해 다운로드한다.
+
+```{r}
+#| eval: false
+
+stac_obj <- stac("https://landsatlook.usgs.gov/stac-server")
+
+collections <- stac_obj |> 
+  collections() |> 
+  get_request()
+
+map_chr(collections$collections, "id")
+
+# landsat-c2l1: Level-1 data
+
+items <- stac_obj |> 
+  stac_search(
+    collections = "landsat-c2l1",  
+    bbox = seoul_bbox,
+    datetime = "2024-08-29T00:00:00Z/2024-08-29T23:59:59Z",
+    limit = 5
+  ) |> 
+  get_request() |> 
+  items_sign_planetary_computer()
+
+selected_item <- items$features[[1]]
+
+selected_item$assets$blue |> preview_plot()
+
+selected_item$assets[["rendered_preview"]]$href
+selected_item %>% 
+  assets_url(asset_names = "thumbnail") %>%
+  preview_plot()
+
+assets_download(selected_item, c("red"), output_dir = "D:/R_Classes/2025_1_RS/", overwrite = TRUE)
+
+# 다운로드는 되지만 파일의 크기가 작음.
 ```
 
 ### STAC API를 이용한 데이터 취득 1: [`rsi`](https://permian-global-research.github.io/rsi/) 패키지의 활용

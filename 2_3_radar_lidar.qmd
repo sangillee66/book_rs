@@ -37,7 +37,7 @@ library(rayshader)
 
 ```{r}
 #| results: hide
-las <- readLAS("D:/My R/Raster Data Manipulation Korea/lidar_data/snu_lidar/lidars/terra_las/cloud850fccd1a896259f.las")
+las <- readLAS("D:/My R/Raster Data Manipulation Korea/lidar_data/snu_lidar/lidars/terra_las/cloud_merged.las")
 las_check(las)
 ```
 
